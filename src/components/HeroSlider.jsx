@@ -214,18 +214,18 @@ export default function HeroSlider({ slides, contact }) {
       </div>
 
       {/* Content */}
-      <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-        <div key={animKey} className="hero-content" style={{ textAlign: 'right', marginLeft: 'auto', marginRight: 0 }}>
+      <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+        <div key={animKey} className="hero-content" style={{ textAlign: 'left', marginLeft: 0, marginRight: 'auto' }}>
           <div className="hero-subtitle">{slide.subtitle}</div>
 
-          <div className="hero-icon-container" style={{ marginLeft: 'auto' }}>
+          <div className="hero-icon-container" style={{ marginLeft: 0 }}>
             <LucideIcon name={slide?.icon} size={42} color="white" />
           </div>
 
           <h1 className="hero-title">{slide?.headline}</h1>
-          <p className="hero-description" style={{ marginLeft: 'auto' }}>{slide?.description}</p>
+          <p className="hero-description" style={{ marginLeft: 0 }}>{slide?.description}</p>
 
-          <div className="hero-btns" style={{ display: 'flex', gap: 16, justifyContent: 'flex-end' }}>
+          <div className="hero-btns" style={{ display: 'flex', gap: 16, justifyContent: 'flex-start' }}>
             <a href="/products" className="hero-btn hero-btn-primary">
               {slide?.cta_primary || slide?.cta1 || 'View Catalog'}
               <LucideIcon name="ChevronRight" size={18} />
