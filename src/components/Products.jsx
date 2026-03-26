@@ -70,85 +70,88 @@ export default function Products({ products, contact, previewMode = false }) {
             gap: 'clamp(16px, 4vw, 32px)'
           }}
         >
-          {displayProducts.map((p) => (
-            <div
+          {displayProducts.map((p, i) => (
+            <Link
               key={p.id}
-              className="premium-card"
-              style={{ display: 'flex', flexDirection: 'column' }}
+              to={`/product/${p.id}`}
+              className="premium-card horizontal-card animate-slide-up"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                padding: 0,
+                overflow: 'hidden',
+                textDecoration: 'none',
+                animationDelay: `${i * 0.1}s`
+              }}
             >
-              <Link to={`/product/${p.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block', flex: 1 }}>
-                {/* Product Image / Placeholder */}
+              {/* Product Image / Placeholder */}
+              <div className="card-img-container" style={{
+                height: 240, background: 'var(--surface-hover)',
+                position: 'relative', overflow: 'hidden',
+                display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}>
+                {p.image_url ? (
+                  <img src={p.image_url} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <div style={{
+                    width: 80, height: 80, borderRadius: 25,
+                    background: 'var(--surface)', display: 'flex',
+                    alignItems: 'center', justifyContent: 'center',
+                    boxShadow: 'var(--shadow)', transform: 'rotate(-5deg)'
+                  }}>
+                    <LucideIcon name={p.icon || 'Package'} size={40} color="var(--primary)" strokeWidth={1.5} />
+                  </div>
+                )}
+
+                {/* Stock Badge */}
                 <div style={{
-                  height: 240, background: 'var(--surface-hover)',
-                  position: 'relative', overflow: 'hidden',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center'
+                  position: 'absolute', top: 20, right: 20,
+                  padding: '6px 14px', borderRadius: 100,
+                  background: (p.stock_status || p.stockStatus) === 'In Stock' ? 'var(--secondary)' : 'var(--primary)',
+                  color: 'white', fontWeight: 800, fontSize: '0.7rem',
+                  letterSpacing: '0.05em', boxShadow: 'var(--shadow)'
                 }}>
-                  {p.image_url ? (
-                    <img src={p.image_url} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  ) : (
-                    <div style={{
-                      width: 80, height: 80, borderRadius: 25,
-                      background: 'var(--surface)', display: 'flex',
-                      alignItems: 'center', justifyContent: 'center',
-                      boxShadow: 'var(--shadow)', transform: 'rotate(-5deg)'
-                    }}>
-                      <LucideIcon name={p.icon || 'Package'} size={40} color="var(--primary)" strokeWidth={1.5} />
-                    </div>
-                  )}
+                  {(p.stock_status || p.stockStatus || 'In Stock').toUpperCase()}
+                </div>
+              </div>
 
-                  {/* Stock Badge */}
-                  <div style={{
-                    position: 'absolute', top: 20, right: 20,
-                    padding: '6px 14px', borderRadius: 100,
-                    background: (p.stock_status || p.stockStatus) === 'In Stock' ? 'var(--secondary)' : 'var(--primary)',
-                    color: 'white', fontWeight: 800, fontSize: '0.7rem',
-                    letterSpacing: '0.05em', boxShadow: 'var(--shadow)'
-                  }}>
-                    {(p.stock_status || p.stockStatus || 'In Stock').toUpperCase()}
-                  </div>
+              {/* Product Info */}
+              <div className="card-content" style={{ padding: 32, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary)', marginBottom: 8, letterSpacing: '0.1em' }}>
+                  {p.category?.toUpperCase() || 'GENERAL'}
+                </div>
+                <h3 style={{ fontSize: '1.4rem', marginBottom: 12 }}>{p.name}</h3>
+                <p className="card-description" style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: 24, minHeight: 48, lineHeight: 1.6 }}>
+                  {p.description}
+                </p>
+
+                <div className="card-specs" style={{
+                  background: 'var(--surface-hover)', border: '1px solid var(--border)',
+                  padding: '12px 16px', borderRadius: 14, marginBottom: 24,
+                  display: 'flex', alignItems: 'center', gap: 12,
+                  marginTop: 'auto'
+                }}>
+                  <LucideIcon name="Layers" size={18} color="var(--text-muted)" />
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)' }}>{p.specs}</span>
                 </div>
 
-                {/* Product Info */}
-                <div style={{ padding: 32 }}>
-                  <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary)', marginBottom: 8, letterSpacing: '0.1em' }}>
-                    {p.category.toUpperCase()}
-                  </div>
-                  <h3 style={{ fontSize: '1.4rem', marginBottom: 12 }}>{p.name}</h3>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: 24, minHeight: 48, lineHeight: 1.6 }}>
-                    {p.description}
-                  </p>
-
-                  <div style={{
-                    background: 'var(--surface-hover)', border: '1px solid var(--border)',
-                    padding: '12px 16px', borderRadius: 14, marginBottom: 24,
-                    display: 'flex', alignItems: 'center', gap: 12
-                  }}>
-                    <LucideIcon name="Layers" size={18} color="var(--text-muted)" />
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)' }}>{p.specs}</span>
-                  </div>
-                </div>
-              </Link>
-
-              <div style={{ padding: '0 32px 32px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div className="card-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>{p.price_range || p.priceRange}</div>
-                  <a
-                    href={`https://wa.me/${contact.whatsapp}?text=Inquiry for ${p.name}`}
-                    target="_blank" rel="noopener noreferrer"
+                  <div
                     className="hero-btn"
                     style={{
-                      padding: '12px 24px', fontSize: '0.9rem', background: 'var(--primary)', color: 'white', margin: 0,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-                      borderRadius: '20px',
+                      padding: '12px 20px', fontSize: '0.85rem', background: 'var(--primary)', color: 'white', margin: 0,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                      borderRadius: '16px',
                       boxShadow: '0 8px 16px rgba(var(--primary-rgb), 0.2)'
                     }}
                   >
-                    <LucideIcon name="MessageCircle" size={18} />
+                    <LucideIcon name="MessageCircle" size={16} />
                     <span>Inquire</span>
-                  </a>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

@@ -214,18 +214,18 @@ export default function HeroSlider({ slides, contact }) {
       </div>
 
       {/* Content */}
-      <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-        <div key={animKey} className="hero-content">
+      <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+        <div key={animKey} className="hero-content" style={{ textAlign: 'right', marginLeft: 'auto', marginRight: 0 }}>
           <div className="hero-subtitle">{slide.subtitle}</div>
 
-          <div className="hero-icon-container">
-            <LucideIcon name={slide.icon} size={42} color="white" />
+          <div className="hero-icon-container" style={{ marginLeft: 'auto' }}>
+            <LucideIcon name={slide?.icon} size={42} color="white" />
           </div>
 
-          <h1 className="hero-title">{slide.headline}</h1>
-          <p className="hero-description">{slide.description}</p>
+          <h1 className="hero-title">{slide?.headline}</h1>
+          <p className="hero-description" style={{ marginLeft: 'auto' }}>{slide?.description}</p>
 
-          <div className="hero-btns" style={{ display: 'flex', gap: 16 }}>
+          <div className="hero-btns" style={{ display: 'flex', gap: 16, justifyContent: 'flex-end' }}>
             <a href="/products" className="hero-btn hero-btn-primary">
               {slide?.cta_primary || slide?.cta1 || 'View Catalog'}
               <LucideIcon name="ChevronRight" size={18} />

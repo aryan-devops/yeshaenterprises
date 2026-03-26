@@ -32,7 +32,7 @@ export default function Preloader({ loading }) {
       visibility: fade ? 'hidden' : 'visible',
       transition: 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s',
     }}>
-      <div style={{ position: 'relative', width: 450, height: 450 }}>
+      <div style={{ position: 'relative', width: 'clamp(280px, 80vw, 450px)', height: 'clamp(280px, 80vw, 450px)' }}>
         {/* Pulsing Glow */}
         <div style={{
           position: 'absolute',

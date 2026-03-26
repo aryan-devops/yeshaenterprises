@@ -24,7 +24,7 @@ export default function StatsMarquee({ stats }) {
         .marquee-item {
           display: flex; align-items: center; gap: 12px;
           color: var(--text-secondary);
-          font-weight: 700; font-size: 0.9rem;
+          font-weight: 700; font-size: clamp(0.75rem, 2.5vw, 0.9rem);
           text-transform: uppercase; letter-spacing: 0.15em;
           white-space: nowrap;
         }

@@ -1,13 +1,27 @@
 import Testimonials from '../components/Testimonials'
 import VisionMission from '../components/VisionMission'
 import About from '../components/About'
+import HeroSlider from '../components/HeroSlider'
 import useScrollReveal from '../hooks/useScrollReveal'
 
 export default function AboutPage({ contact, testimonials }) {
   const reveal = useScrollReveal()
 
   return (
-    <div style={{ paddingTop: 'var(--navbar-height)' }}>
+    <>
+      <HeroSlider 
+        slides={[{
+          id: 'about-hero',
+          headline: 'Pioneering Sustainable Fisheries',
+          subtitle: 'Innovation • Quality • Integrity',
+          description: 'Leveraging years of engineering expertise to bring industrial-grade Biofloc infrastructure to farmers across the nation.',
+          gradient: 'linear-gradient(135deg, rgba(2, 6, 23, 0.9), rgba(14, 165, 233, 0.7))',
+          cta_primary: 'Our Vision',
+          cta_secondary: 'Contact Experts'
+        }]}
+        contact={contact}
+      />
+
       <div className="reveal" ref={reveal}>
         <About />
       </div>
@@ -19,7 +33,6 @@ export default function AboutPage({ contact, testimonials }) {
       <div className="reveal" ref={reveal}>
         <Testimonials reviews={testimonials} />
       </div>
-
       <section style={{ padding: '100px 0', background: 'var(--bg)' }}>
         <div className="container">
           <div className="premium-card" style={{ padding: 60, textAlign: 'center' }}>
@@ -36,6 +49,6 @@ export default function AboutPage({ contact, testimonials }) {
           </div>
         </div>
       </section>
-    </div>
+    </>
   )
 }

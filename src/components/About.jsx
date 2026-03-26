@@ -41,7 +41,7 @@ export default function About() {
               OUR STORY
             </div>
             
-            <h2 style={{ fontSize: '3rem', marginBottom: 24, lineHeight: 1.1 }}>
+            <h2 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', marginBottom: 24, lineHeight: 1.1 }}>
               Pioneering Sustainable <br />
               <span style={{ color: 'var(--primary)' }}>Aquaculture Systems</span>
             </h2>
