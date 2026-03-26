@@ -68,12 +68,36 @@ function LoginGate({ onLogin }) {
 
           {error && <p style={{ color: '#ef4444', fontSize: '0.85rem', fontWeight: 600 }}>{error}</p>}
 
-          <button type="submit" className="hero-btn" style={{
-            background: 'var(--primary)', color: 'white', justifyContent: 'center', width: '100%', margin: 0,
-            boxShadow: '0 10px 20px rgba(var(--primary-rgb), 0.2)'
-          }}>
+          <button 
+            type="submit" 
+            style={{
+              background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))', 
+              color: 'white', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              gap: 8, 
+              width: '100%', 
+              padding: 18, 
+              borderRadius: 100, 
+              fontWeight: 700, 
+              fontSize: '1rem', 
+              border: 'none', 
+              cursor: 'pointer', 
+              transition: 'all 0.3s cubic-bezier(0.23, 1, 0.32, 1)', 
+              boxShadow: '0 8px 24px rgba(var(--primary-rgb), 0.25)'
+            }}
+            onMouseEnter={e => { 
+              e.currentTarget.style.transform = 'translateY(-3px)'; 
+              e.currentTarget.style.boxShadow = '0 14px 28px rgba(var(--primary-rgb), 0.35)';
+            }}
+            onMouseLeave={e => { 
+              e.currentTarget.style.transform = 'translateY(0)'; 
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(var(--primary-rgb), 0.25)';
+            }}
+          >
             Unlock Dashboard
-            <LucideIcon name="ChevronRight" size={20} />
+            <LucideIcon name="ArrowRight" size={18} strokeWidth={2.5} />
           </button>
         </form>
       </div>
