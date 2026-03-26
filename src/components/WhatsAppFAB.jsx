@@ -36,7 +36,7 @@ export default function WhatsAppFAB({ contact }) {
         }
       `}</style>
       <LucideIcon name="MessageCircle" size={32} />
-      
+
       {/* Pulse Effect */}
       <div style={{
         position: 'absolute',

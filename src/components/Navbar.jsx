@@ -191,10 +191,10 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
               textDecoration: 'none',
             }}
           >
-            <img 
-              src={darkMode ? logoDark : logoLight} 
-              alt="Yesha Enterprises" 
-              style={{ height: 'var(--logo-height)', width: 'auto', objectFit: 'contain' }} 
+            <img
+              src={darkMode ? logoDark : logoLight}
+              alt="Yesha Enterprises"
+              style={{ height: 'var(--logo-height)', width: 'auto', objectFit: 'contain' }}
             />
           </NavLink>
 
@@ -206,26 +206,26 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
             {/* SEARCH FORM */}
             <form onSubmit={handleSearch} style={{ position: 'relative' }}>
               <LucideIcon name="Search" size={16} color="var(--text-muted)" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }} />
-              <input 
-                type="text" 
-                placeholder="Search..." 
-                value={searchQuery} 
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                style={{ 
-                  width: 200, padding: '10px 16px 10px 42px', borderRadius: 100, 
-                  border: '1px solid var(--border)', background: 'var(--surface-hover)', 
-                  fontSize: '0.9rem', color: 'var(--text-primary)', outline: 'none', 
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' 
+                style={{
+                  width: 200, padding: '10px 16px 10px 42px', borderRadius: 100,
+                  border: '1px solid var(--border)', background: 'var(--surface-hover)',
+                  fontSize: '0.9rem', color: 'var(--text-primary)', outline: 'none',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
-                onFocus={e => { 
-                  e.target.style.borderColor = 'var(--primary)'; 
-                  e.target.style.background = 'var(--surface)'; 
+                onFocus={e => {
+                  e.target.style.borderColor = 'var(--primary)';
+                  e.target.style.background = 'var(--surface)';
                   e.target.style.boxShadow = '0 0 0 3px rgba(var(--primary-rgb), 0.15)';
                   e.target.style.width = '260px';
                 }}
-                onBlur={e => { 
-                  e.target.style.borderColor = 'var(--border)'; 
-                  e.target.style.background = 'var(--surface-hover)'; 
+                onBlur={e => {
+                  e.target.style.borderColor = 'var(--border)';
+                  e.target.style.background = 'var(--surface-hover)';
                   e.target.style.boxShadow = 'none';
                   e.target.style.width = '200px';
                 }}
@@ -303,15 +303,15 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
         <div className="mobile-menu">
           <form onSubmit={handleSearch} style={{ position: 'relative', marginBottom: 8 }}>
             <LucideIcon name="Search" size={18} color="var(--text-muted)" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }} />
-            <input 
-              type="text" 
-              placeholder="Search products..." 
-              value={searchQuery} 
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              style={{ 
-                width: '100%', padding: '14px 16px 14px 44px', borderRadius: 100, 
-                border: '1px solid var(--border)', background: 'var(--surface-hover)', 
-                fontSize: '1rem', color: 'var(--text-primary)', outline: 'none' 
+              style={{
+                width: '100%', padding: '14px 16px 14px 44px', borderRadius: 100,
+                border: '1px solid var(--border)', background: 'var(--surface-hover)',
+                fontSize: '1rem', color: 'var(--text-primary)', outline: 'none'
               }}
               onFocus={e => e.target.style.borderColor = 'var(--primary)'}
               onBlur={e => e.target.style.borderColor = 'var(--border)'}
