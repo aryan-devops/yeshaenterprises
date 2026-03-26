@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import LucideIcon from '../components/LucideIcon'
+import PageHero from '../components/PageHero'
 
 export default function ProductDetailPage({ products, contact }) {
   const { id } = useParams()
@@ -34,8 +35,18 @@ export default function ProductDetailPage({ products, contact }) {
   if (gallery.length === 0) gallery.push(null)
 
   return (
-    <div style={{ background: 'var(--bg)', minHeight: '100vh', padding: '120px 0' }}>
-      <div className="container">
+    <>
+      <PageHero
+        title={product.name}
+        subtitle={product.category?.toUpperCase() || 'PRODUCT DETAILS'}
+        description={product.description}
+        bgImage={product.image_url || 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+        gradient="linear-gradient(135deg, rgba(2, 6, 23, 0.95), rgba(14, 116, 144, 0.85))"
+        badge="Product Details"
+        icon="PackageSearch"
+      />
+      <div style={{ background: 'var(--bg)', minHeight: '50vh', padding: '80px 0' }}>
+        <div className="container">
 
         {/* Breadcrumbs */}
         <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 40, fontSize: '0.9rem', color: 'var(--text-muted)' }}>
@@ -213,6 +224,7 @@ export default function ProductDetailPage({ products, contact }) {
           }
         }
       `}</style>
-    </div>
+      </div>
+    </>
   )
 }
