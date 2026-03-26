@@ -214,7 +214,7 @@ export default function HeroSlider({ slides, contact }) {
       </div>
 
       {/* Content */}
-      <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+      <div className="container hero-container" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: 'clamp(10px, 3vw, 24px)' }}>
         <div key={animKey} className="hero-content" style={{ textAlign: 'left', marginLeft: 0, marginRight: 'auto' }}>
           <div className="hero-subtitle">{slide.subtitle}</div>
 
