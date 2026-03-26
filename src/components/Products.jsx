@@ -12,48 +12,31 @@ export default function Products({ products, contact, previewMode = false }) {
     ? products
     : products.filter(p => p.category === activeTab)
 
-  const displayProducts = previewMode ? filtered.slice(0, 3) : filtered
+  const displayProducts = previewMode ? filtered.slice(0, 6) : filtered
 
   return (
-    <section id="products" style={{ padding: 'clamp(60px, 10vh, 100px) 0', background: 'var(--bg)' }}>
+    <section id="products" className="products-section">
       <div className="container">
         {/* Section Header */}
-        <div style={{ textAlign: 'center', marginBottom: 60 }} className="animate-slide-up">
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8,
-            padding: '8px 16px', borderRadius: '100px',
-            background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)',
-            fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.1em',
-            marginBottom: 16
-          }}>
-            <LucideIcon name="Package" size={16} />
+        <div className="products-header animate-slide-up">
+          <div className="section-pill">
+            <LucideIcon name="Package" size={14} />
             OUR SOLUTIONS
           </div>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: 20 }}>Complete Biofloc Infrastructure</h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: 600, margin: '0 auto', fontSize: '1.1rem' }}>
-            Wholesale prices, engineering-grade quality, and Pan-India delivery on all industrial aquaculture products.
+          <h2 className="products-title">Complete Biofloc Infrastructure</h2>
+          <p className="products-subtitle">
+            Wholesale prices, engineering-grade quality, and Pan-India delivery.
           </p>
         </div>
 
         {/* Filter Tabs */}
         {!previewMode && (
-          <div style={{
-            display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 60, flexWrap: 'wrap',
-            padding: 8, background: 'var(--surface)', borderRadius: 20, border: '1px solid var(--border)',
-            width: 'fit-content', margin: '0 auto 60px'
-          }}>
+          <div className="filter-tabs">
             {categories.map(c => (
               <button
                 key={c}
                 onClick={() => setActiveTab(c)}
-                style={{
-                  padding: '10px 24px', borderRadius: 14,
-                  fontSize: '0.9rem', fontWeight: 600,
-                  transition: 'all 0.3s cubic-bezier(0.23, 1, 0.32, 1)',
-                  background: activeTab === c ? 'var(--primary)' : 'transparent',
-                  color: activeTab === c ? 'white' : 'var(--text-secondary)',
-                  boxShadow: activeTab === c ? '0 8px 16px rgba(var(--primary-rgb), 0.2)' : 'none'
-                }}
+                className={`filter-tab ${activeTab === c ? 'active' : ''}`}
               >
                 {c}
               </button>
@@ -61,101 +44,294 @@ export default function Products({ products, contact, previewMode = false }) {
           </div>
         )}
 
-        {/* Product Grid */}
-        <div
-          className="reveal-stagger"
-          ref={reveal}
-          style={{
-            display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-            gap: 'clamp(16px, 4vw, 32px)'
-          }}
-        >
+        {/* Product Grid — NEW DESIGN */}
+        <div className="products-grid reveal-stagger" ref={reveal}>
           {displayProducts.map((p, i) => (
             <Link
               key={p.id}
               to={`/product/${p.id}`}
-              className="product-card horizontal-card animate-slide-up"
-              style={{ animationDelay: `${i * 0.1}s` }}
+              className="pcard animate-slide-up"
+              style={{ animationDelay: `${i * 0.08}s` }}
             >
-              {/* Product Image / Placeholder */}
-              <div className="card-img-container">
-                {p.image_url ? (
-                  <img src={p.image_url} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  <div style={{
-                    width: 80, height: 80, borderRadius: 25,
-                    background: 'var(--surface)', display: 'flex',
-                    alignItems: 'center', justifyContent: 'center',
-                    boxShadow: 'var(--shadow)', transform: 'rotate(-5deg)'
-                  }}>
-                    <LucideIcon name={p.icon || 'Package'} size={40} color="var(--primary)" strokeWidth={1.5} />
-                  </div>
-                )}
-
-                {/* Stock Badge */}
-                <div style={{
-                  position: 'absolute', top: 20, right: 20,
-                  padding: '6px 14px', borderRadius: 100,
-                  background: (p.stock_status || p.stockStatus) === 'In Stock' ? 'var(--secondary)' : 'var(--primary)',
-                  color: 'white', fontWeight: 800, fontSize: '0.7rem',
-                  letterSpacing: '0.05em', boxShadow: 'var(--shadow)'
-                }}>
-                  {(p.stock_status || p.stockStatus || 'In Stock').toUpperCase()}
-                </div>
+              {/* Image */}
+              <div className="pcard-img">
+                {p.image_url
+                  ? <img src={p.image_url} alt={p.name} />
+                  : <div className="pcard-icon-wrap">
+                      <LucideIcon name={p.icon || 'Package'} size={36} color="var(--primary)" strokeWidth={1.5} />
+                    </div>
+                }
+                <span className="pcard-badge">{(p.stock_status || p.stockStatus || 'In Stock').toUpperCase()}</span>
               </div>
 
-              {/* Product Info */}
-              <div className="card-content">
-                <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.1em' }}>
-                  {p.category?.toUpperCase() || 'GENERAL'}
-                </div>
-                <h3>{p.name}</h3>
-                <p className="card-description">
-                  {p.description}
-                </p>
+              {/* Info */}
+              <div className="pcard-body">
+                <span className="pcard-category">{p.category?.toUpperCase() || 'GENERAL'}</span>
+                <h3 className="pcard-name">{p.name}</h3>
+                <p className="pcard-desc">{p.description}</p>
 
-                <div className="card-specs" style={{
-                  background: 'var(--surface-hover)', border: '1px solid var(--border)',
-                  display: 'flex', alignItems: 'center', gap: 10,
-                  marginTop: 'auto'
-                }}>
-                  <LucideIcon name="Layers" size={16} color="var(--text-muted)" />
-                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)' }}>{p.specs}</span>
+                <div className="pcard-specs">
+                  <LucideIcon name="Layers" size={14} color="var(--text-muted)" />
+                  <span>{p.specs}</span>
                 </div>
 
-                <div className="card-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ fontWeight: 800, color: 'var(--text-primary)' }}>{p.price_range || p.priceRange}</div>
-                  <div
-                    className="hero-btn"
-                    style={{
-                      background: 'var(--primary)', color: 'white', margin: 0,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                      boxShadow: '0 8px 16px rgba(var(--primary-rgb), 0.2)'
-                    }}
-                  >
-                    <LucideIcon name="MessageCircle" size={16} />
-                    <span>Inquire</span>
-                  </div>
+                <div className="pcard-footer">
+                  <span className="pcard-price">{p.price_range || p.priceRange}</span>
+                  <span className="pcard-cta">
+                    <LucideIcon name="ArrowRight" size={16} />
+                    View
+                  </span>
                 </div>
               </div>
             </Link>
           ))}
         </div>
 
-        {/* View All CTA for Preview Mode */}
+        {/* View All CTA */}
         {previewMode && (
-          <div style={{ textAlign: 'center', marginTop: 60 }}>
-            <a
-              href="/products"
-              className="hero-btn"
-              style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--primary)', padding: '16px 32px' }}
-            >
+          <div className="products-cta">
+            <a href="/products" className="hero-btn" style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--primary)', padding: '14px 28px' }}>
               Explore Full Catalog
-              <LucideIcon name="ArrowRight" size={20} />
+              <LucideIcon name="ArrowRight" size={18} />
             </a>
           </div>
         )}
       </div>
+
+      <style>{`
+        /* ====== PRODUCTS SECTION ====== */
+        .products-section {
+          padding: clamp(48px, 8vh, 100px) 0;
+          background: var(--bg);
+        }
+        .products-header {
+          text-align: center;
+          margin-bottom: 40px;
+        }
+        .section-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 14px;
+          border-radius: 100px;
+          background: rgba(var(--primary-rgb), 0.1);
+          color: var(--primary);
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          margin-bottom: 14px;
+        }
+        .products-title {
+          font-size: clamp(1.6rem, 5vw, 2.4rem);
+          font-weight: 800;
+          margin-bottom: 12px;
+          font-family: var(--font-heading);
+        }
+        .products-subtitle {
+          color: var(--text-secondary);
+          font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+          max-width: 520px;
+          margin: 0 auto;
+        }
+
+        /* Filter */
+        .filter-tabs {
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+          margin-bottom: 40px;
+          flex-wrap: wrap;
+          padding: 6px;
+          background: var(--surface);
+          border-radius: 16px;
+          border: 1px solid var(--border);
+          width: fit-content;
+          margin: 0 auto 40px;
+        }
+        .filter-tab {
+          padding: 8px 18px;
+          border-radius: 12px;
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: var(--text-secondary);
+          transition: all 0.25s ease;
+        }
+        .filter-tab.active {
+          background: var(--primary);
+          color: white;
+          box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+        }
+
+        /* Product Grid */
+        .products-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+          gap: clamp(14px, 3vw, 28px);
+        }
+
+        /* ====== NEW PRODUCT CARD (pcard) ====== */
+        .pcard {
+          display: flex;
+          flex-direction: column;
+          border-radius: 20px;
+          overflow: hidden;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          text-decoration: none;
+          color: inherit;
+          transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+        .pcard:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 16px 32px rgba(var(--primary-rgb), 0.12);
+          border-color: var(--primary);
+        }
+        .pcard-img {
+          position: relative;
+          height: 190px;
+          background: var(--surface-hover);
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .pcard-img img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
+        }
+        .pcard:hover .pcard-img img { transform: scale(1.06); }
+        .pcard-icon-wrap {
+          width: 72px;
+          height: 72px;
+          border-radius: 20px;
+          background: var(--bg);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: var(--shadow);
+        }
+        .pcard-badge {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          padding: 4px 10px;
+          border-radius: 100px;
+          background: var(--secondary);
+          color: white;
+          font-size: 0.65rem;
+          font-weight: 800;
+          letter-spacing: 0.05em;
+        }
+        .pcard-body {
+          padding: 18px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          flex: 1;
+        }
+        .pcard-category {
+          font-size: 0.65rem;
+          font-weight: 800;
+          color: var(--primary);
+          letter-spacing: 0.12em;
+        }
+        .pcard-name {
+          font-size: 1.05rem;
+          font-weight: 700;
+          line-height: 1.3;
+          color: var(--text-primary);
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .pcard-desc {
+          font-size: 0.82rem;
+          color: var(--text-secondary);
+          line-height: 1.5;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          flex: 1;
+        }
+        .pcard-specs {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 7px 10px;
+          background: var(--surface-hover);
+          border-radius: 8px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: var(--text-secondary);
+          border: 1px solid var(--border);
+          margin-top: 4px;
+        }
+        .pcard-footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 10px;
+          padding-top: 10px;
+          border-top: 1px solid var(--border);
+        }
+        .pcard-price {
+          font-size: 0.9rem;
+          font-weight: 800;
+          color: var(--text-primary);
+        }
+        .pcard-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: var(--primary);
+          padding: 6px 12px;
+          border-radius: 8px;
+          background: rgba(var(--primary-rgb), 0.1);
+          transition: background 0.2s;
+        }
+        .pcard:hover .pcard-cta {
+          background: var(--primary);
+          color: white;
+        }
+
+        /* ====== MOBILE OVERRIDES ====== */
+        @media (max-width: 520px) {
+          .products-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+          }
+          .pcard-img {
+            height: 120px;
+          }
+          .pcard-body {
+            padding: 12px;
+            gap: 4px;
+          }
+          .pcard-name {
+            font-size: 0.88rem;
+            -webkit-line-clamp: 2;
+          }
+          .pcard-desc { display: none; }
+          .pcard-specs { display: none; }
+          .pcard-footer {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+          }
+          .pcard-cta { width: 100%; justify-content: center; }
+        }
+
+        .products-cta {
+          text-align: center;
+          margin-top: 48px;
+        }
+      `}</style>
     </section>
   )
 }
