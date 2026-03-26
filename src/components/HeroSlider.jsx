@@ -57,6 +57,17 @@ export default function HeroSlider({ slides, contact }) {
         }
         @keyframes progress-horizontal { from { width: 0; } to { width: 100%; } }
 
+        .hero-subtitle {
+          color: rgba(255, 255, 255, 0.9);
+          font-weight: 700;
+          font-size: 0.9rem;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          margin-bottom: 12px;
+          opacity: 0;
+          animation: fade-in 1s 0.3s forwards;
+        }
+
         .hero-content {
           position: relative; z-index: 10;
           max-width: 900px; padding: 0 24px;
