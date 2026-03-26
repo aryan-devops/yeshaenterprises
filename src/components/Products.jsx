@@ -106,17 +106,16 @@ export default function Products({ products, contact, previewMode = false }) {
 
               {/* Product Info */}
               <div className="card-content">
-                <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--primary)', marginBottom: 8, letterSpacing: '0.1em' }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.1em' }}>
                   {p.category?.toUpperCase() || 'GENERAL'}
                 </div>
-                <h3 style={{ fontSize: '1.25rem' }}>{p.name}</h3>
-                <p className="card-description" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: 20, minHeight: 44, lineHeight: 1.5 }}>
+                <h3>{p.name}</h3>
+                <p className="card-description">
                   {p.description}
                 </p>
 
                 <div className="card-specs" style={{
                   background: 'var(--surface-hover)', border: '1px solid var(--border)',
-                  padding: '10px 14px', borderRadius: 12, marginBottom: 20,
                   display: 'flex', alignItems: 'center', gap: 10,
                   marginTop: 'auto'
                 }}>
@@ -125,13 +124,12 @@ export default function Products({ products, contact, previewMode = false }) {
                 </div>
 
                 <div className="card-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)' }}>{p.price_range || p.priceRange}</div>
+                  <div style={{ fontWeight: 800, color: 'var(--text-primary)' }}>{p.price_range || p.priceRange}</div>
                   <div
                     className="hero-btn"
                     style={{
-                      padding: '10px 18px', fontSize: '0.8rem', background: 'var(--primary)', color: 'white', margin: 0,
+                      background: 'var(--primary)', color: 'white', margin: 0,
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                      borderRadius: '14px',
                       boxShadow: '0 8px 16px rgba(var(--primary-rgb), 0.2)'
                     }}
                   >
