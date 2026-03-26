@@ -2,6 +2,7 @@ import Testimonials from '../components/Testimonials'
 import VisionMission from '../components/VisionMission'
 import About from '../components/About'
 import PageHero from '../components/PageHero'
+import LucideIcon from '../components/LucideIcon'
 import useScrollReveal from '../hooks/useScrollReveal'
 
 export default function AboutPage({ contact, testimonials }) {
@@ -33,14 +34,25 @@ export default function AboutPage({ contact, testimonials }) {
 
       <section style={{ padding: '100px 0', background: 'var(--bg)' }}>
         <div className="container">
-          <div className="premium-card" style={{ padding: 60, textAlign: 'center' }}>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: 24 }}>Ready to Start Your Project?</h2>
+          <div className="premium-card" style={{ padding: 60, textAlign: 'center', borderRadius: 40 }}>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: 24, fontWeight: 800 }}>Ready to Start Your Project?</h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', marginBottom: 40, maxWidth: 800, margin: '0 auto 40px' }}>
               Whether you're setting up a new Biofloc farm or upgrading your infrastructure, we have the engineering expertise to help you succeed.
             </p>
-            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <a href="/contact" className="hero-btn" style={{ margin: 0 }}>Get in Touch</a>
-              <a href={`https://wa.me/${contact?.whatsapp}`} className="hero-btn" style={{ background: 'transparent', border: '1px solid var(--primary)', color: 'var(--primary)', margin: 0 }}>
+            <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <a href="/contact" 
+                 style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: 100, fontWeight: 700, fontSize: '1.05rem', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.23, 1, 0.32, 1)', boxShadow: '0 8px 16px rgba(var(--primary-rgb), 0.25)' }}
+                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 12px 24px rgba(var(--primary-rgb), 0.35)'; }}
+                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 16px rgba(var(--primary-rgb), 0.25)'; }}>
+                Get in Touch
+                <LucideIcon name="ArrowRight" size={20} strokeWidth={2.5} />
+              </a>
+
+              <a href={`https://wa.me/${contact?.whatsapp}`} 
+                 style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--surface-hover)', border: '2px solid var(--border)', color: 'var(--text-primary)', padding: '16px 36px', borderRadius: 100, fontWeight: 700, fontSize: '1.05rem', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.23, 1, 0.32, 1)' }}
+                 onMouseEnter={e => { e.currentTarget.style.borderColor = '#25D366'; e.currentTarget.style.color = '#25D366'; e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 12px 24px rgba(37, 211, 102, 0.15)'; }}
+                 onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
+                <LucideIcon name="MessageCircle" size={20} strokeWidth={2.5} />
                 WhatsApp Now
               </a>
             </div>
