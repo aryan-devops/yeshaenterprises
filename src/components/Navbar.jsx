@@ -228,11 +228,6 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
                   name={darkMode ? 'Sun' : 'Moon'}
                 />
               </button>
-
-              <button className="admin-btn" onClick={onAdminClick}>
-                <LucideIcon name="Lock" size={18} />
-                Admin
-              </button>
             </div>
           </div>
 
@@ -281,18 +276,6 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
               margin: '8px 0',
             }}
           />
-
-          <button
-            className="admin-btn"
-            onClick={() => {
-              setMenuOpen(false)
-              onAdminClick()
-            }}
-            style={{ width: '100%', justifyContent: 'center' }}
-          >
-            <LucideIcon name="Lock" size={20} />
-            Admin Panel
-          </button>
 
           <button
             className="theme-toggle"
