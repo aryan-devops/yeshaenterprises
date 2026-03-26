@@ -9,6 +9,7 @@ import ContactPage from './pages/ContactPage'
 import AdminPanel from './components/AdminPanel'
 import ProductDetailPage from './pages/ProductDetailPage'
 import Preloader from './components/Preloader'
+import ScrollToTop from './components/ScrollToTop'
 
 const DEFAULT_PRODUCTS = [
   {
@@ -210,6 +211,7 @@ export default function App() {
     <>
       <Preloader loading={loading} />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           {/* Admin Route (No Layout) */}
           <Route path="/admin" element={
