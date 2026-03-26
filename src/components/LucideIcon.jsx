@@ -32,7 +32,8 @@ export default function LucideIcon({ name, color, size = 24, className = '', str
   
   if (!IconComponent) {
     // Return a fallback if the icon name is invalid
-    return <Icons.HelpCircle color={color} size={size} className={className} strokeWidth={strokeWidth} />
+    const Fallback = Icons.CircleHelp || Icons.HelpCircle || Icons.Info;
+    return <Fallback color={color} size={size} className={className} strokeWidth={strokeWidth} />
   }
 
   return <IconComponent color={color} size={size} className={className} strokeWidth={strokeWidth} />

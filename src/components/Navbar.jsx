@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import LucideIcon from './LucideIcon'
+import logoLight from '../assets/main-logo.svg'
+import logoDark from '../assets/main-logo-dark.svg'
 
 export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
   const [scrolled, setScrolled] = useState(false)
@@ -172,7 +174,7 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
             }}
           >
             <img 
-              src={darkMode ? "/src/assets/main-logo-dark.svg" : "/src/assets/main-logo.svg"} 
+              src={darkMode ? logoDark : logoLight} 
               alt="Yesha Enterprises" 
               style={{ height: 'var(--logo-height)', width: 'auto', objectFit: 'contain' }} 
             />

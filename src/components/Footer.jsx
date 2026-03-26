@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import LucideIcon from './LucideIcon'
+import logo from '../assets/main-logo-dark.svg'
 
 export default function Footer({ contact, onAdminClick }) {
   const year = new Date().getFullYear()
@@ -22,9 +23,9 @@ export default function Footer({ contact, onAdminClick }) {
           <div>
             <div style={{ marginBottom: 24 }}>
               <img 
-                src="/src/assets/main-logo.svg" 
+                src={logo} 
                 alt="Yesha Enterprises" 
-                style={{ height: 150, width: 'auto', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} 
+                style={{ height: 150, width: 'auto', objectFit: 'contain' }} 
               />
             </div>
 

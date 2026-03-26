@@ -17,8 +17,8 @@
   --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --logo-height: 100px;
-  --navbar-height: 120px;
+  --logo-height: 150px;
+  --navbar-height: 170px;
   --font-heading: 'Syne', sans-serif;
   --font-body: 'DM Sans', sans-serif;
   --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -212,8 +212,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 /* Desktop/Mobile Helpers */
 @media (max-width: 768px) {
   :root { 
-    --navbar-height: 80px; 
-    --logo-height: 60px;
+    --navbar-height: 120px; 
+    --logo-height: 100px;
   }
   .container { padding: 0 20px; }
 }

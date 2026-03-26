@@ -204,11 +204,10 @@ export default function HeroSlider({ slides, contact }) {
               }} />
             )}
             
-            {/* Gradient Overlay Layer */}
             <div style={{
               position: 'absolute', inset: 0,
-              background: s.gradient || 'linear-gradient(135deg, rgba(10, 37, 64, 0.8), rgba(0,0,0,0.6))',
-              mixMode: s.image_url ? 'multiply' : 'normal'
+              background: slide?.gradient || 'linear-gradient(135deg, rgba(10, 37, 64, 0.8), rgba(0,0,0,0.6))',
+              mixBlendMode: slide?.image_url ? 'multiply' : 'normal'
             }} />
           </div>
         ))}
@@ -228,13 +227,13 @@ export default function HeroSlider({ slides, contact }) {
 
           <div className="hero-btns" style={{ display: 'flex', gap: 16 }}>
             <a href="/products" className="hero-btn hero-btn-primary">
-              {slide.cta_primary || slide.cta1 || 'View Catalog'}
+              {slide?.cta_primary || slide?.cta1 || 'View Catalog'}
               <LucideIcon name="ChevronRight" size={18} />
             </a>
 
-            <a href={`https://wa.me/${contact.whatsapp}`} className="hero-btn hero-btn-secondary">
+            <a href={`https://wa.me/${contact?.whatsapp || ''}`} className="hero-btn hero-btn-secondary">
               <LucideIcon name="MessageCircle" size={18} />
-              {slide.cta_secondary || slide.cta2 || 'Direct Inquiry'}
+              {slide?.cta_secondary || slide?.cta2 || 'Direct Inquiry'}
             </a>
           </div>
         </div>
