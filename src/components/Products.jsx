@@ -74,22 +74,11 @@ export default function Products({ products, contact, previewMode = false }) {
             <Link
               key={p.id}
               to={`/product/${p.id}`}
-              className="premium-card horizontal-card animate-slide-up"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                padding: 0,
-                overflow: 'hidden',
-                textDecoration: 'none',
-                animationDelay: `${i * 0.1}s`
-              }}
+              className="product-card horizontal-card animate-slide-up"
+              style={{ animationDelay: `${i * 0.1}s` }}
             >
               {/* Product Image / Placeholder */}
-              <div className="card-img-container" style={{
-                height: 240, background: 'var(--surface-hover)',
-                position: 'relative', overflow: 'hidden',
-                display: 'flex', alignItems: 'center', justifyContent: 'center'
-              }}>
+              <div className="card-img-container">
                 {p.image_url ? (
                   <img src={p.image_url} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
@@ -116,33 +105,33 @@ export default function Products({ products, contact, previewMode = false }) {
               </div>
 
               {/* Product Info */}
-              <div className="card-content" style={{ padding: 32, flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary)', marginBottom: 8, letterSpacing: '0.1em' }}>
+              <div className="card-content">
+                <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--primary)', marginBottom: 8, letterSpacing: '0.1em' }}>
                   {p.category?.toUpperCase() || 'GENERAL'}
                 </div>
-                <h3 style={{ fontSize: '1.4rem', marginBottom: 12 }}>{p.name}</h3>
-                <p className="card-description" style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: 24, minHeight: 48, lineHeight: 1.6 }}>
+                <h3 style={{ fontSize: '1.25rem' }}>{p.name}</h3>
+                <p className="card-description" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: 20, minHeight: 44, lineHeight: 1.5 }}>
                   {p.description}
                 </p>
 
                 <div className="card-specs" style={{
                   background: 'var(--surface-hover)', border: '1px solid var(--border)',
-                  padding: '12px 16px', borderRadius: 14, marginBottom: 24,
-                  display: 'flex', alignItems: 'center', gap: 12,
+                  padding: '10px 14px', borderRadius: 12, marginBottom: 20,
+                  display: 'flex', alignItems: 'center', gap: 10,
                   marginTop: 'auto'
                 }}>
-                  <LucideIcon name="Layers" size={18} color="var(--text-muted)" />
-                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)' }}>{p.specs}</span>
+                  <LucideIcon name="Layers" size={16} color="var(--text-muted)" />
+                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)' }}>{p.specs}</span>
                 </div>
 
                 <div className="card-footer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>{p.price_range || p.priceRange}</div>
+                  <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)' }}>{p.price_range || p.priceRange}</div>
                   <div
                     className="hero-btn"
                     style={{
-                      padding: '12px 20px', fontSize: '0.85rem', background: 'var(--primary)', color: 'white', margin: 0,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                      borderRadius: '16px',
+                      padding: '10px 18px', fontSize: '0.8rem', background: 'var(--primary)', color: 'white', margin: 0,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                      borderRadius: '14px',
                       boxShadow: '0 8px 16px rgba(var(--primary-rgb), 0.2)'
                     }}
                   >
