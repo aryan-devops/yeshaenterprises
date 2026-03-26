@@ -22,10 +22,10 @@ export default function Footer({ contact, onAdminClick }) {
           {/* Brand Col */}
           <div>
             <div style={{ marginBottom: 24 }}>
-              <img 
-                src={logo} 
-                alt="Yesha Enterprises" 
-                style={{ height: 150, width: 'auto', objectFit: 'contain' }} 
+              <img
+                src={logo}
+                alt="Yesha Enterprises"
+                style={{ height: 150, width: 'auto', objectFit: 'contain' }}
               />
             </div>
 
@@ -78,7 +78,7 @@ export default function Footer({ contact, onAdminClick }) {
 
           {/* Categories */}
           <div>
-            <h4 style={{ fontSize: '1.1rem', marginBottom: 28 }}>Solutions</h4>
+            <h4 style={{ fontSize: '1.1rem', marginBottom: 28 }}>Products</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {categories.map((cat, i) => (
                 <Link key={i} to="/products" className="footer-link">
