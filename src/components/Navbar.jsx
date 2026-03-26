@@ -170,6 +170,25 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
           border-color: var(--primary);
           box-shadow: 0 8px 16px rgba(var(--primary-rgb), 0.3);
         }
+        .download-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 16px;
+          border-radius: 100px;
+          background: linear-gradient(135deg, var(--primary), var(--primary-dark, var(--primary)));
+          color: white !important;
+          font-weight: 700;
+          font-size: 0.9rem;
+          text-decoration: none;
+          transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+          box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
+        }
+
+        .download-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.4);
+        }
       `}</style>
 
       <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
@@ -266,10 +285,16 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
             />
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <a href="/yesha_catalog.pdf" download className="download-btn" style={{ marginLeft: 8 }}>
+                <LucideIcon name="Download" size={16} strokeWidth={2.5} />
+                <span>Brochure</span>
+              </a>
+
               {/* FIXED BUTTON */}
               <button
                 className="theme-toggle"
                 onClick={toggleDarkMode}
+                style={{ marginLeft: 8 }}
               >
                 <LucideIcon
                   name={darkMode ? 'Sun' : 'Moon'}
@@ -340,6 +365,11 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
               margin: '8px 0',
             }}
           />
+
+          <a href="/yesha_catalog.pdf" download className="download-btn" style={{ display: 'flex', justifyContent: 'center', padding: '14px', borderRadius: 14 }}>
+            <LucideIcon name="Download" size={20} strokeWidth={2.5} />
+            <span>Download Full Brochure</span>
+          </a>
 
           <button
             className="theme-toggle"
