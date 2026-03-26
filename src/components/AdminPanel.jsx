@@ -473,6 +473,16 @@ function SliderManager({ slides, refreshData }) {
               <InputGroup label="Headline" value={formData.headline} onChange={e => setFormData({ ...formData, headline: e.target.value })} />
               <InputGroup label="Subtitle" value={formData.subtitle} onChange={e => setFormData({ ...formData, subtitle: e.target.value })} />
 
+              <div style={{ width: '100%' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: 8, display: 'block', textTransform: 'uppercase' }}>Description (Paragraph Text)</label>
+                <textarea
+                  value={formData.description}
+                  onChange={e => setFormData({ ...formData, description: e.target.value })}
+                  rows={3}
+                  style={{ width: '100%', padding: '16px', borderRadius: 24, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-primary)', fontFamily: 'inherit' }}
+                />
+              </div>
+
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                 <div style={{ width: '100%' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 800 }}>Visibility</label>

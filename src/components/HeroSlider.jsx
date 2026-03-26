@@ -85,13 +85,17 @@ export default function HeroSlider({ slides, contact }) {
         @media (max-width: 768px) {
           .hero-content {
             padding-top: 40px;
-            text-align: center;
+            text-align: left; /* strictly left aligned now */
+          }
+          .hero-title {
+            font-size: clamp(1.8rem, 8vw, 2.8rem); /* significantly smaller font on mobile */
           }
           .hero-icon-container {
-            margin: 0 auto 24px;
+            margin: 0 0 20px 0; /* Left bound */
           }
           .hero-description {
-            margin: 0 auto 30px;
+            margin: 0 0 30px 0; /* Left bound, no auto margin */
+            font-size: 0.95rem; /* Smaller font on mobile */
           }
           .hero-btns {
             flex-direction: column;
@@ -102,8 +106,7 @@ export default function HeroSlider({ slides, contact }) {
             justify-content: center;
           }
           .hero-controls {
-            right: 20px !important;
-            bottom: 30px !important;
+            display: none !important; /* Hide arrows completely on mobile */
           }
         }
 
