@@ -6,11 +6,17 @@ import useScrollReveal from '../hooks/useScrollReveal'
 export default function Products({ products, contact, previewMode = false }) {
   const reveal = useScrollReveal()
   const [activeTab, setActiveTab] = useState('All')
-  const categories = ['All', 'Pond Liners', 'Blowers', 'Tanks', 'Generators', 'Shade Nets']
+  const [searchQuery, setSearchQuery] = useState('')
+  
+  // Dynamically generate categories from products, defaulting to standard ones if missing
+  const uniqueCategories = ['All', ...Array.from(new Set(products.map(p => p.category))).filter(Boolean)]
 
-  const filtered = activeTab === 'All'
-    ? products
-    : products.filter(p => p.category === activeTab)
+  const filtered = products.filter(p => {
+    const matchesCategory = activeTab === 'All' || p.category === activeTab
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    return matchesCategory && matchesSearch
+  })
 
   const displayProducts = previewMode ? filtered.slice(0, 6) : filtered
 
@@ -29,18 +35,46 @@ export default function Products({ products, contact, previewMode = false }) {
           </p>
         </div>
 
-        {/* Filter Tabs */}
+        {/* Search & Filter Controls */}
         {!previewMode && (
-          <div className="filter-tabs">
-            {categories.map(c => (
-              <button
-                key={c}
-                onClick={() => setActiveTab(c)}
-                className={`filter-tab ${activeTab === c ? 'active' : ''}`}
-              >
-                {c}
-              </button>
-            ))}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24, marginBottom: 40 }}>
+            {/* Search Bar */}
+            <div style={{ position: 'relative', width: '100%', maxWidth: 480 }}>
+              <LucideIcon name="Search" size={18} color="var(--text-muted)" style={{ position: 'absolute', left: 18, top: '50%', transform: 'translateY(-50%)' }} />
+              <input
+                type="text"
+                placeholder="Search for products, models, or details..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                style={{ 
+                  width: '100%', padding: '16px 20px 16px 48px', borderRadius: 100, 
+                  border: '1px solid var(--border)', background: 'var(--surface)', 
+                  fontSize: '0.95rem', color: 'var(--text-primary)', outline: 'none',
+                  transition: 'all 0.3s', boxShadow: 'var(--shadow-sm)'
+                }}
+                onFocus={e => {
+                  e.target.style.borderColor = 'var(--primary)';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(var(--primary-rgb), 0.15)';
+                }}
+                onBlur={e => {
+                  e.target.style.borderColor = 'var(--border)';
+                  e.target.style.boxShadow = 'var(--shadow-sm)';
+                }}
+              />
+            </div>
+
+            {/* Filter Tabs */}
+            <div className="filter-tabs" style={{ margin: 0 }}>
+              {uniqueCategories.map(c => (
+                <button
+                  key={c}
+                  onClick={() => setActiveTab(c)}
+                  className={`filter-tab ${activeTab === c ? 'active' : ''}`}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
