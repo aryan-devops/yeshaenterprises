@@ -2,14 +2,13 @@ import LucideIcon from './LucideIcon'
 
 export default function VisionMission() {
   const points = [
-    {
       title: 'Our Vision',
       desc: 'To become the global benchmark for excellence in sustainable aquaculture infrastructure, empowering every farmer with industrial-grade tools for success.',
       icon: 'Eye',
       gradient: 'linear-gradient(135deg, #0f172a, #1e293b)',
       accent: 'var(--primary)',
-      textColor: 'var(--text-primary)',
-      descColor: 'var(--text-secondary)'
+      textColor: 'white',
+      descColor: 'rgba(255,255,255,0.85)'
     },
     {
       title: 'Our Mission',
