@@ -116,13 +116,8 @@ export default function Contact({ contact }) {
                 <a 
                   href={`https://wa.me/${contact.whatsapp}?text=Hi, I'd like a quote for Biofloc products.`}
                   target="_blank" rel="noopener noreferrer"
-                  className="hero-btn"
-                  style={{ 
-                    background: 'var(--primary)', color: 'white', margin: 0, padding: '16px', 
-                    fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
-                    width: '100%', borderRadius: '20px',
-                    boxShadow: '0 8px 16px rgba(var(--primary-rgb), 0.2)'
-                  }}
+                  className="hero-btn btn-primary"
+                  style={{ margin: 0, width: '100%' }}
                 >
                   <LucideIcon name="MessageCircle" size={20} />
                   <span>WhatsApp Us</span>
@@ -130,12 +125,8 @@ export default function Contact({ contact }) {
                 
                 <a 
                   href={`tel:${contact.phone.replace(/\s+/g, '')}`}
-                  className="hero-btn"
-                  style={{ 
-                    background: 'var(--surface-hover)', color: 'var(--text-primary)', margin: 0, padding: '16px', 
-                    fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
-                    width: '100%', borderRadius: '20px', border: '1px solid var(--border)'
-                  }}
+                  className="hero-btn btn-secondary"
+                  style={{ margin: 0, width: '100%' }}
                 >
                   <LucideIcon name="Phone" size={20} />
                   <span>Call Us Now</span>

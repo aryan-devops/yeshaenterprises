@@ -130,39 +130,7 @@ export default function HeroSlider({ slides, contact }) {
           transform: translateY(0.5px);
         }
 
-        .hero-btn {
-          padding: 16px 32px;
-          border-radius: 100px;
-          font-weight: 600;
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          text-decoration: none;
-          transition: 0.3s;
-        }
-
-        .hero-btn-primary {
-          background: white;
-          color: black;
-        }
-
-        .hero-btn-secondary {
-          background: rgba(255,255,255,0.1);
-          color: white;
-          border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .hero-btn-tertiary {
-          background: transparent;
-          color: white;
-          border: 1px solid rgba(255,255,255,0.5);
-          backdrop-filter: blur(4px);
-        }
-
-        .hero-btn-tertiary:hover {
-          background: rgba(255,255,255,0.2);
-          border-color: white;
-        }
+        /* Buttons are now handled globally in index.css */
 
         /* ===== SLIDER BUTTON FIX ===== */
         .slider-btn {
@@ -242,17 +210,17 @@ export default function HeroSlider({ slides, contact }) {
           <p className="hero-description" style={{ marginLeft: 0 }}>{slide?.description}</p>
 
           <div className="hero-btns" style={{ display: 'flex', gap: 16, justifyContent: 'flex-start', flexWrap: 'wrap' }}>
-            <a href="/products" className="hero-btn hero-btn-primary">
+            <a href="/products" className="hero-btn" style={{ background: 'white', color: 'black' }}>
               {slide?.cta_primary || slide?.cta1 || 'View Catalog'}
               <LucideIcon name="ChevronRight" size={18} />
             </a>
 
-            <a href={`https://wa.me/${contact?.whatsapp || ''}`} className="hero-btn hero-btn-secondary">
+            <a href={`https://wa.me/${contact?.whatsapp || ''}`} className="hero-btn btn-secondary" style={{ backdropFilter: 'blur(8px)' }}>
               <LucideIcon name="MessageCircle" size={18} />
               {slide?.cta_secondary || slide?.cta2 || 'Direct Inquiry'}
             </a>
 
-            <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" className="hero-btn hero-btn-tertiary">
+            <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" className="hero-btn btn-tertiary">
               <LucideIcon name="Download" size={18} />
               Download Brochure
             </a>

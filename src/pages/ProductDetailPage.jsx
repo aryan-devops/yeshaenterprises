@@ -177,26 +177,8 @@ export default function ProductDetailPage({ products, contact }) {
                 href={`https://wa.me/+91${contact.whatsapp?.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`I am interested in ${product.name}. Please provide more details.`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hero-btn"
-                style={{
-                  flex: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 12,
-
-                  padding: '20px 40px',
-                  background: 'var(--primary)',
-                  color: 'white',
-                  borderRadius: 100,
-
-                  fontSize: '1.1rem',
-                  fontWeight: 700,
-
-                  boxShadow: '0 15px 30px rgba(var(--primary-rgb), 0.3)',
-                  transition: 'all 0.3s ease',
-                  textDecoration: 'none'
-                }}
+                className="hero-btn btn-primary"
+                style={{ flex: 1 }}
               >
                 <LucideIcon name="MessageCircle" size={22} />
                 <span>Send Inquiry on WhatsApp</span>

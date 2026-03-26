@@ -286,7 +286,7 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
             />
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" className="download-btn" style={{ marginLeft: 8 }}>
+              <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" className="download-btn hero-btn" style={{ marginLeft: 8, padding: '8px 16px', fontSize: '0.85rem' }}>
                 <LucideIcon name="Download" size={16} strokeWidth={2.5} />
                 <span>Brochure</span>
               </a>
@@ -367,9 +367,9 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
             }}
           />
 
-          <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" className="download-btn" style={{ display: 'flex', justifyContent: 'center', padding: '14px', borderRadius: 14 }}>
+          <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" className="hero-btn btn-primary" style={{ width: '100%', marginTop: 8 }}>
             <LucideIcon name="Download" size={20} strokeWidth={2.5} />
-            <span>Download Full Brochure</span>
+            <span>Download Brochure</span>
           </a>
 
           <button

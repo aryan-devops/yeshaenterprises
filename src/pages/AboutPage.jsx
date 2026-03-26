@@ -41,26 +41,21 @@ export default function AboutPage({ contact, testimonials }) {
               Whether you're setting up a new Biofloc farm or upgrading your infrastructure, we have the engineering expertise to help you succeed.
             </p>
             <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <a href="/contact" 
-                 style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: 100, fontWeight: 700, fontSize: '1.05rem', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.23, 1, 0.32, 1)', boxShadow: '0 8px 16px rgba(var(--primary-rgb), 0.25)' }}
-                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 12px 24px rgba(var(--primary-rgb), 0.35)'; }}
-                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 16px rgba(var(--primary-rgb), 0.25)'; }}>
+              <a href="/contact" className="hero-btn btn-primary">
                 Get in Touch
                 <LucideIcon name="ArrowRight" size={20} strokeWidth={2.5} />
               </a>
 
               <a href={`https://wa.me/${contact?.whatsapp}`} 
-                 style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--surface-hover)', border: '2px solid var(--border)', color: 'var(--text-primary)', padding: '16px 36px', borderRadius: 100, fontWeight: 700, fontSize: '1.05rem', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.23, 1, 0.32, 1)' }}
+                 className="hero-btn"
+                 style={{ background: 'var(--surface-hover)', border: '2px solid var(--border)', color: 'var(--text-primary)' }}
                  onMouseEnter={e => { e.currentTarget.style.borderColor = '#25D366'; e.currentTarget.style.color = '#25D366'; e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 12px 24px rgba(37, 211, 102, 0.15)'; }}
                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
                 <LucideIcon name="MessageCircle" size={20} strokeWidth={2.5} />
                 WhatsApp Now
               </a>
 
-              <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" 
-                 style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent', border: '2px solid var(--primary)', color: 'var(--primary)', padding: '16px 36px', borderRadius: 100, fontWeight: 700, fontSize: '1.05rem', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.23, 1, 0.32, 1)' }}
-                 onMouseEnter={e => { e.currentTarget.style.background = 'rgba(var(--primary-rgb), 0.05)'; e.currentTarget.style.transform = 'translateY(-3px)'; }}
-                 onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+              <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" className="hero-btn btn-outline">
                 <LucideIcon name="FileText" size={20} strokeWidth={2.5} />
                 Download Brochure
               </a>
