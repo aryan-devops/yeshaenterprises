@@ -70,15 +70,16 @@ export default function About() {
           </div>
 
           {/* Right: Feature Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+          <div className="about-features-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
             {usps.map((usp, i) => (
               <div 
                 key={i} 
-                className="premium-card" 
+                className="premium-card about-usp-card" 
                 style={{ 
                   padding: 32, 
                   marginTop: i % 2 !== 0 ? 40 : 0,
-                  marginBottom: i % 2 === 0 ? 40 : 0
+                  marginBottom: i % 2 === 0 ? 40 : 0,
+                  textAlign: 'left'
                 }}
               >
                 <div style={{ 
@@ -89,8 +90,8 @@ export default function About() {
                 }}>
                   <LucideIcon name={usp.icon} size={28} />
                 </div>
-                <h3 style={{ fontSize: '1.2rem', marginBottom: 12 }}>{usp.title}</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>
+                <h3 style={{ fontSize: '1.15rem', marginBottom: 12, textAlign: 'left' }}>{usp.title}</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6, textAlign: 'left' }}>
                   {usp.desc}
                 </p>
               </div>
@@ -101,9 +102,9 @@ export default function About() {
       
       <style>{`
         @media (max-width: 1024px) {
-          #about > .container > div { gridTemplateColumns: 1fr !important; gap: 60px !important; }
-          #about > .container > div > div:last-child { marginTop: 0 !important; }
-          .premium-card { marginTop: 0 !important; marginBottom: 0 !important; }
+          #about > .container > div { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .about-features-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+          .about-usp-card { margin-top: 0 !important; margin-bottom: 0 !important; }
         }
       `}</style>
     </section>
