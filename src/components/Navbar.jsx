@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import LucideIcon from './LucideIcon'
 import logoLight from '../assets/main-logo.svg'
 import logoDark from '../assets/main-logo-dark.svg'
+import brochurePdf from '../assets/yesha-enterprises.pdf'
 
 export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
   const [scrolled, setScrolled] = useState(false)
@@ -285,7 +286,7 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
             />
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <a href="/yesha_catalog.pdf" download className="download-btn" style={{ marginLeft: 8 }}>
+              <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" className="download-btn" style={{ marginLeft: 8 }}>
                 <LucideIcon name="Download" size={16} strokeWidth={2.5} />
                 <span>Brochure</span>
               </a>
@@ -366,7 +367,7 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
             }}
           />
 
-          <a href="/yesha_catalog.pdf" download className="download-btn" style={{ display: 'flex', justifyContent: 'center', padding: '14px', borderRadius: 14 }}>
+          <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" className="download-btn" style={{ display: 'flex', justifyContent: 'center', padding: '14px', borderRadius: 14 }}>
             <LucideIcon name="Download" size={20} strokeWidth={2.5} />
             <span>Download Full Brochure</span>
           </a>
