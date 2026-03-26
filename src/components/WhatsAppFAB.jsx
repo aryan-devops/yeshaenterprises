@@ -8,17 +8,17 @@ export default function WhatsAppFAB({ contact }) {
       rel="noopener noreferrer"
       style={{
         position: 'fixed',
-        bottom: 32,
-        right: 32,
-        width: 64,
-        height: 64,
-        borderRadius: 22,
+        bottom: 24,
+        right: 24,
+        width: 56,
+        height: 56,
+        borderRadius: 18,
         background: '#25d366',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         color: 'white',
-        boxShadow: '0 12px 32px rgba(37, 211, 102, 0.4)',
+        boxShadow: '0 8px 24px rgba(37, 211, 102, 0.4)',
         zIndex: 1000,
         transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
         animation: 'fab-bounce 3s infinite'
@@ -27,22 +27,22 @@ export default function WhatsAppFAB({ contact }) {
     >
       <style>{`
         .wa-fab:hover {
-          transform: translateY(-8px) scale(1.1) rotate(10deg);
-          box-shadow: 0 16px 40px rgba(37, 211, 102, 0.5);
+          transform: translateY(-6px) scale(1.08) rotate(8deg);
+          box-shadow: 0 12px 32px rgba(37, 211, 102, 0.5);
         }
         @keyframes fab-bounce {
           0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
+          50% { transform: translateY(-6px); }
         }
       `}</style>
-      <LucideIcon name="MessageCircle" size={32} />
+      <LucideIcon name="MessageCircle" size={26} />
 
       {/* Pulse Effect */}
       <div style={{
         position: 'absolute',
         inset: -4,
-        borderRadius: 24,
-        border: '2px solid #25d366',
+        borderRadius: 22,
+        border: '2px solid rgba(37, 211, 102, 0.6)',
         animation: 'pulse-ring 2s infinite',
         pointerEvents: 'none'
       }} />
