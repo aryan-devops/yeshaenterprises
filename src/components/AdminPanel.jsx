@@ -195,6 +195,11 @@ function ProductManager({ products, refreshData }) {
     e.preventDefault()
     try {
       const payload = { ...formData }
+      if (payload.category === 'ADD_NEW' && payload.custom_category) {
+        payload.category = payload.custom_category
+      }
+      delete payload.custom_category
+
       const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
       if (modal === 'add' || (payload.id && !uuidRegex.test(payload.id))) {
         delete payload.id
@@ -320,13 +325,33 @@ function ProductManager({ products, refreshData }) {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                 <div style={{ width: '100%' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: 8, display: 'block', textTransform: 'uppercase' }}>Category</label>
-                  <select
-                    value={formData.category}
-                    onChange={e => setFormData({ ...formData, category: e.target.value })}
-                    style={{ width: '100%', padding: '12px', borderRadius: 100, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-primary)' }}
-                  >
-                    {CATEGORIES_LIST.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
+                  {formData.category === 'ADD_NEW' ? (
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <input 
+                        type="text"
+                        autoFocus
+                        placeholder="Type new category..."
+                        value={formData.custom_category || ''}
+                        onChange={e => setFormData({ ...formData, custom_category: e.target.value })}
+                        style={{ width: '100%', padding: '12px 16px', borderRadius: 100, border: '1px solid var(--primary)', background: 'var(--surface)', color: 'var(--text-primary)', outline: 'none' }}
+                      />
+                      <button type="button" onClick={() => setFormData({...formData, category: 'Other', custom_category: ''})} style={{ padding: '0 16px', borderRadius: 100, background: 'var(--surface-hover)', border: '1px solid var(--border)', cursor: 'pointer', color: 'var(--text-secondary)' }}>
+                        <LucideIcon name="X" size={16} />
+                      </button>
+                    </div>
+                  ) : (
+                    <select
+                      value={formData.category}
+                      onChange={e => setFormData({ ...formData, category: e.target.value })}
+                      style={{ width: '100%', padding: '12px', borderRadius: 100, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-primary)' }}
+                    >
+                      {Array.from(new Set([...CATEGORIES_LIST, ...(products || []).map(p => p.category)])).filter(Boolean).map(c => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                      <option disabled>──────────</option>
+                      <option value="ADD_NEW" style={{ fontWeight: 'bold' }}>+ Create New Category...</option>
+                    </select>
+                  )}
                 </div>
                 <InputGroup label="Price Range" icon="IndianRupee" value={formData.price_range} onChange={e => setFormData({ ...formData, price_range: e.target.value })} />
               </div>
