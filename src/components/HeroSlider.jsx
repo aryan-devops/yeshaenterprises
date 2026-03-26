@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import LucideIcon from './LucideIcon'
+import brochurePdf from '../assets/yesha-enterprises.pdf'
 
 export default function HeroSlider({ slides, contact }) {
   const [current, setCurrent] = useState(0)
@@ -151,6 +152,18 @@ export default function HeroSlider({ slides, contact }) {
           border: 1px solid rgba(255,255,255,0.3);
         }
 
+        .hero-btn-tertiary {
+          background: transparent;
+          color: white;
+          border: 1px solid rgba(255,255,255,0.5);
+          backdrop-filter: blur(4px);
+        }
+
+        .hero-btn-tertiary:hover {
+          background: rgba(255,255,255,0.2);
+          border-color: white;
+        }
+
         /* ===== SLIDER BUTTON FIX ===== */
         .slider-btn {
           width: 50px;
@@ -228,7 +241,7 @@ export default function HeroSlider({ slides, contact }) {
           <h1 className="hero-title">{slide?.headline}</h1>
           <p className="hero-description" style={{ marginLeft: 0 }}>{slide?.description}</p>
 
-          <div className="hero-btns" style={{ display: 'flex', gap: 16, justifyContent: 'flex-start' }}>
+          <div className="hero-btns" style={{ display: 'flex', gap: 16, justifyContent: 'flex-start', flexWrap: 'wrap' }}>
             <a href="/products" className="hero-btn hero-btn-primary">
               {slide?.cta_primary || slide?.cta1 || 'View Catalog'}
               <LucideIcon name="ChevronRight" size={18} />
@@ -237,6 +250,11 @@ export default function HeroSlider({ slides, contact }) {
             <a href={`https://wa.me/${contact?.whatsapp || ''}`} className="hero-btn hero-btn-secondary">
               <LucideIcon name="MessageCircle" size={18} />
               {slide?.cta_secondary || slide?.cta2 || 'Direct Inquiry'}
+            </a>
+
+            <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" className="hero-btn hero-btn-tertiary">
+              <LucideIcon name="Download" size={18} />
+              Download Brochure
             </a>
           </div>
         </div>

@@ -4,6 +4,7 @@ import About from '../components/About'
 import PageHero from '../components/PageHero'
 import LucideIcon from '../components/LucideIcon'
 import useScrollReveal from '../hooks/useScrollReveal'
+import brochurePdf from '../assets/yesha-enterprises.pdf'
 
 export default function AboutPage({ contact, testimonials }) {
   const reveal = useScrollReveal()
@@ -54,6 +55,14 @@ export default function AboutPage({ contact, testimonials }) {
                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
                 <LucideIcon name="MessageCircle" size={20} strokeWidth={2.5} />
                 WhatsApp Now
+              </a>
+
+              <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" 
+                 style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'transparent', border: '2px solid var(--primary)', color: 'var(--primary)', padding: '16px 36px', borderRadius: 100, fontWeight: 700, fontSize: '1.05rem', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.23, 1, 0.32, 1)' }}
+                 onMouseEnter={e => { e.currentTarget.style.background = 'rgba(var(--primary-rgb), 0.05)'; e.currentTarget.style.transform = 'translateY(-3px)'; }}
+                 onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+                <LucideIcon name="FileText" size={20} strokeWidth={2.5} />
+                Download Brochure
               </a>
             </div>
           </div>
