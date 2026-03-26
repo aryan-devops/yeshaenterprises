@@ -316,6 +316,7 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
               border: '1px solid var(--border)',
               alignItems: 'center',
               justifyContent: 'center',
+              color: 'var(--text-primary)'
             }}
             onClick={() => setMenuOpen(!menuOpen)}
           >
@@ -328,7 +329,7 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
       {menuOpen && (
         <div className="mobile-menu">
           <form onSubmit={handleSearch} style={{ position: 'relative', marginBottom: 8 }}>
-            <LucideIcon name="Search" size={18} color="var(--text-muted)" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }} />
+            <LucideIcon name="Search" size={18} color="var(--text-primary)" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }} />
             <input
               type="text"
               placeholder="Search products..."
