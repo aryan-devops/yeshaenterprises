@@ -2,6 +2,7 @@ import LucideIcon from './LucideIcon'
 
 export default function VisionMission() {
   const points = [
+    {
       title: 'Our Vision',
       desc: 'To become the global benchmark for excellence in sustainable aquaculture infrastructure, empowering every farmer with industrial-grade tools for success.',
       icon: 'Eye',
