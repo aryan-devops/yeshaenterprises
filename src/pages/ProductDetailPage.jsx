@@ -112,11 +112,11 @@ export default function ProductDetailPage({ products, contact }) {
               {product.category.toUpperCase()}
             </div>
 
-            <h1 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: 16, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+            <h1 style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)', fontWeight: 800, marginBottom: 16, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
               {product.name}
             </h1>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 32 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 20, marginBottom: 32 }}>
               <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                 {product.price_range}
               </div>
@@ -128,21 +128,21 @@ export default function ProductDetailPage({ products, contact }) {
               </div>
             </div>
 
-            <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 40 }}>
+            <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 40 }}>
               {product.description}
             </p>
 
             {/* Specifications Card */}
             <div style={{
               background: 'var(--surface)', border: '1px solid var(--border)',
-              borderRadius: 32, padding: 32, marginBottom: 40,
+              borderRadius: 32, padding: '24px', marginBottom: 40,
               boxShadow: '0 4px 20px rgba(0,0,0,0.03)'
             }}>
               <h4 style={{ fontSize: '1.1rem', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 12, fontWeight: 700 }}>
                 <LucideIcon name="ShieldCheck" size={20} color="var(--primary)" />
                 Technical Specifications
               </h4>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
+              <div className="specs-grid">
                 {[
                   { label: 'Standard Spec', value: product.specs, icon: 'Settings' },
                   { label: 'Material Grade', value: product.material_grade || 'Industrial-Grade', icon: 'Layers' },

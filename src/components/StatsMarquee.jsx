@@ -10,7 +10,9 @@ export default function StatsMarquee({ stats }) {
       padding: '24px 0', 
       overflow: 'hidden',
       position: 'relative',
-      zIndex: 20
+      zIndex: 20,
+      width: '100%',
+      maxWidth: '100vw'
     }}>
       <style>{`
         .marquee-container {

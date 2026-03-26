@@ -17,7 +17,8 @@
   --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --navbar-height: 110px;
+  --logo-height: 100px;
+  --navbar-height: 120px;
   --font-heading: 'Syne', sans-serif;
   --font-body: 'DM Sans', sans-serif;
   --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -53,6 +54,7 @@
 html {
   scroll-behavior: smooth;
   height: -webkit-fill-available;
+  overflow-x: hidden;
 }
 
 body {
@@ -63,6 +65,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  width: 100%;
   min-height: 100vh;
   min-height: -webkit-fill-available;
   transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s ease;
@@ -208,6 +211,22 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 /* Desktop/Mobile Helpers */
 @media (max-width: 768px) {
-  :root { --navbar-height: 64px; }
+  :root { 
+    --navbar-height: 80px; 
+    --logo-height: 60px;
+  }
   .container { padding: 0 20px; }
 }
+ 
+ .specs-grid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 32px;
+ }
+ 
+ @media (max-width: 640px) {
+   .specs-grid {
+     grid-template-columns: 1fr;
+     gap: 16px;
+   }
+ }

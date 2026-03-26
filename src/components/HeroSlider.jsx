@@ -40,7 +40,7 @@ export default function HeroSlider({ slides, contact }) {
 
   return (
     <section
-      style={{ position: 'relative', height: '100vh', minHeight: 700, overflow: 'hidden' }}
+      style={{ position: 'relative', height: '100vh', minHeight: 'clamp(600px, 100vh, 900px)', overflow: 'hidden' }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onTouchStart={onTouchStart}
@@ -64,7 +64,7 @@ export default function HeroSlider({ slides, contact }) {
         .hero-title {
           font-family: var(--font-heading);
           font-weight: 800;
-          font-size: clamp(2rem, 6vw, 3.5rem);
+          font-size: clamp(2.2rem, 10vw, 4rem);
           color: white;
           line-height: 1.1;
           margin-bottom: 24px;
@@ -73,22 +73,38 @@ export default function HeroSlider({ slides, contact }) {
           animation: slide-up 0.8s forwards;
         }
 
-        .hero-subtitle {
-          font-size: 0.9rem;
-          color: rgba(255,255,255,0.85);
-          margin-bottom: 20px;
-          letter-spacing: 2px;
-          text-transform: uppercase;
-          opacity: 0;
-          animation: fade-in 1s 0.3s forwards;
-        }
-
         .hero-description {
           color: rgba(255,255,255,0.75);
           margin-bottom: 30px;
           max-width: 520px;
+          font-size: clamp(1rem, 4vw, 1.15rem);
           opacity: 0;
           animation: fade-in 1s 0.5s forwards;
+        }
+
+        @media (max-width: 768px) {
+          .hero-content {
+            padding-top: 40px;
+            text-align: center;
+          }
+          .hero-icon-container {
+            margin: 0 auto 24px;
+          }
+          .hero-description {
+            margin: 0 auto 30px;
+          }
+          .hero-btns {
+            flex-direction: column;
+            width: 100%;
+          }
+          .hero-btn {
+            width: 100%;
+            justify-content: center;
+          }
+          .hero-controls {
+            right: 20px !important;
+            bottom: 30px !important;
+          }
         }
 
         .hero-icon-container {
@@ -210,7 +226,7 @@ export default function HeroSlider({ slides, contact }) {
           <h1 className="hero-title">{slide.headline}</h1>
           <p className="hero-description">{slide.description}</p>
 
-          <div style={{ display: 'flex', gap: 16 }}>
+          <div className="hero-btns" style={{ display: 'flex', gap: 16 }}>
             <a href="/products" className="hero-btn hero-btn-primary">
               {slide.cta_primary || slide.cta1 || 'View Catalog'}
               <LucideIcon name="ChevronRight" size={18} />
@@ -225,12 +241,13 @@ export default function HeroSlider({ slides, contact }) {
       </div>
 
       {/* Controls */}
-      <div style={{
+      <div className="hero-controls" style={{
         position: 'absolute',
         bottom: 50,
         right: 50,
         display: 'flex',
-        gap: 12
+        gap: 12,
+        zIndex: 50
       }}>
         <button className="slider-btn" onClick={prev}>
           <LucideIcon name="ArrowLeft" color="white" />

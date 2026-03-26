@@ -13,7 +13,9 @@ export default function BlobBackground() {
       zIndex: -1,
       overflow: 'hidden',
       background: 'var(--bg)',
-      pointerEvents: 'none'
+      pointerEvents: 'none',
+      width: '100%',
+      maxWidth: '100vw'
     }}>
       <style>{`
         .blob {

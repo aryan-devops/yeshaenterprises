@@ -174,7 +174,7 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
             <img 
               src={darkMode ? "/src/assets/main-logo-dark.svg" : "/src/assets/main-logo.svg"} 
               alt="Yesha Enterprises" 
-              style={{ height: 150, width: 'auto', objectFit: 'contain' }} 
+              style={{ height: 'var(--logo-height)', width: 'auto', objectFit: 'contain' }} 
             />
           </NavLink>
 

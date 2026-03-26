@@ -15,7 +15,7 @@ export default function Products({ products, contact, previewMode = false }) {
   const displayProducts = previewMode ? filtered.slice(0, 3) : filtered
 
   return (
-    <section id="products" style={{ padding: '100px 0', background: 'var(--bg)' }}>
+    <section id="products" style={{ padding: 'clamp(60px, 10vh, 100px) 0', background: 'var(--bg)' }}>
       <div className="container">
         {/* Section Header */}
         <div style={{ textAlign: 'center', marginBottom: 60 }} className="animate-slide-up">
@@ -66,8 +66,8 @@ export default function Products({ products, contact, previewMode = false }) {
           className="reveal-stagger"
           ref={reveal}
           style={{
-            display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-            gap: 32
+            display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: 'clamp(16px, 4vw, 32px)'
           }}
         >
           {displayProducts.map((p) => (
