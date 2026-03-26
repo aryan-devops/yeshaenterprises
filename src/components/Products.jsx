@@ -54,13 +54,13 @@ export default function Products({ products, contact, previewMode = false }) {
 
         {/* Search & Filter Controls */}
         {!previewMode && (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24, marginBottom: 40 }}>
+          <div className="products-controls">
             {/* Search Bar */}
-            <div style={{ position: 'relative', width: '100%', maxWidth: 480 }}>
+            <div className="products-search-wrapper" style={{ position: 'relative' }}>
               <LucideIcon name="Search" size={18} color="var(--text-muted)" style={{ position: 'absolute', left: 18, top: '50%', transform: 'translateY(-50%)' }} />
               <input
                 type="text"
-                placeholder="Search for products, models, or details..."
+                placeholder="Search products, models, details..."
                 value={searchQuery}
                 onChange={handleSearchChange}
                 style={{ 
@@ -81,16 +81,18 @@ export default function Products({ products, contact, previewMode = false }) {
             </div>
 
             {/* Filter Tabs */}
-            <div className="filter-tabs" style={{ margin: 0 }}>
-              {uniqueCategories.map(c => (
-                <button
-                  key={c}
-                  onClick={() => setActiveTab(c)}
-                  className={`filter-tab ${activeTab === c ? 'active' : ''}`}
-                >
-                  {c}
-                </button>
-              ))}
+            <div className="filter-tabs-wrapper">
+              <div className="filter-tabs">
+                {uniqueCategories.map(c => (
+                  <button
+                    key={c}
+                    onClick={() => setActiveTab(c)}
+                    className={`filter-tab ${activeTab === c ? 'active' : ''}`}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -185,27 +187,52 @@ export default function Products({ products, contact, previewMode = false }) {
           margin: 0 auto;
         }
 
+        /* Controls Layout */
+        .products-controls {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 24px;
+          margin-bottom: 40px;
+          width: 100%;
+        }
+        .products-search-wrapper {
+          flex: 0 0 380px;
+        }
+        .filter-tabs-wrapper {
+          flex: 1;
+          overflow-x: auto;
+          scrollbar-width: none;  /* Firefox */
+          -ms-overflow-style: none; /* IE and Edge */
+          padding: 4px;
+        }
+        .filter-tabs-wrapper::-webkit-scrollbar {
+          display: none; /* Chrome, Safari and Opera */
+        }
+        
         /* Filter */
         .filter-tabs {
           display: flex;
-          justify-content: center;
           gap: 8px;
-          margin-bottom: 40px;
-          flex-wrap: wrap;
+          width: max-content;
           padding: 6px;
           background: var(--surface);
           border-radius: 16px;
           border: 1px solid var(--border);
-          width: fit-content;
-          margin: 0 auto 40px;
         }
         .filter-tab {
-          padding: 8px 18px;
+          padding: 10px 20px;
           border-radius: 12px;
           font-size: 0.85rem;
           font-weight: 600;
           color: var(--text-secondary);
           transition: all 0.25s ease;
+          border: 1px solid transparent;
+          cursor: pointer;
+        }
+        .filter-tab:hover {
+          color: var(--text-primary);
+          background: var(--surface-hover);
         }
         .filter-tab.active {
           background: var(--primary);
@@ -352,6 +379,22 @@ export default function Products({ products, contact, previewMode = false }) {
         }
 
         /* ====== MOBILE OVERRIDES ====== */
+        @media (max-width: 900px) {
+          .products-controls {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
+          }
+          .products-search-wrapper {
+            flex: 1;
+            width: 100%;
+          }
+          .filter-tabs-wrapper {
+            margin: 0 -5vw;
+            padding: 4px 5vw;
+          }
+        }
+
         @media (max-width: 520px) {
           .products-grid {
             grid-template-columns: 1fr 1fr;
