@@ -32,14 +32,14 @@ function LoginGate({ onLogin }) {
       <div
         className={`premium-card ${shake ? 'animate-shake' : ''}`}
         style={{
-          padding: '60px 48px', width: '100%', maxWidth: 420, textAlign: 'center',
+          padding: '60px 48px', width: '100%', maxWidth: 420, textAlign: 'left',
           background: 'var(--surface)', border: '1px solid var(--border)', zIndex: 1,
           borderRadius: 32, boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
         }}
       >
         <div style={{
           width: 80, height: 80, borderRadius: 24, background: 'rgba(var(--primary-rgb), 0.1)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 32px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 0 32px 0',
           color: 'var(--primary)', boxShadow: 'var(--shadow)'
         }}>
           <LucideIcon name="ShieldLock" size={40} strokeWidth={1.5} />
@@ -50,7 +50,7 @@ function LoginGate({ onLogin }) {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div style={{ position: 'relative' }}>
-            <div style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }}>
+            <div style={{ position: 'absolute', left: 18, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }}>
               <LucideIcon name="KeyRound" size={18} />
             </div>
             <input
@@ -59,7 +59,7 @@ function LoginGate({ onLogin }) {
               value={pw}
               onChange={e => setPw(e.target.value)}
               style={{
-                width: '100%', padding: '16px 16px 16px 24px', borderRadius: 100,
+                width: '100%', padding: '16px 16px 16px 48px', borderRadius: 100,
                 background: 'var(--surface-hover)', border: '1px solid var(--border)',
                 color: 'var(--text-primary)', fontSize: '1rem', transition: 'all 0.3s'
               }}
