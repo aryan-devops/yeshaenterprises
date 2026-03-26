@@ -7,7 +7,25 @@ import logoDark from '../assets/main-logo-dark.svg'
 export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      navigate(`/products?q=${encodeURIComponent(searchQuery.trim())}`)
+      setMenuOpen(false)
+      setSearchQuery('')
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -183,8 +201,37 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
           {/* Desktop Nav */}
           <div
             className="nav-links-desktop"
-            style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+            style={{ display: 'flex', alignItems: 'center', gap: 16 }}
           >
+            {/* SEARCH FORM */}
+            <form onSubmit={handleSearch} style={{ position: 'relative' }}>
+              <LucideIcon name="Search" size={16} color="var(--text-muted)" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }} />
+              <input 
+                type="text" 
+                placeholder="Search..." 
+                value={searchQuery} 
+                onChange={e => setSearchQuery(e.target.value)}
+                style={{ 
+                  width: 200, padding: '10px 16px 10px 42px', borderRadius: 100, 
+                  border: '1px solid var(--border)', background: 'var(--surface-hover)', 
+                  fontSize: '0.9rem', color: 'var(--text-primary)', outline: 'none', 
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' 
+                }}
+                onFocus={e => { 
+                  e.target.style.borderColor = 'var(--primary)'; 
+                  e.target.style.background = 'var(--surface)'; 
+                  e.target.style.boxShadow = '0 0 0 3px rgba(var(--primary-rgb), 0.15)';
+                  e.target.style.width = '260px';
+                }}
+                onBlur={e => { 
+                  e.target.style.borderColor = 'var(--border)'; 
+                  e.target.style.background = 'var(--surface-hover)'; 
+                  e.target.style.boxShadow = 'none';
+                  e.target.style.width = '200px';
+                }}
+              />
+            </form>
+
             <div
               style={{
                 display: 'flex',
@@ -254,6 +301,23 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="mobile-menu">
+          <form onSubmit={handleSearch} style={{ position: 'relative', marginBottom: 8 }}>
+            <LucideIcon name="Search" size={18} color="var(--text-muted)" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }} />
+            <input 
+              type="text" 
+              placeholder="Search products..." 
+              value={searchQuery} 
+              onChange={e => setSearchQuery(e.target.value)}
+              style={{ 
+                width: '100%', padding: '14px 16px 14px 44px', borderRadius: 100, 
+                border: '1px solid var(--border)', background: 'var(--surface-hover)', 
+                fontSize: '1rem', color: 'var(--text-primary)', outline: 'none' 
+              }}
+              onFocus={e => e.target.style.borderColor = 'var(--primary)'}
+              onBlur={e => e.target.style.borderColor = 'var(--border)'}
+            />
+          </form>
+
           {navLinks.map((link) => (
             <NavLink
               key={link.to}

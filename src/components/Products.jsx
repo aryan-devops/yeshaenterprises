@@ -1,12 +1,29 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import LucideIcon from './LucideIcon'
 import useScrollReveal from '../hooks/useScrollReveal'
 
 export default function Products({ products, contact, previewMode = false }) {
   const reveal = useScrollReveal()
   const [activeTab, setActiveTab] = useState('All')
-  const [searchQuery, setSearchQuery] = useState('')
+  
+  // Connect Search to URL Params
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '')
+  
+  useEffect(() => {
+    setSearchQuery(searchParams.get('q') || '')
+  }, [searchParams])
+
+  const handleSearchChange = (e) => {
+    const val = e.target.value
+    setSearchQuery(val)
+    if (val) {
+      setSearchParams({ q: val })
+    } else {
+      setSearchParams({})
+    }
+  }
   
   // Dynamically generate categories from products, defaulting to standard ones if missing
   const uniqueCategories = ['All', ...Array.from(new Set(products.map(p => p.category))).filter(Boolean)]
@@ -45,7 +62,7 @@ export default function Products({ products, contact, previewMode = false }) {
                 type="text"
                 placeholder="Search for products, models, or details..."
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={handleSearchChange}
                 style={{ 
                   width: '100%', padding: '16px 20px 16px 48px', borderRadius: 100, 
                   border: '1px solid var(--border)', background: 'var(--surface)', 
