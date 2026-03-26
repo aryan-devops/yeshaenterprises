@@ -193,9 +193,7 @@ export default function App() {
 
   const toggleDarkMode = useCallback(() => setDarkMode(d => !d), [])
   const handleAdminLogin = useCallback(() => setAdminLoggedIn(true), [])
-  const handleAdminLogout = useCallback(() => { setAdminLoggedIn(false); setShowAdmin(false) }, [])
-  const openAdmin = useCallback(() => setShowAdmin(true), [])
-  const closeAdmin = useCallback(() => setShowAdmin(false), [])
+  const handleAdminLogout = useCallback(() => setAdminLoggedIn(false), [])
 
   const sharedProps = { 
     products, setProducts, 
@@ -204,34 +202,35 @@ export default function App() {
     contact, setContact, 
     testimonials, setTestimonials,
     enquiries, setEnquiries, 
-    darkMode, toggleDarkMode, 
-    openAdmin,
+    darkMode, toggleDarkMode,
     refreshData: fetchData
-  }
-
-  if (showAdmin) {
-    return (
-      <AdminPanel
-        {...sharedProps}
-        loggedIn={adminLoggedIn} onLogin={handleAdminLogin}
-        onLogout={handleAdminLogout} onClose={closeAdmin}
-      />
-    )
   }
 
   return (
     <>
       <Preloader loading={loading} />
       <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainLayout {...sharedProps} />}>
-          <Route index element={<HomePage {...sharedProps} />} />
-          <Route path="products" element={<ProductsPage products={products} contact={contact} />} />
-          <Route path="product/:id" element={<ProductDetailPage products={products} contact={contact} />} />
-          <Route path="about" element={<AboutPage contact={contact} testimonials={testimonials} />} />
-          <Route path="contact" element={<ContactPage contact={contact} />} />
-        </Route>
-      </Routes>
+        <Routes>
+          {/* Admin Route (No Layout) */}
+          <Route path="/admin" element={
+            <AdminPanel
+              {...sharedProps}
+              loggedIn={adminLoggedIn} 
+              onLogin={handleAdminLogin}
+              onLogout={handleAdminLogout} 
+              onClose={() => window.location.href = '/'}
+            />
+          } />
+
+          {/* Public Routes (With Navbar/Footer Layout) */}
+          <Route path="/" element={<MainLayout {...sharedProps} />}>
+            <Route index element={<HomePage {...sharedProps} />} />
+            <Route path="products" element={<ProductsPage products={products} contact={contact} />} />
+            <Route path="product/:id" element={<ProductDetailPage products={products} contact={contact} />} />
+            <Route path="about" element={<AboutPage contact={contact} testimonials={testimonials} />} />
+            <Route path="contact" element={<ContactPage contact={contact} />} />
+          </Route>
+        </Routes>
       </BrowserRouter>
     </>
   );
