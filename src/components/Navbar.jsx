@@ -276,30 +276,6 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
               ))}
             </div>
 
-            <button 
-              onClick={() => navigate('/contact')}
-              className="nav-cta-btn"
-              style={{
-                background: 'var(--primary)',
-                color: 'white',
-                padding: '10px 24px',
-                borderRadius: '100px',
-                border: 'none',
-                fontSize: '0.85rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                transition: 'all 0.3s ease',
-                marginLeft: 10,
-                boxShadow: '0 10px 20px rgba(var(--primary-rgb), 0.3)'
-              }}
-            >
-              <LucideIcon name="Send" size={16} />
-              BULK ENQUIRY
-            </button>
-
             <div
               style={{
                 width: '1px',
