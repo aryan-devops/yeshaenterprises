@@ -76,13 +76,17 @@ export default function Footer({ contact, onAdminClick }) {
             </div>
           </div>
 
-          {/* Categories */}
+          {/* Regional Presence */}
           <div>
-            <h4 style={{ fontSize: '1.1rem', marginBottom: 28 }}>Products</h4>
+            <h4 style={{ fontSize: '1.1rem', marginBottom: 28 }}>Regional Presence</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              {categories.map((cat, i) => (
-                <Link key={i} to="/products" className="footer-link">
-                  {cat}
+              {[
+                { name: 'Chhattisgarh (HQ)', path: '/location/chhattisgarh' },
+                { name: 'Maharashtra', path: '/location/maharashtra' },
+                { name: 'Odisha', path: '/location/odisha' }
+              ].map((loc, i) => (
+                <Link key={i} to={loc.path} className="footer-link">
+                  {loc.name}
                 </Link>
               ))}
             </div>

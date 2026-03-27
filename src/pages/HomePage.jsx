@@ -54,17 +54,32 @@ export default function HomePage({ slides, stats, products, contact, testimonial
 
   return (
     <>
-      <SEO
-        title="Best HDPE Pond Liner & Biofloc Equipment in India"
-        description="Yesha Enterprises is the leading distributor of HDPE Pond Liners, Ring Blowers, and Biofloc Fish Farming products in Raipur, Chhattisgarh. PAN India delivery available."
+      <SEO 
+        title="Best HDPE Pond Liner in Chhattisgarh, Maharashtra & Odisha"
+        description="Yesha Enterprises: Top-rated HDPE Pond Liners & Biofloc equipment in Raipur, Nagpur, & Bhubaneswar. India's biggest dealer of GEOMEMBRANE liners. Get a quote!"
+        keywords="pond liner Chhattisgarh, pond liner Maharashtra, pond liner Odisha, Biofloc fish farming India, HDPE pond liner price, ring blower Raipur"
       />
       <script type="application/ld+json">
-        {JSON.stringify(organizationSchema)}
+        {JSON.stringify({
+          ...organizationSchema,
+          "areaServed": [
+            { "@type": "State", "name": "Chhattisgarh" },
+            { "@type": "State", "name": "Maharashtra" },
+            { "@type": "State", "name": "Odisha" }
+          ]
+        })}
       </script>
-
+      
       <HeroSlider slides={visibleSlides} contact={contact} />
-
+      
       <div className="reveal" ref={reveal}>
+        <div className="container" style={{ padding: '40px 0', borderBottom: '1px solid var(--border)' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap', opacity: 0.7 }}>
+            <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>#1 IN CHHATTISGARH</span>
+            <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>TOP SUPPLIER MAHARASHTRA</span>
+            <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>PREMIER PARTNER ODISHA</span>
+          </div>
+        </div>
         <StatsMarquee stats={stats} />
       </div>
 

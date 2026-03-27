@@ -217,7 +217,7 @@ export default function HeroSlider({ slides, contact }) {
             <LucideIcon name={slide?.icon} size={42} color="white" />
           </div>
 
-          <h1 className="hero-title">{slide?.headline}</h1>
+          <h1 className="hero-title" style={{ maxWidth: '800px' }}>{slide?.headline || "India's Leading HDPE Pond Liner & Biofloc Solutions"}</h1>
           <p className="hero-description" style={{ marginLeft: 0 }}>{slide?.description}</p>
 
           <div className="hero-btns" style={{ display: 'flex', gap: 16, justifyContent: 'flex-start', flexWrap: 'wrap' }}>

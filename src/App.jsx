@@ -10,6 +10,7 @@ import AdminPanel from './components/AdminPanel'
 import ProductDetailPage from './pages/ProductDetailPage'
 import Preloader from './components/Preloader'
 import ScrollToTop from './components/ScrollToTop'
+import LocationPage from './pages/LocationPage'
 
 const DEFAULT_PRODUCTS = [
   {
@@ -231,6 +232,11 @@ export default function App() {
             <Route path="product/:id" element={<ProductDetailPage products={products} contact={contact} />} />
             <Route path="about" element={<AboutPage contact={contact} testimonials={testimonials} />} />
             <Route path="contact" element={<ContactPage contact={contact} />} />
+            
+            {/* Location Landing Pages */}
+            <Route path="location/chhattisgarh" element={<LocationPage state="Chhattisgarh" city="Raipur" {...sharedProps} />} />
+            <Route path="location/maharashtra" element={<LocationPage state="Maharashtra" city="Nagpur" {...sharedProps} />} />
+            <Route path="location/odisha" element={<LocationPage state="Odisha" city="Bhubaneswar" {...sharedProps} />} />
           </Route>
         </Routes>
       </BrowserRouter>
