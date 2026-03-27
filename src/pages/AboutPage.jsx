@@ -1,3 +1,4 @@
+import SEO from '../components/SEO'
 import Testimonials from '../components/Testimonials'
 import VisionMission from '../components/VisionMission'
 import About from '../components/About'
@@ -9,8 +10,46 @@ import brochurePdf from '../assets/yesha-enterprises.pdf'
 export default function AboutPage({ contact, testimonials }) {
   const reveal = useScrollReveal()
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What products does Yesha Enterprises supply?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yesha Enterprises is a leading distributor of HDPE Pond Liners, Ring Blowers, Circular Fish Tanks, and complete Biofloc Fish Farming infrastructure across India."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Yesha Enterprises provide PAN India delivery?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, we provide PAN India delivery for all our fish farming products, including heavy equipment like ring blowers and bulk HDPE liners."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where is Yesha Enterprises located?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our central hub is located at Office No. 71 Govind Sarang Parisar, New Rajendra Nagar, Raipur, Chhattisgarh, 492001."
+        }
+      }
+    ]
+  };
+
   return (
     <>
+      <SEO 
+        title="About Us - Pioneers in Biofloc Fish Farming"
+        description="Learn about Yesha Enterprises, India's leading distributor of HDPE Pond Liners and Biofloc equipment. Our mission is to empower farmers with industrial-grade infrastructure."
+      />
+      <script type="application/ld+json">
+        {JSON.stringify(faqSchema)}
+      </script>
       <PageHero
         title="Pioneering Sustainable Fisheries"
         subtitle="Innovation • Quality • Integrity"

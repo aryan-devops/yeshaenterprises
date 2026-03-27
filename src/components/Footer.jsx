@@ -22,9 +22,9 @@ export default function Footer({ contact, onAdminClick }) {
           {/* Brand Col */}
           <div>
             <div style={{ marginBottom: 24 }}>
-              <img
+            <img
                 src={logo}
-                alt="Yesha Enterprises"
+                alt="Yesha Enterprises - HDPE Pond Liner & Biofloc Equipment"
                 style={{ height: 150, width: 'auto', objectFit: 'contain' }}
               />
             </div>

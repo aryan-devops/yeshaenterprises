@@ -1,9 +1,14 @@
+import SEO from '../components/SEO'
 import Products from '../components/Products'
 import PageHero from '../components/PageHero'
 
 export default function ProductsPage({ products, contact }) {
   return (
     <>
+      <SEO 
+        title="Products - Biofloc Equipment & HDPE Pond Liners"
+        description="Browse our collection of industrial-grade Biofloc fish farming products, HDPE pond liners, and ring blowers. Wholesale prices and PAN India delivery."
+      />
       <PageHero
         title="Our Products"
         subtitle="Complete Biofloc Farming Solutions"

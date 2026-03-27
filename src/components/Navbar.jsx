@@ -213,7 +213,7 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
           >
             <img
               src={darkMode ? logoDark : logoLight}
-              alt="Yesha Enterprises"
+              alt="Yesha Enterprises Logo"
               style={{ height: 'var(--logo-height)', width: 'auto', objectFit: 'contain' }}
             />
           </NavLink>

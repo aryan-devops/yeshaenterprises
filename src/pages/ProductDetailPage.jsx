@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import LucideIcon from '../components/LucideIcon'
 import PageHero from '../components/PageHero'
+import SEO from '../components/SEO'
 
 export default function ProductDetailPage({ products, contact }) {
   const { id } = useParams()
@@ -34,8 +35,73 @@ export default function ProductDetailPage({ products, contact }) {
 
   if (gallery.length === 0) gallery.push(null)
 
+  const productSchema = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": product.name,
+    "image": [
+      product.image_url,
+      product.image_url_2,
+      product.image_url_3
+    ].filter(Boolean),
+    "description": product.description,
+    "sku": `YESHA-${product.id}`,
+    "brand": {
+      "@type": "Brand",
+      "name": "Yesha Enterprises"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": window.location.href,
+      "priceCurrency": "INR",
+      "price": product.price_range?.split('-')[0]?.replace(/[^0-9]/g, '') || "0",
+      "availability": product.stock_status === 'In Stock' ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Yesha Enterprises"
+      }
+    }
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://yeshaenterprises.in/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Products",
+        "item": "https://yeshaenterprises.in/products"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.name,
+        "item": window.location.href
+      }
+    ]
+  };
+
   return (
     <>
+      <SEO 
+        title={product.name}
+        description={product.description?.substring(0, 160)}
+        keywords={`${product.name}, ${product.category}, Biofloc ${product.name}, ${product.name} price Raipur`}
+        image={product.image_url}
+      />
+      <script type="application/ld+json">
+        {JSON.stringify(productSchema)}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify(breadcrumbSchema)}
+      </script>
       <PageHero
         title={product.name}
         subtitle={product.category?.toUpperCase() || 'PRODUCT DETAILS'}

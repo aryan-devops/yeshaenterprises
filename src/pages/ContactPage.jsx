@@ -1,9 +1,14 @@
+import SEO from '../components/SEO'
 import Contact from '../components/Contact'
 import PageHero from '../components/PageHero'
 
 export default function ContactPage({ contact }) {
   return (
     <>
+      <SEO 
+        title="Contact Us - Yesha Enterprises Raipur"
+        description="Get in touch with Yesha Enterprises for bulk orders of HDPE Pond Liners, Biofloc tanks, and fish farming equipment. dealer inquiries welcome."
+      />
       <PageHero
         title="Get In Touch"
         subtitle="Contact Yesha Enterprises"

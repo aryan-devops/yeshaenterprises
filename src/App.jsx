@@ -98,9 +98,9 @@ const DEFAULT_STATS = [
 ]
 
 const DEFAULT_CONTACT = {
-  phone: '+91 99772 28924',
+  phone: '+91 99772 28924, 9770403382',
   email: 'yeshaenterprises01@gmail.com',
-  address: 'Raipur, Chhattisgarh, India — 492001',
+  address: 'Office No. 71 Govind Sarang Parisar, New Rajendra Nagar Raipur, Chhattisgarh, India — 492001',
   instagram: 'https://www.instagram.com/yeshaenterprises01',
   facebook: 'https://www.facebook.com/yeshaenterpises01/',
   indiamart: 'https://www.indiamart.com/yesha-enterprises-raipur/profile.html',

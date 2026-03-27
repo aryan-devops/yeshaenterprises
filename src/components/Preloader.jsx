@@ -48,7 +48,7 @@ export default function Preloader({ loading }) {
         {/* Logo */}
         <img 
           src={logo} 
-          alt="Yesha Enterprises" 
+          alt="Yesha Enterprises Loading" 
           style={{ 
             width: '100%', 
             height: '100%', 
