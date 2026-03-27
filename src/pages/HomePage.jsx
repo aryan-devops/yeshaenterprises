@@ -48,7 +48,10 @@ export default function HomePage({ slides, stats, products, contact, testimonial
     },
     "sameAs": [
       "https://facebook.com/yeshaenterprises01",
-      "https://instagram.com/yeshaenterprises01"
+      "https://instagram.com/yeshaenterprises01",
+      "https://www.tradeindia.com/yesha-enterprises-36400761/",
+      "https://www.exportersindia.com/yeshaenterprises/",
+      "https://www.indiamart.com/yesha-enterprises-raipur/profile.html"
     ]
   };
 

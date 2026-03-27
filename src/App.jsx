@@ -105,6 +105,8 @@ const DEFAULT_CONTACT = {
   instagram: 'https://www.instagram.com/yeshaenterprises01',
   facebook: 'https://www.facebook.com/yeshaenterpises01/',
   indiamart: 'https://www.indiamart.com/yesha-enterprises-raipur/profile.html',
+  tradeindia: 'https://www.tradeindia.com/yesha-enterprises-36400761/',
+  exportersindia: 'https://www.exportersindia.com/yeshaenterprises/',
   whatsapp: '919977228924',
 }
 
