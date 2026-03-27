@@ -15,7 +15,7 @@ export default function HomePage({ slides, stats, products, contact, testimonial
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "Yesha Enterprises",
-    "image": "https://yeshaenterprises.in/fish-icon.svg",
+    "image": "https://yeshaenterprises.in/favicon.ico",
     "@id": "https://yeshaenterprises.in",
     "url": "https://yeshaenterprises.in",
     "telephone": "+91 99772 28924, 9770403382",
