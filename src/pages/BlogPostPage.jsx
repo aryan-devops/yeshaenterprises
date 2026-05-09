@@ -151,13 +151,14 @@ export default function BlogPostPage({ blogs, contact = {} }) {
 
             {/* Sidebar */}
             <aside>
-              {/* Engage With Us — Dark Card */}
+              {/* Engage With Us — Light Card */}
               <div style={{
-                background: '#0f172a', borderRadius: 20, padding: 28,
+                background: 'var(--surface)', border: '1px solid var(--border)',
+                borderRadius: 20, padding: 28,
                 position: 'sticky', top: 120,
               }}>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'white', marginBottom: 8 }}>Engage With Us</h3>
-                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.875rem', lineHeight: 1.7, marginBottom: 22 }}>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 8 }}>Engage With Us</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', lineHeight: 1.7, marginBottom: 22 }}>
                   Need expert advice on pond liners or Biofloc setup? Talk to our team directly.
                 </p>
 
@@ -169,21 +170,21 @@ export default function BlogPostPage({ blogs, contact = {} }) {
                   <LucideIcon name="MessageCircle" size={16} /> WhatsApp Us Now
                 </a>
 
-                <Link to="/products" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'rgba(255,255,255,0.07)', color: 'white', padding: '12px 16px', borderRadius: 12, fontWeight: 600, fontSize: '0.9rem', textDecoration: 'none', border: '1px solid rgba(255,255,255,0.1)', marginBottom: 22 }}>
+                <Link to="/products" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'var(--primary)', color: 'white', padding: '12px 16px', borderRadius: 12, fontWeight: 600, fontSize: '0.9rem', textDecoration: 'none', marginBottom: 22 }}>
                   <LucideIcon name="Package" size={16} /> View Products
                 </Link>
 
-                <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 18, marginBottom: 4 }}>
-                  <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', marginBottom: 6 }}>📞 Call Us</p>
-                  <p style={{ fontWeight: 700, color: 'white', fontSize: '0.95rem', margin: 0 }}>+91 99772 28924</p>
+                <div style={{ borderTop: '1px solid var(--border)', paddingTop: 18, marginBottom: 4 }}>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: 6 }}>📞 Call Us</p>
+                  <p style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.95rem', margin: 0 }}>+91 99772 28924</p>
                 </div>
 
                 {blog.keywords && (
-                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 18, marginTop: 18 }}>
-                    <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', marginBottom: 10 }}>🏷 Tags</p>
+                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: 18, marginTop: 18 }}>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: 10 }}>🏷 Tags</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                       {blog.keywords.split(',').slice(0, 5).map((tag, i) => (
-                        <span key={i} style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', padding: '3px 10px', borderRadius: 100, fontSize: '0.72rem', color: 'rgba(255,255,255,0.5)' }}>
+                        <span key={i} style={{ background: 'var(--bg)', border: '1px solid var(--border)', padding: '3px 10px', borderRadius: 100, fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
                           {tag.trim()}
                         </span>
                       ))}
