@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import logo from '../assets/main-logo-dark.svg';
+import logo from '../assets/main-logo.svg';
 
 export default function Preloader({ loading }) {
   const [show, setShow] = useState(true);
@@ -22,7 +22,7 @@ export default function Preloader({ loading }) {
       left: 0,
       width: '100%',
       height: '100%',
-      background: '#020617',
+      background: '#ffffff',
       zIndex: 9999,
       display: 'flex',
       flexDirection: 'column',
@@ -40,7 +40,7 @@ export default function Preloader({ loading }) {
           left: '50%',
           width: '120%',
           height: '120%',
-          background: 'radial-gradient(circle, rgba(14, 165, 233, 0.2) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%)',
           transform: 'translate(-50%, -50%)',
           animation: 'pulse-glow 2s ease-in-out infinite'
         }} />
@@ -58,7 +58,7 @@ export default function Preloader({ loading }) {
         />
       </div>
 
-      <div style={{ marginTop: 40, width: 200, height: 2, background: 'rgba(255,255,255,0.05)', borderRadius: 10, overflow: 'hidden' }}>
+      <div style={{ marginTop: 40, width: 200, height: 2, background: 'rgba(0,0,0,0.05)', borderRadius: 10, overflow: 'hidden' }}>
         <div style={{
           height: '100%',
           background: 'linear-gradient(90deg, var(--primary), var(--aqua))',
