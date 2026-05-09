@@ -190,13 +190,19 @@ export default function HeroSlider({ slides, contact }) {
           >
             {/* Background Image Layer */}
             {s.image_url && (
-              <div style={{
-                position: 'absolute', inset: 0,
-                backgroundImage: `url(${s.image_url})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                filter: 'none'
-              }} />
+              <img 
+                src={s.image_url} 
+                alt={s.headline || "Hero Slide"}
+                fetchPriority={i === 0 ? "high" : "auto"}
+                loading={i === 0 ? "eager" : "lazy"}
+                style={{
+                  position: 'absolute', inset: 0,
+                  width: '100%', height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  filter: 'none'
+                }} 
+              />
             )}
             
             <div style={{

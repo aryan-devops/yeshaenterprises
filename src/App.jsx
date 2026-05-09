@@ -255,7 +255,6 @@ export default function App() {
 
   return (
     <>
-      <Preloader loading={loading} />
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
