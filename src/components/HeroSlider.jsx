@@ -77,7 +77,7 @@ export default function HeroSlider({ slides, contact }) {
           font-family: var(--font-heading);
           font-weight: 800;
           font-size: clamp(2.2rem, 10vw, 4rem);
-          color: white;
+          color: var(--text-primary);
           line-height: 1.1;
           margin-bottom: 24px;
           opacity: 0;
@@ -86,7 +86,7 @@ export default function HeroSlider({ slides, contact }) {
         }
 
         .hero-description {
-          color: rgba(255,255,255,0.75);
+          color: var(--text-secondary);
           margin-bottom: 30px;
           max-width: 520px;
           font-size: clamp(1rem, 4vw, 1.15rem);
@@ -126,9 +126,9 @@ export default function HeroSlider({ slides, contact }) {
           width: 72px;
           height: 72px;
           border-radius: 20px;
-          background: rgba(255,255,255,0.1);
+          background: rgba(0,0,0,0.03);
           backdrop-filter: blur(12px);
-          border: 1px solid rgba(255,255,255,0.2);
+          border: 1px solid rgba(0,0,0,0.08);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -148,8 +148,8 @@ export default function HeroSlider({ slides, contact }) {
           width: 50px;
           height: 50px;
           border-radius: 14px;
-          border: 1px solid rgba(255,255,255,0.2);
-          background: rgba(255,255,255,0.08);
+          border: 1px solid rgba(0,0,0,0.08);
+          background: rgba(0,0,0,0.03);
           backdrop-filter: blur(10px);
 
           display: flex;
@@ -164,7 +164,7 @@ export default function HeroSlider({ slides, contact }) {
 
         .slider-btn:hover {
           transform: scale(1.08);
-          background: rgba(255,255,255,0.15);
+          background: rgba(0,0,0,0.08);
         }
 
         .slider-btn svg {
@@ -195,14 +195,14 @@ export default function HeroSlider({ slides, contact }) {
                 backgroundImage: `url(${s.image_url})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                filter: 'brightness(0.5)'
+                filter: 'none'
               }} />
             )}
             
             <div style={{
               position: 'absolute', inset: 0,
-              background: slide?.gradient || 'linear-gradient(135deg, rgba(10, 37, 64, 0.8), rgba(0,0,0,0.6))',
-              mixBlendMode: slide?.image_url ? 'multiply' : 'normal'
+              background: slide?.gradient || 'transparent',
+              mixBlendMode: 'normal'
             }} />
           </div>
         ))}
@@ -214,24 +214,24 @@ export default function HeroSlider({ slides, contact }) {
           <div className="hero-subtitle">{slide.subtitle}</div>
 
           <div className="hero-icon-container" style={{ marginLeft: 0 }}>
-            <LucideIcon name={slide?.icon} size={42} color="white" />
+            <LucideIcon name={slide?.icon} size={42} color="var(--primary)" />
           </div>
 
           <h1 className="hero-title" style={{ maxWidth: '800px' }}>{slide?.headline || "India's Leading HDPE Pond Liner & Biofloc Solutions"}</h1>
           <p className="hero-description" style={{ marginLeft: 0 }}>{slide?.description}</p>
 
           <div className="hero-btns" style={{ display: 'flex', gap: 16, justifyContent: 'flex-start', flexWrap: 'wrap' }}>
-            <a href="/products" className="hero-btn" style={{ background: 'white', color: 'black' }}>
+            <a href="/products" className="hero-btn" style={{ background: 'var(--primary)', color: 'white' }}>
               {slide?.cta_primary || slide?.cta1 || 'View Catalog'}
               <LucideIcon name="ChevronRight" size={18} />
             </a>
 
-            <a href={`https://wa.me/${contact?.whatsapp || ''}`} className="hero-btn btn-secondary" style={{ backdropFilter: 'blur(8px)' }}>
+            <a href={`https://wa.me/${contact?.whatsapp || ''}`} className="hero-btn btn-secondary" style={{ backdropFilter: 'blur(8px)', background: 'rgba(0,0,0,0.05)', color: 'var(--text-primary)', border: '1px solid rgba(0,0,0,0.1)' }}>
               <LucideIcon name="MessageCircle" size={18} />
               {slide?.cta_secondary || slide?.cta2 || 'Direct Inquiry'}
             </a>
 
-            <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" className="hero-btn btn-tertiary">
+            <a href={brochurePdf} download="Yesha_Enterprises_Brochure.pdf" className="hero-btn btn-tertiary" style={{ color: 'var(--text-primary)', background: 'transparent' }}>
               <LucideIcon name="Download" size={18} />
               Download Brochure
             </a>
@@ -249,11 +249,11 @@ export default function HeroSlider({ slides, contact }) {
         zIndex: 50
       }}>
         <button className="slider-btn" onClick={prev}>
-          <LucideIcon name="ArrowLeft" color="white" />
+          <LucideIcon name="ArrowLeft" color="var(--text-primary)" />
         </button>
 
         <button className="slider-btn" onClick={next}>
-          <LucideIcon name="ArrowRight" color="white" />
+          <LucideIcon name="ArrowRight" color="var(--text-primary)" />
         </button>
       </div>
     </section>
