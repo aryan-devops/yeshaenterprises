@@ -6,13 +6,13 @@ export default function ProductsPage({ products, contact }) {
   return (
     <>
       <SEO 
-        title="Products - Biofloc Equipment & HDPE Pond Liners"
-        description="Browse our collection of industrial-grade Biofloc fish farming products, HDPE pond liners, and ring blowers. Wholesale prices and PAN India delivery."
+        title="Products - Best Fish Farming Tools & HDPE Pond Liners"
+        description="See our list of the best Biofloc fish farming products, HDPE pond liners, and air pumps. Get best prices and fast delivery across India."
       />
       <PageHero
         title="Our Products"
-        subtitle="Complete Biofloc Farming Solutions"
-        description="Wholesale prices · Custom sizes · PAN India delivery on all products"
+        subtitle="Complete Fish Farming Setup"
+        description="Best prices · Custom sizes · Delivery everywhere in India"
         bgImage="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=80"
         gradient="linear-gradient(135deg, #0a4f7add 0%, #0e7490cc 50%, #22d3ee55 100%)"
         badge="PRODUCTS"

@@ -221,10 +221,10 @@ export default function ProductDetailPage({ products, contact }) {
                 </h4>
                 <div className="specs-grid">
                   {[
-                    { label: 'Standard Spec', value: product.specs, icon: 'Settings' },
-                    { label: 'Material Grade', value: product.material_grade || 'Industrial-Grade', icon: 'Layers' },
-                    { label: 'Distribution', value: product.distribution || 'Pan India', icon: 'Truck' },
-                    { label: 'Technical Support', value: product.support || '24/7 Support', icon: 'Headset' }
+                    { label: 'Size & Specs', value: product.specs, icon: 'Settings' },
+                    { label: 'Quality', value: product.material_grade || 'Top Quality', icon: 'Layers' },
+                    { label: 'Delivery', value: product.distribution || 'All over India', icon: 'Truck' },
+                    { label: 'Help', value: product.support || '24/7 Support', icon: 'Headset' }
                   ].map((spec, i) => (
                     <div key={i}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>

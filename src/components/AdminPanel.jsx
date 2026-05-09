@@ -140,6 +140,63 @@ const InputGroup = ({ label, icon, ...props }) => (
   </div>
 )
 
+// ---------------------- WYSIWYG Editor ----------------------
+function CustomWysiwyg({ value, onChange }) {
+  const editorRef = useRef(null)
+  
+  useEffect(() => {
+    if (editorRef.current && editorRef.current.innerHTML !== value) {
+      if (document.activeElement !== editorRef.current) {
+        editorRef.current.innerHTML = value || ''
+      }
+    }
+  }, [value])
+
+  const exec = (cmd, arg) => {
+    document.execCommand(cmd, false, arg)
+    editorRef.current.focus()
+    onChange(editorRef.current.innerHTML)
+  }
+
+  return (
+    <div style={{ border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--surface)' }}>
+      <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--border)', display: 'flex', gap: 8, background: 'var(--surface-hover)', flexWrap: 'wrap' }}>
+        <button type="button" onClick={() => exec('formatBlock', 'H2')} title="Heading 2" style={{ padding: '6px 10px', fontWeight: 800, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-primary)', transition: 'background 0.2s' }}>H2</button>
+        <button type="button" onClick={() => exec('formatBlock', 'H3')} title="Heading 3" style={{ padding: '6px 10px', fontWeight: 700, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-primary)', transition: 'background 0.2s' }}>H3</button>
+        <div style={{ width: 1, background: 'var(--border)', margin: '0 4px' }} />
+        <button type="button" onClick={() => exec('bold')} title="Bold" style={{ padding: 6, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-primary)' }}><LucideIcon name="Bold" size={18} /></button>
+        <button type="button" onClick={() => exec('italic')} title="Italic" style={{ padding: 6, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-primary)' }}><LucideIcon name="Italic" size={18} /></button>
+        <button type="button" onClick={() => exec('underline')} title="Underline" style={{ padding: 6, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-primary)' }}><LucideIcon name="Underline" size={18} /></button>
+        <div style={{ width: 1, background: 'var(--border)', margin: '0 4px' }} />
+        <button type="button" onClick={() => exec('insertUnorderedList')} title="Bullet List" style={{ padding: 6, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-primary)' }}><LucideIcon name="List" size={18} /></button>
+        <button type="button" onClick={() => exec('insertOrderedList')} title="Numbered List" style={{ padding: 6, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-primary)' }}><LucideIcon name="ListOrdered" size={18} /></button>
+        <div style={{ width: 1, background: 'var(--border)', margin: '0 4px' }} />
+        <button type="button" onClick={() => {
+          const url = prompt('Enter link URL:')
+          if (url) exec('createLink', url)
+        }} title="Insert Link" style={{ padding: 6, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-primary)' }}><LucideIcon name="Link" size={18} /></button>
+        <button type="button" onClick={() => {
+          exec('removeFormat')
+        }} title="Clear Formatting" style={{ padding: 6, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-muted)', marginLeft: 'auto' }}><LucideIcon name="Eraser" size={18} /></button>
+      </div>
+      <div 
+        ref={editorRef}
+        contentEditable
+        onInput={e => onChange(e.currentTarget.innerHTML)}
+        onBlur={e => onChange(e.currentTarget.innerHTML)}
+        style={{ minHeight: 300, padding: 16, outline: 'none', color: 'var(--text-primary)', lineHeight: 1.6, fontSize: '1rem', background: 'white' }}
+        className="custom-wysiwyg"
+      />
+      <style>{`
+        .custom-wysiwyg h2 { font-size: 1.8em; margin: 0.5em 0; color: var(--text-primary); }
+        .custom-wysiwyg h3 { font-size: 1.4em; margin: 0.5em 0; color: var(--text-primary); }
+        .custom-wysiwyg ul, .custom-wysiwyg ol { padding-left: 20px; margin: 0.5em 0; }
+        .custom-wysiwyg a { color: var(--primary); text-decoration: underline; }
+      `}</style>
+    </div>
+  )
+}
+
 // ---------------------- Common Utils ----------------------
 async function uploadImage(file) {
   if (!file) return null
@@ -752,6 +809,158 @@ function ContactManager({ contact, refreshData }) {
   )
 }
 
+function BlogManager({ blogs, refreshData }) {
+  const [modal, setModal] = useState(null)
+  const [formData, setFormData] = useState({})
+  const [uploading, setUploading] = useState(false)
+
+  useEffect(() => {
+    if (modal && modal !== 'add') {
+      setFormData(modal)
+    } else {
+      setFormData({ title: '', slug: '', excerpt: '', content: '', image_url: '', keywords: '', is_published: true })
+    }
+  }, [modal])
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    try {
+      setUploading(true)
+      const url = await uploadImage(file)
+      setFormData({ ...formData, image_url: url })
+    } catch (err) {
+      alert(`Upload failed: ${err.message}`)
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const handleSave = async (e) => {
+    e.preventDefault()
+    try {
+      const payload = { ...formData }
+      if (!payload.slug) {
+        payload.slug = payload.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
+      }
+      
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+      if (modal === 'add' || (payload.id && !uuidRegex.test(payload.id))) {
+        delete payload.id
+      }
+      
+      const { error } = await supabase.from('blogs').upsert(payload)
+      if (error) throw error
+      await refreshData()
+      setModal(null)
+    } catch (err) {
+      alert('Error saving blog: ' + err.message)
+    }
+  }
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Delete this blog post?')) return
+    try {
+      const { error } = await supabase.from('blogs').delete().eq('id', id)
+      if (error) throw error
+      await refreshData()
+    } catch (err) {
+      alert('Error deleting: ' + err.message)
+    }
+  }
+
+  return (
+    <div className="animate-fade-in">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+        <div>
+          <h2 style={{ fontSize: '1.5rem', marginBottom: 4 }}>Blog Management</h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Create and manage SEO-optimized blog posts.</p>
+        </div>
+        <button onClick={() => setModal('add')} className="hero-btn" style={{ background: 'var(--primary)', color: 'white', padding: '12px 24px', margin: 0 }}>
+          <LucideIcon name="Plus" size={18} />
+          New Post
+        </button>
+      </div>
+      <div style={{ display: 'grid', gap: 20 }}>
+        {(blogs || []).map(b => (
+          <div key={b.id} className="premium-card" style={{ padding: 24, display: 'flex', gap: 24, alignItems: 'center' }}>
+            <div style={{ width: 100, height: 100, borderRadius: 16, background: 'var(--surface-hover)', overflow: 'hidden', flexShrink: 0 }}>
+              {b.image_url ? <img src={b.image_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><LucideIcon name="Image" /></div>}
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: 8 }}>{b.title}</div>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: 8 }}>{b.excerpt?.substring(0, 100)}...</div>
+              <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '2px 8px', borderRadius: 4, background: b.is_published ? 'rgba(16, 185, 129, 0.1)' : 'rgba(107, 114, 128, 0.1)', color: b.is_published ? '#10b981' : '#6b7280' }}>
+                  {b.is_published ? 'PUBLISHED' : 'DRAFT'}
+                </span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{new Date(b.created_at).toLocaleDateString()}</span>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button onClick={() => setModal(b)} style={{ width: 44, height: 44, borderRadius: 100, background: 'var(--surface-hover)', border: '1px solid var(--border)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)' }}><LucideIcon name="Edit" size={18} /></button>
+              <button onClick={() => handleDelete(b.id)} style={{ width: 44, height: 44, borderRadius: 100, background: 'rgba(239, 68, 68, 0.05)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.2)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><LucideIcon name="Trash2" size={18} /></button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {modal && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)' }}>
+          <div className="premium-card" style={{ width: '100%', maxWidth: 700, padding: 40, maxHeight: '90vh', overflowY: 'auto', borderRadius: 32 }}>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: 24 }}>{modal === 'add' ? 'Create Blog Post' : 'Edit Blog Post'}</h3>
+            <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ width: '100%', height: 200, borderRadius: 16, background: 'var(--surface-hover)', margin: '0 auto 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                  {formData.image_url ? <img src={formData.image_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <LucideIcon name="Image" size={32} color="var(--text-muted)" />}
+                </div>
+                <label style={{ cursor: 'pointer', color: 'var(--primary)', fontWeight: 600 }}>
+                  {uploading ? 'Uploading...' : 'Upload Featured Image'}
+                  <input type="file" hidden accept="image/*" onChange={handleFileChange} disabled={uploading} />
+                </label>
+              </div>
+
+              <InputGroup label="Post Title" icon="Type" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} required />
+              
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                <InputGroup label="Custom Slug (optional)" icon="Link" value={formData.slug} onChange={e => setFormData({ ...formData, slug: e.target.value })} placeholder="Leave empty to auto-generate" />
+                <InputGroup label="SEO Keywords" icon="Search" value={formData.keywords} onChange={e => setFormData({ ...formData, keywords: e.target.value })} placeholder="comma, separated" />
+              </div>
+              
+              <div style={{ width: '100%' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: 8, display: 'block', textTransform: 'uppercase' }}>Excerpt (Short description)</label>
+                <textarea value={formData.excerpt} onChange={e => setFormData({ ...formData, excerpt: e.target.value })} rows={2} style={{ width: '100%', padding: 16, borderRadius: 16, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-primary)', fontFamily: 'inherit' }} required />
+              </div>
+
+              <div style={{ width: '100%' }}>
+                <label style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: 8, display: 'block', textTransform: 'uppercase' }}>Main Content</label>
+                <CustomWysiwyg 
+                  value={formData.content} 
+                  onChange={content => setFormData({ ...formData, content })}
+                />
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px', background: 'var(--surface-hover)', borderRadius: 12, border: '1px solid var(--border)' }}>
+                <input type="checkbox" id="is_published" checked={formData.is_published} onChange={e => setFormData({ ...formData, is_published: e.target.checked })} style={{ width: 20, height: 20, accentColor: 'var(--primary)' }} />
+                <label htmlFor="is_published" style={{ fontWeight: 600, cursor: 'pointer' }}>Publish immediately (visible to public)</label>
+              </div>
+
+              <div style={{ display: 'flex', gap: 16, marginTop: 12 }}>
+                <button type="button" onClick={() => setModal(null)} style={{ flex: 1, padding: 18, borderRadius: 100, border: '1px solid var(--border)', fontWeight: 600, color: 'var(--text-secondary)' }}>Cancel</button>
+                <button type="submit" className="hero-btn" style={{ flex: 2, background: 'var(--primary)', color: 'white', padding: 18, margin: 0, boxShadow: '0 8px 16px rgba(var(--primary-rgb), 0.2)' }} disabled={uploading}>
+                  <LucideIcon name="Save" size={18} />
+                  Save Blog Post
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ---------------------- Main Dashboard ----------------------
 
 export default function AdminPanel(props) {
@@ -761,6 +970,7 @@ export default function AdminPanel(props) {
 
   const menu = [
     { id: 'products', label: 'Inventory', icon: 'Package' },
+    { id: 'blogs', label: 'Blog Posts', icon: 'BookOpen' },
     { id: 'slides', label: 'Hero Slides', icon: 'Layout' },
     { id: 'testimonials', label: 'Reviews', icon: 'MessageSquare' },
     { id: 'stats', label: 'Ticker', icon: 'BarChart' },
@@ -817,6 +1027,7 @@ export default function AdminPanel(props) {
       <main style={{ flex: 1, padding: '60px 80px', overflowY: 'auto', background: 'var(--bg)' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           {active === 'products' && <ProductManager {...props} />}
+          {active === 'blogs' && <BlogManager {...props} />}
           {active === 'slides' && <SliderManager {...props} />}
           {active === 'testimonials' && <TestimonialManager {...props} />}
           {active === 'stats' && <StatsManager {...props} />}

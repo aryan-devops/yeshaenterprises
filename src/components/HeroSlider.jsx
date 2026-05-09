@@ -41,7 +41,7 @@ export default function HeroSlider({ slides, contact }) {
 
   return (
     <section
-      style={{ position: 'relative', height: '100vh', minHeight: 'clamp(600px, 100vh, 900px)', overflow: 'hidden' }}
+      style={{ position: 'relative', height: '80vh', minHeight: 'clamp(500px, 80vh, 700px)', overflow: 'hidden' }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onTouchStart={onTouchStart}

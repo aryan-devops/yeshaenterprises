@@ -39,6 +39,7 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
   const navLinks = [
     { label: 'Home', to: '/', icon: 'Home' },
     { label: 'Products', to: '/products', icon: 'Package' },
+    { label: 'Blog', to: '/blog', icon: 'BookOpen' },
     { label: 'About', to: '/about', icon: 'Info' },
     { label: 'Contact', to: '/contact', icon: 'Phone' },
   ]
@@ -290,17 +291,6 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
                 <LucideIcon name="Download" size={16} strokeWidth={2.5} />
                 <span>Brochure</span>
               </a>
-
-              {/* FIXED BUTTON */}
-              <button
-                className="theme-toggle"
-                onClick={toggleDarkMode}
-                style={{ marginLeft: 8 }}
-              >
-                <LucideIcon
-                  name={darkMode ? 'Sun' : 'Moon'}
-                />
-              </button>
             </div>
           </div>
 
@@ -372,18 +362,6 @@ export default function Navbar({ darkMode, toggleDarkMode, onAdminClick }) {
             <LucideIcon name="Download" size={20} strokeWidth={2.5} />
             <span>Download Brochure</span>
           </a>
-
-          <button
-            className="theme-toggle"
-            onClick={() => {
-              toggleDarkMode()
-              setMenuOpen(false)
-            }}
-            style={{ width: '100%', gap: 12 }}
-          >
-            <LucideIcon name={darkMode ? 'Sun' : 'Moon'} />
-            {darkMode ? 'Light Mode' : 'Dark Mode'}
-          </button>
         </div>
       )}
 

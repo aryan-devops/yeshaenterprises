@@ -5,9 +5,11 @@ import Products from '../components/Products'
 import About from '../components/About'
 import VisionMission from '../components/VisionMission'
 import Testimonials from '../components/Testimonials'
+import FAQ from '../components/FAQ'
+import RecentBlogs from '../components/RecentBlogs'
 import useScrollReveal from '../hooks/useScrollReveal'
 
-export default function HomePage({ slides, stats, products, contact, testimonials }) {
+export default function HomePage({ slides, stats, products, contact, testimonials, blogs }) {
   const visibleSlides = slides.filter(s => s.is_visible || s.visible)
   const reveal = useScrollReveal()
 
@@ -58,9 +60,9 @@ export default function HomePage({ slides, stats, products, contact, testimonial
   return (
     <>
       <SEO 
-        title="Best HDPE Pond Liner in Chhattisgarh, Maharashtra & Odisha"
-        description="Yesha Enterprises: Top-rated HDPE Pond Liners & Biofloc equipment in Raipur, Nagpur, & Bhubaneswar. India's biggest dealer of GEOMEMBRANE liners. Get a quote!"
-        keywords="pond liner Chhattisgarh, pond liner Maharashtra, pond liner Odisha, Biofloc fish farming India, HDPE pond liner price, ring blower Raipur"
+        title="Best HDPE Pond Liner in India - Chhattisgarh, Maharashtra & Odisha"
+        description="Yesha Enterprises is the top seller of HDPE Pond Liners and Biofloc tools in Raipur, Nagpur, and Bhubaneswar. Best prices and fast delivery."
+        keywords="pond liner Chhattisgarh, pond liner Maharashtra, pond liner Odisha, Biofloc fish farming India, HDPE pond liner price, ring blower"
       />
       <script type="application/ld+json">
         {JSON.stringify({
@@ -78,9 +80,9 @@ export default function HomePage({ slides, stats, products, contact, testimonial
       <div className="reveal" ref={reveal}>
         <div className="container" style={{ padding: '40px 0', borderBottom: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap', opacity: 0.7 }}>
-            <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>#1 IN CHHATTISGARH</span>
-            <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>TOP SUPPLIER MAHARASHTRA</span>
-            <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>PREMIER PARTNER ODISHA</span>
+            <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>#1 IN INDIA</span>
+            <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>TOP QUALITY SUPPLIER</span>
+            <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>TRUSTED PARTNER</span>
           </div>
         </div>
         <StatsMarquee stats={stats} />
@@ -99,7 +101,15 @@ export default function HomePage({ slides, stats, products, contact, testimonial
       </div>
 
       <div className="reveal" ref={reveal}>
+        <RecentBlogs blogs={blogs} />
+      </div>
+
+      <div className="reveal" ref={reveal}>
         <Testimonials reviews={testimonials} />
+      </div>
+
+      <div className="reveal" ref={reveal}>
+        <FAQ />
       </div>
     </>
   )

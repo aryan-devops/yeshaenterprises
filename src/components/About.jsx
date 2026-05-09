@@ -3,23 +3,23 @@ import LucideIcon from './LucideIcon'
 export default function About() {
   const usps = [
     { 
-      title: 'Infrastructure Experts', 
-      desc: 'Deep technical expertise in Biofloc tank design and pond liner engineering.',
+      title: 'Setup Experts', 
+      desc: 'We have deep knowledge in designing fish tanks and making strong pond liners.',
       icon: 'HardHat'
     },
     { 
-      title: 'Quality Assurance', 
-      desc: 'Every product undergoes rigorous testing for UV resistance and fish safety.',
+      title: 'Top Quality', 
+      desc: 'Every product is tested to make sure it is safe for fish and lasts long in the sun.',
       icon: 'ShieldCheck'
     },
     { 
-      title: 'Supply Chain Sync', 
-      desc: 'Optimized logistics network ensuring timely delivery across all Indian states.',
+      title: 'Fast Delivery', 
+      desc: 'We have a strong network to make sure you get your order quickly anywhere in India.',
       icon: 'Truck'
     },
     { 
-      title: 'Bulk Pricing', 
-      desc: 'Manufacturer-direct wholesale rates for dealers and large-scale fish farms.',
+      title: 'Best Prices', 
+      desc: 'We offer low wholesale prices for dealers and big fish farms directly from the factory.',
       icon: 'TrendingDown'
     }
   ]
@@ -42,20 +42,20 @@ export default function About() {
             </div>
             
             <h2 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', marginBottom: 24, lineHeight: 1.1 }}>
-              Pioneering Sustainable <br />
-              <span style={{ color: 'var(--primary)' }}>Aquaculture Systems</span>
+              Building Better <br />
+              <span style={{ color: 'var(--primary)' }}>Fish Farms</span>
             </h2>
             
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.15rem', marginBottom: 32, lineHeight: 1.8 }}>
-              Founded in 2022 in Raipur, Yesha Enterprises has rapidly become India's primary distributor for industrial-grade Biofloc infrastructure. We don't just sell products; we engineer the foundation for your aquatic success.
+              Started in 2022 in Raipur, Yesha Enterprises has quickly become India's top seller for fish farming tools. We don't just sell things; we help you build a farm that works.
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
               {[
-                { val: '100+', label: 'Dealers Nationwide', icon: 'Globe' },
-                { val: '15+', label: 'Pond Liner Specs', icon: 'Layers' },
-                { val: '2Y+', label: 'Market Leadership', icon: 'Award' },
-                { val: '5.0', label: 'Client Satisfaction', icon: 'Star' }
+                { val: '100+', label: 'Dealers in India', icon: 'Globe' },
+                { val: '15+', label: 'Pond Liner Types', icon: 'Layers' },
+                { val: '2Y+', label: 'Top Seller', icon: 'Award' },
+                { val: '5.0', label: 'Happy Customers', icon: 'Star' }
               ].map((stat, i) => (
                 <div key={i} style={{ 
                   padding: 24, background: 'var(--bg)', borderRadius: 20, 

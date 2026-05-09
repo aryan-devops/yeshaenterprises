@@ -3,8 +3,8 @@ import LucideIcon from './LucideIcon'
 export default function VisionMission() {
   const points = [
     {
-      title: 'Our Vision',
-      desc: 'To become the global benchmark for excellence in sustainable aquaculture infrastructure, empowering every farmer with industrial-grade tools for success.',
+      title: 'Our Goal',
+      desc: 'To be the best provider of tools for fish farming, helping every farmer succeed with easy-to-use and high-quality products.',
       icon: 'Eye',
       gradient: 'linear-gradient(135deg, #0f172a, #1e293b)',
       accent: 'var(--primary)',
@@ -12,8 +12,8 @@ export default function VisionMission() {
       descColor: 'rgba(255,255,255,0.85)'
     },
     {
-      title: 'Our Mission',
-      desc: 'To engineer and distribute high-performance Biofloc systems that are accessible, durable, and optimized for maximum aquatic yield across India.',
+      title: 'Our Work',
+      desc: 'To make and sell the best Biofloc systems that are affordable, strong, and help farmers grow more fish all over India.',
       icon: 'Target',
       gradient: 'linear-gradient(135deg, var(--primary), var(--primary-dark))',
       accent: 'white',
