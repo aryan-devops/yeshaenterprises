@@ -150,48 +150,97 @@ export default function BlogPostPage({ blogs, contact = {} }) {
             />
 
             {/* Sidebar */}
-            <aside>
-              {/* Engage With Us — Light Card */}
-              <div style={{
-                background: 'var(--surface)', border: '1px solid var(--border)',
-                borderRadius: 20, padding: 28,
-                position: 'sticky', top: 120,
-              }}>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 8 }}>Engage With Us</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', lineHeight: 1.7, marginBottom: 22 }}>
-                  Need expert advice on pond liners or Biofloc setup? Talk to our team directly.
-                </p>
+            <aside style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
+              {/* Card 1: Engage With Us */}
+              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 6 }}>Engage With Us</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: 18 }}>
+                  Have a question? Our experts are ready to help you choose the right product for your farm.
+                </p>
                 <a
                   href={`https://wa.me/${contact?.whatsapp || '919977228924'}`}
                   target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#22c55e', color: 'white', padding: '12px 16px', borderRadius: 12, fontWeight: 700, fontSize: '0.9rem', textDecoration: 'none', marginBottom: 10 }}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#22c55e', color: 'white', padding: '12px 16px', borderRadius: 12, fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none', marginBottom: 10 }}
                 >
                   <LucideIcon name="MessageCircle" size={16} /> WhatsApp Us Now
                 </a>
-
-                <Link to="/products" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'var(--primary)', color: 'white', padding: '12px 16px', borderRadius: 12, fontWeight: 600, fontSize: '0.9rem', textDecoration: 'none', marginBottom: 22 }}>
-                  <LucideIcon name="Package" size={16} /> View Products
+                <a
+                  href="tel:+919977228924"
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text-primary)', padding: '12px 16px', borderRadius: 12, fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none', marginBottom: 10 }}
+                >
+                  <LucideIcon name="Phone" size={16} /> Call: +91 99772 28924
+                </a>
+                <Link to="/contact" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'var(--primary)', color: 'white', padding: '12px 16px', borderRadius: 12, fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none' }}>
+                  <LucideIcon name="Mail" size={16} /> Send Enquiry
                 </Link>
-
-                <div style={{ borderTop: '1px solid var(--border)', paddingTop: 18, marginBottom: 4 }}>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: 6 }}>📞 Call Us</p>
-                  <p style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.95rem', margin: 0 }}>+91 99772 28924</p>
-                </div>
-
-                {blog.keywords && (
-                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: 18, marginTop: 18 }}>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: 10 }}>🏷 Tags</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                      {blog.keywords.split(',').slice(0, 5).map((tag, i) => (
-                        <span key={i} style={{ background: 'var(--bg)', border: '1px solid var(--border)', padding: '3px 10px', borderRadius: 100, fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
-                          {tag.trim()}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
+
+              {/* Card 2: Why Choose Us */}
+              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 16 }}>Why Choose Yesha Enterprises?</h3>
+                {[
+                  { icon: 'ShieldCheck', text: '#1 Pond Liner Supplier in Chhattisgarh' },
+                  { icon: 'Truck', text: 'Fast Delivery Across India' },
+                  { icon: 'Scissors', text: 'Custom Sizes for Every Farm' },
+                  { icon: 'BadgeIndianRupee', text: 'Best Wholesale Prices' },
+                  { icon: 'HeadphonesIcon', text: 'Expert Support Before & After Sale' },
+                ].map((item, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <LucideIcon name={item.icon} size={16} color="white" />
+                    </div>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{item.text}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Card 3: View Products */}
+              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 16 }}>Our Products</h3>
+                {[
+                  { label: 'HDPE Pond Liners', path: '/products' },
+                  { label: 'Ring Blowers / Air Pumps', path: '/products' },
+                  { label: 'Circular Fish Tanks', path: '/products' },
+                  { label: 'Diesel Generators', path: '/products' },
+                  { label: 'HDPE Shade Nets', path: '/products' },
+                ].map((item, i) => (
+                  <Link key={i} to={item.path} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0', borderBottom: i < 4 ? '1px solid var(--border)' : 'none', textDecoration: 'none', color: 'var(--text-secondary)', fontSize: '0.875rem', fontWeight: 500 }}>
+                    {item.label}
+                    <LucideIcon name="ChevronRight" size={16} color="var(--primary)" />
+                  </Link>
+                ))}
+              </div>
+
+              {/* Card 4: Tags */}
+              {blog.keywords && (
+                <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 14 }}>Article Tags</h3>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    {blog.keywords.split(',').slice(0, 10).map((tag, i) => (
+                      <span key={i} style={{ background: 'var(--bg)', border: '1px solid var(--border)', padding: '5px 12px', borderRadius: 100, fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+                        {tag.trim()}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Card 5: Our Locations */}
+              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 14 }}>We Serve Across India</h3>
+                {[
+                  { state: 'Chhattisgarh (HQ)', city: 'Raipur, Bilaspur, Durg', path: '/location/chhattisgarh' },
+                  { state: 'Maharashtra', city: 'Nagpur, Amravati', path: '/location/maharashtra' },
+                  { state: 'Odisha', city: 'Bhubaneswar, Cuttack', path: '/location/odisha' },
+                ].map((loc, i) => (
+                  <Link key={i} to={loc.path} style={{ display: 'block', textDecoration: 'none', marginBottom: i < 2 ? 12 : 0 }}>
+                    <p style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-primary)', margin: '0 0 2px' }}>{loc.state}</p>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0 }}>{loc.city}</p>
+                  </Link>
+                ))}
+              </div>
+
             </aside>
           </div>
         </div>
