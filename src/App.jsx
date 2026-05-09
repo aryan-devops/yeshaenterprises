@@ -104,40 +104,6 @@ const DEFAULT_BLOGS = [
     keywords: 'hdpe pond liner, pond liner, hdpe liner, best pond liner, fish pond liners, buy pond liner, lldpe pond liner, pond liner installation, 20 x 20 pond liner, flexible pond liner, pond liner manufacturers, pond liner manufacturers in india, pond liner prices, water pond liner, bulk pond liner, irrigation pond liner, wholesale pond liners, pond liner size, largest pond liner available, deep pond liner, pond liner for fish farming, hdpe pond liner manufacturer, high quality pond liner, pond liner with drain, uv resistant pond liner, pond liner india, pond liner manufacturers in maharashtra, fish tank liner, hdpe fish pond liner, pond liner fitters near me, best fish pond liner, quality pond liner, pond liner supplier, good quality pond liner, blue liner for pond, pond liner tank, pond liner design, water feature pond liner, fish pond membrane, fish farming pond design, biofloc tanks, 1000 sq ft pond, design of ponds, cheap pond liner',
     is_published: true,
     created_at: new Date(Date.now() - 259200000).toISOString()
-  },
-  {
-    id: '1',
-    slug: 'how-to-start-biofloc-fish-farming-india',
-    title: 'How to Start Biofloc Fish Farming in India: A Complete Guide',
-    excerpt: 'Learn the step-by-step process of starting a profitable Biofloc fish farm in India. From setup to fish growth, everything you need to know.',
-    content: '<p>Biofloc fish farming is a profitable and modern way to grow fish in a small space. Unlike traditional ponds, it uses special tanks and air pumps to keep the water clean and fish healthy.</p><br><h2>1. Tank Setup</h2><p>The first step is setting up a round fish tank with a high-quality HDPE pond liner. This prevents water leakage and keeps the fish safe.</p><br><h2>2. Air Pumps</h2><p>You need a strong ring blower to provide oxygen 24/7. This is very important for Biofloc.</p><br><h2>3. Water Preparation</h2><p>Before adding fish, you need to prepare the water with probiotics and molasses to create the "floc". This floc acts as food for the fish and keeps the water clean.</p><br><p><strong>Start your Biofloc journey today with the right tools!</strong></p>',
-    image_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80',
-    keywords: 'Biofloc fish farming in India, how to start biofloc, biofloc setup guide, fish farming business',
-    is_published: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: '2',
-    slug: 'why-hdpe-pond-liners-essential',
-    title: 'Why HDPE Pond Liners are Essential for Successful Fish Farming',
-    excerpt: 'Discover why top fish farmers choose HDPE pond liners over traditional ponds. Learn about their durability, cost-effectiveness, and fish safety.',
-    content: '<p>When starting a fish farm, the base is everything. Many new farmers make the mistake of using cheap plastics or bare mud ponds.</p><br><h2>What is an HDPE Pond Liner?</h2><p>HDPE stands for High-Density Polyethylene. It is a very strong, thick plastic sheet designed specifically for water storage and aquaculture.</p><br><h2>Benefits of HDPE Liners</h2><ul><li><strong>No Water Loss:</strong> They stop water from leaking into the ground.</li><li><strong>Fish Safety:</strong> High-quality liners are non-toxic and safe for fish.</li><li><strong>Long Life:</strong> They are UV stabilized, meaning the sun will not destroy them quickly.</li><li><strong>Easy to Clean:</strong> Unlike mud ponds, HDPE liners are very easy to clean and manage disease outbreaks.</li></ul><br><p>Investing in a good HDPE pond liner from a trusted supplier like Yesha Enterprises will save you money in the long run.</p>',
-    image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
-    keywords: 'HDPE pond liner, pond liner benefits, fish farming pond liner, geomembrane, fish tank setup',
-    is_published: true,
-    created_at: new Date(Date.now() - 86400000).toISOString()
-  },
-  {
-    id: '3',
-    slug: 'choosing-right-ring-blower',
-    title: 'Choosing the Right Ring Blower for Your Biofloc Setup',
-    excerpt: 'Oxygen is life in Biofloc farming. Find out how to choose the perfect ring blower based on your tank size and fish capacity.',
-    content: '<p>In Biofloc fish farming, you cannot rely on natural oxygen. You have a lot of fish in a small space, so you need a constant supply of air. This is where ring blowers come in.</p><br><h2>What does a Ring Blower do?</h2><p>A ring blower pushes air into the water through aeration tubes. This creates bubbles that give oxygen to the fish and the good bacteria (the floc).</p><br><h2>How to Choose?</h2><ul><li><strong>Tank Size:</strong> For a 10,000-liter tank, you usually need a 1HP ring blower.</li><li><strong>Power Supply:</strong> Choose between single-phase and three-phase blowers depending on your electricity connection.</li><li><strong>Quality:</strong> Always buy from a top seller to ensure it runs quietly and doesn\'t break down. A power failure without a backup can kill all your fish.</li></ul><br><p><strong>Always keep a diesel generator as a backup for your ring blower!</strong></p>',
-    image_url: 'https://images.unsplash.com/photo-1583091176882-62a26fae3d16?w=800&q=80',
-    keywords: 'Ring blower, biofloc aeration, fish tank air pump, choosing ring blower, 1HP blower',
-    is_published: true,
-    created_at: new Date(Date.now() - 172800000).toISOString()
-  }
 ]
 
 const DEFAULT_PRODUCTS = [
