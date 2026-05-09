@@ -860,10 +860,17 @@ function BlogManager({ blogs, refreshData }) {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this blog post?')) return
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    const isUUID = uuidRegex.test(String(id))
     try {
-      const { error } = await supabase.from('blogs').delete().eq('id', id)
-      if (error) throw error
-      await refreshData()
+      if (isUUID) {
+        const { error } = await supabase.from('blogs').delete().eq('id', id)
+        if (error) throw error
+        await refreshData()
+      } else {
+        // Default blog (non-UUID id) — only remove from local state
+        setBlogs(prev => prev.filter(b => b.id !== id))
+      }
     } catch (err) {
       alert('Error deleting: ' + err.message)
     }
