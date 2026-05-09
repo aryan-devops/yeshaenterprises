@@ -809,7 +809,7 @@ function ContactManager({ contact, refreshData }) {
   )
 }
 
-function BlogManager({ blogs, refreshData }) {
+function BlogManager({ blogs, setBlogs, refreshData }) {
   const [modal, setModal] = useState(null)
   const [formData, setFormData] = useState({})
   const [uploading, setUploading] = useState(false)
@@ -1034,7 +1034,7 @@ export default function AdminPanel(props) {
       <main style={{ flex: 1, padding: '60px 80px', overflowY: 'auto', background: 'var(--bg)' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           {active === 'products' && <ProductManager {...props} />}
-          {active === 'blogs' && <BlogManager {...props} />}
+          {active === 'blogs' && <BlogManager {...props} setBlogs={props.setBlogs} />}
           {active === 'slides' && <SliderManager {...props} />}
           {active === 'testimonials' && <TestimonialManager {...props} />}
           {active === 'stats' && <StatsManager {...props} />}
