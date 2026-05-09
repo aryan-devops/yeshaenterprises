@@ -43,10 +43,6 @@ export default function FAQ() {
 
   return (
     <section style={{ padding: '80px 0', background: 'var(--surface)' }}>
-      <SEO 
-        title="FAQ - Biofloc Fish Farming Questions Answered"
-        description="Find answers to the most common questions about Biofloc fish farming, HDPE pond liners, ring blowers, and setup costs."
-      />
       <script type="application/ld+json">
         {JSON.stringify(faqSchema)}
       </script>
