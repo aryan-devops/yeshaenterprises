@@ -104,6 +104,7 @@ const DEFAULT_BLOGS = [
     keywords: 'hdpe pond liner, pond liner, hdpe liner, best pond liner, fish pond liners, buy pond liner, lldpe pond liner, pond liner installation, 20 x 20 pond liner, flexible pond liner, pond liner manufacturers, pond liner manufacturers in india, pond liner prices, water pond liner, bulk pond liner, irrigation pond liner, wholesale pond liners, pond liner size, largest pond liner available, deep pond liner, pond liner for fish farming, hdpe pond liner manufacturer, high quality pond liner, pond liner with drain, uv resistant pond liner, pond liner india, pond liner manufacturers in maharashtra, fish tank liner, hdpe fish pond liner, pond liner fitters near me, best fish pond liner, quality pond liner, pond liner supplier, good quality pond liner, blue liner for pond, pond liner tank, pond liner design, water feature pond liner, fish pond membrane, fish farming pond design, biofloc tanks, 1000 sq ft pond, design of ponds, cheap pond liner',
     is_published: true,
     created_at: new Date(Date.now() - 259200000).toISOString()
+  }
 ]
 
 const DEFAULT_PRODUCTS = [
