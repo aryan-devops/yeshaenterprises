@@ -86,7 +86,7 @@ export default function BlogPostPage({ blogs, contact = {} }) {
     )
   }
 
-  const faqs = getBlogFAQs(blog)
+  const faqs = (blog.faqs && blog.faqs.length > 0) ? blog.faqs : getBlogFAQs(blog)
 
   const articleSchema = {
     "@context": "https://schema.org", "@type": "Article",

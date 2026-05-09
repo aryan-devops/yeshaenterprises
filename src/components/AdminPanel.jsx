@@ -911,6 +911,11 @@ function BlogManager({ blogs, setBlogs, refreshData }) {
                   {b.is_published ? 'PUBLISHED' : 'DRAFT'}
                 </span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{new Date(b.created_at).toLocaleDateString()}</span>
+                {b.faqs?.length > 0 && (
+                  <span style={{ fontSize: '0.7rem', background: 'var(--surface-hover)', padding: '2px 6px', borderRadius: 4, border: '1px solid var(--border)' }}>
+                    {b.faqs.length} FAQs
+                  </span>
+                )}
               </div>
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
@@ -955,6 +960,59 @@ function BlogManager({ blogs, setBlogs, refreshData }) {
                   value={formData.content} 
                   onChange={content => setFormData({ ...formData, content })}
                 />
+              </div>
+
+              <div style={{ width: '100%', borderTop: '1px solid var(--border)', paddingTop: 20 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Custom FAQs</label>
+                  <button 
+                    type="button" 
+                    onClick={() => setFormData({ ...formData, faqs: [...(formData.faqs || []), { q: '', a: '' }] })}
+                    style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+                  >
+                    <LucideIcon name="Plus" size={14} /> Add FAQ
+                  </button>
+                </div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  {(formData.faqs || []).map((faq, idx) => (
+                    <div key={idx} style={{ background: 'var(--surface-hover)', padding: 16, borderRadius: 16, border: '1px solid var(--border)', position: 'relative' }}>
+                      <button 
+                        type="button"
+                        onClick={() => setFormData({ ...formData, faqs: formData.faqs.filter((_, i) => i !== idx) })}
+                        style={{ position: 'absolute', top: 12, right: 12, background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }}
+                      >
+                        <LucideIcon name="X" size={16} />
+                      </button>
+                      <input 
+                        placeholder="Question..." 
+                        value={faq.q} 
+                        onChange={e => {
+                          const newFaqs = [...formData.faqs]
+                          newFaqs[idx].q = e.target.value
+                          setFormData({ ...formData, faqs: newFaqs })
+                        }}
+                        style={{ width: 'calc(100% - 30px)', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border)', padding: '8px 0', marginBottom: 8, fontWeight: 700, color: 'var(--text-primary)', outline: 'none' }}
+                      />
+                      <textarea 
+                        placeholder="Answer..." 
+                        value={faq.a} 
+                        onChange={e => {
+                          const newFaqs = [...formData.faqs]
+                          newFaqs[idx].a = e.target.value
+                          setFormData({ ...formData, faqs: newFaqs })
+                        }}
+                        rows={2}
+                        style={{ width: '100%', background: 'transparent', border: 'none', padding: '8px 0', color: 'var(--text-secondary)', fontSize: '0.9rem', outline: 'none', resize: 'none' }}
+                      />
+                    </div>
+                  ))}
+                  {(formData.faqs || []).length === 0 && (
+                    <p style={{ textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-muted)', fontStyle: 'italic', padding: '20px 0' }}>
+                      No custom FAQs. The page will use auto-generated ones.
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px', background: 'var(--surface-hover)', borderRadius: 12, border: '1px solid var(--border)' }}>
