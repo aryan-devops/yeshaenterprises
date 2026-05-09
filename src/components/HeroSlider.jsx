@@ -201,7 +201,7 @@ export default function HeroSlider({ slides, contact }) {
             
             <div style={{
               position: 'absolute', inset: 0,
-              background: slide?.gradient || 'transparent',
+              background: slide?.gradient || 'linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0) 100%)',
               mixBlendMode: 'normal'
             }} />
           </div>
