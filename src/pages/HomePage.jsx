@@ -80,7 +80,7 @@ export default function HomePage({ slides, stats, products, contact, testimonial
       <div className="reveal" ref={reveal}>
         <div className="container" style={{ padding: '40px 0', borderBottom: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap', opacity: 0.7 }}>
-            <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>#1 IN INDIA</span>
+            <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>#1 IN CHHATTISGARH</span>
             <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>TOP QUALITY SUPPLIER</span>
             <span style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>TRUSTED PARTNER</span>
           </div>
