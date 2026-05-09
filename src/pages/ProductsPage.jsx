@@ -8,6 +8,7 @@ export default function ProductsPage({ products, contact }) {
       <SEO 
         title="Products - Best Fish Farming Tools & HDPE Pond Liners"
         description="See our list of the best Biofloc fish farming products, HDPE pond liners, and air pumps. Get best prices and fast delivery across India."
+        keywords="pond liners for sale near me, cheap pond liner, wholesale pond liners, hdpe liner pond, largest pond liner available, pond liner size, buy pond liner, stock pond liner, pond liner prices, bulk pond liner, hdpe pond liner manufacturer, biofloc tanks, fish pond membrane"
       />
       <PageHero
         title="Our Products"
