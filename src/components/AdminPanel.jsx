@@ -849,8 +849,17 @@ function BlogManager({ blogs, setBlogs, refreshData }) {
         delete payload.id
       }
       
-      const { error } = await supabase.from('blogs').upsert(payload)
-      if (error) throw error
+      let { error } = await supabase.from('blogs').upsert(payload)
+      
+      // If duplicate slug, auto-append a unique suffix and retry
+      if (error && error.code === '23505' && error.message.includes('slug')) {
+        payload.slug = payload.slug + '-' + Date.now().toString().slice(-5)
+        const retry = await supabase.from('blogs').upsert(payload)
+        if (retry.error) throw retry.error
+      } else if (error) {
+        throw error
+      }
+      
       await refreshData()
       setModal(null)
     } catch (err) {
