@@ -297,7 +297,12 @@ export default function App() {
       if (slideData && slideData.length > 0) setSlides(slideData)
       if (testimonialData && testimonialData.length > 0) setTestimonials(testimonialData)
       if (enquiryData) setEnquiries(enquiryData)
-      if (blogData && blogData.length > 0) setBlogs(blogData)
+      if (blogData && blogData.length > 0) {
+        // Merge: Supabase blogs take priority, then add any default blogs not already in Supabase
+        const supabaseSlugs = new Set(blogData.map(b => b.slug))
+        const extraDefaults = DEFAULT_BLOGS.filter(b => !supabaseSlugs.has(b.slug))
+        setBlogs([...blogData, ...extraDefaults])
+      }
       
       if (settingsData) {
         const contactInfo = settingsData.find(s => s.key === 'contact_info')
