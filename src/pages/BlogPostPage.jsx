@@ -65,10 +65,10 @@ export default function BlogPostPage({ blogs }) {
           position: 'relative', height: '60vh', minHeight: 400, display: 'flex', alignItems: 'flex-end',
           background: blog.image_url ? `url(${blog.image_url}) center/cover` : 'var(--surface)'
         }}>
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0) 100%)' }} />
           <div className="container" style={{ position: 'relative', zIndex: 10, paddingBottom: 60, width: '100%' }}>
             
-            <Link to="/blog" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: 'white', opacity: 0.8, textDecoration: 'none', marginBottom: 24, fontWeight: 600, fontSize: '0.9rem' }}>
+            <Link to="/blog" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: 'var(--text-primary)', textDecoration: 'none', marginBottom: 24, fontWeight: 700, fontSize: '0.9rem' }}>
               <LucideIcon name="ArrowLeft" size={16} /> Back to Blog
             </Link>
 
@@ -76,12 +76,12 @@ export default function BlogPostPage({ blogs }) {
               <span style={{ background: 'var(--primary)', color: 'white', padding: '4px 12px', borderRadius: 100, fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px' }}>
                 Guide
               </span>
-              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', fontWeight: 600 }}>
+              <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 600 }}>
                 {new Date(blog.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
               </span>
             </div>
             
-            <h1 style={{ color: 'white', fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 800, lineHeight: 1.1, maxWidth: 900, marginBottom: 0 }}>
+            <h1 style={{ color: 'var(--text-primary)', fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 800, lineHeight: 1.1, maxWidth: 900, marginBottom: 0 }}>
               {blog.title}
             </h1>
           </div>
