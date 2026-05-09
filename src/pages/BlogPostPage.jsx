@@ -241,6 +241,31 @@ export default function BlogPostPage({ blogs, contact = {} }) {
                 ))}
               </div>
 
+              {/* Card 6: Latest Articles */}
+              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 16 }}>Latest Updates</h3>
+                {blogs.filter(b => b.slug !== slug).slice(0, 3).map((b, i) => (
+                  <Link key={i} to={`/blog/${b.slug}`} style={{ display: 'block', textDecoration: 'none', marginBottom: i < 2 ? 16 : 0, group: 'true' }}>
+                    <p style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px', lineHeight: 1.4, transition: 'color 0.2s' }} className="sidebar-blog-link">{b.title}</p>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0 }}>{new Date(b.created_at).toLocaleDateString()}</p>
+                  </Link>
+                ))}
+              </div>
+
+              {/* Card 7: Business Hours */}
+              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 14 }}>Business Hours</h3>
+                {[
+                  { days: 'Mon - Sat', hours: '09:00 AM - 07:00 PM' },
+                  { days: 'Sunday', hours: 'Closed' },
+                ].map((item, i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: i === 0 ? 8 : 0 }}>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 600 }}>{item.days}</span>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{item.hours}</span>
+                  </div>
+                ))}
+              </div>
+
             </aside>
           </div>
         </div>
@@ -284,6 +309,7 @@ export default function BlogPostPage({ blogs, contact = {} }) {
         .blog-content blockquote { border-left: 4px solid var(--primary); padding: 14px 20px; background: var(--surface); border-radius: 0 12px 12px 0; margin-bottom: 20px; }
         .blog-content img { max-width: 100%; border-radius: 14px; margin: 20px 0; }
         .blog-content a { color: var(--primary); text-decoration: underline; }
+        .sidebar-blog-link:hover { color: var(--primary) !important; }
       `}</style>
     </>
   )
