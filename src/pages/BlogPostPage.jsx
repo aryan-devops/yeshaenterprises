@@ -93,7 +93,7 @@ export default function BlogPostPage({ blogs }) {
             {/* Main Content */}
             <div 
               className="blog-content" 
-              style={{ background: 'var(--surface)', padding: '40px 0', borderRadius: 24, fontSize: '1.15rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}
+              style={{ fontSize: '1.15rem', color: 'var(--text-secondary)', lineHeight: 1.8 }}
               dangerouslySetInnerHTML={{ __html: blog.content }}
             />
 
