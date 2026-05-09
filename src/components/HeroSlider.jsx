@@ -58,7 +58,7 @@ export default function HeroSlider({ slides, contact }) {
         @keyframes progress-horizontal { from { width: 0; } to { width: 100%; } }
 
         .hero-subtitle {
-          color: rgba(255, 255, 255, 0.9);
+          color: var(--text-primary);
           font-weight: 700;
           font-size: 0.9rem;
           text-transform: uppercase;
@@ -201,7 +201,7 @@ export default function HeroSlider({ slides, contact }) {
             
             <div style={{
               position: 'absolute', inset: 0,
-              background: slide?.gradient || 'linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0) 100%)',
+              background: slide?.gradient || 'linear-gradient(90deg, rgba(224, 242, 254, 0.95) 0%, rgba(240, 249, 255, 0.7) 40%, rgba(255,255,255,0) 100%)',
               mixBlendMode: 'normal'
             }} />
           </div>
