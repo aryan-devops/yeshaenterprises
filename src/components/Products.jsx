@@ -124,8 +124,8 @@ export default function Products({ products, contact, previewMode = false }) {
                 <p className="pcard-desc">{p.description}</p>
 
                 <div className="pcard-specs">
-                  <LucideIcon name="Layers" size={14} color="var(--text-muted)" />
-                  <span>{p.specs}</span>
+                  <LucideIcon name={(p.specifications && p.specifications[0]?.icon) || 'Layers'} size={14} color="var(--text-muted)" />
+                  <span>{(p.specifications && p.specifications[0]?.value) || p.specs}</span>
                 </div>
 
                 <div className="pcard-footer">
@@ -412,7 +412,11 @@ export default function Products({ products, contact, previewMode = false }) {
             -webkit-line-clamp: 2;
           }
           .pcard-desc { display: none; }
-          .pcard-specs { display: none; }
+          .pcard-specs { 
+            display: flex; 
+            font-size: 0.65rem !important; 
+            padding: 4px 8px !important;
+          }
           .pcard-footer {
             flex-direction: column;
             align-items: flex-start;
