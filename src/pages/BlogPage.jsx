@@ -30,8 +30,8 @@ export default function BlogPage({ blogs }) {
         title="Fish Farming Knowledge Hub"
         subtitle="Guides, Tips & Industry News"
         description="Learn how to grow your fish farming business with expert advice."
-        bgImage="https://images.unsplash.com/photo-1583091176882-62a26fae3d16?w=1920&q=80"
-        gradient="linear-gradient(135deg, rgba(6, 78, 59, 0.9), rgba(5, 150, 105, 0.8))"
+        bgImage="/assets/blog-hero.png"
+        gradient="linear-gradient(135deg, rgba(6, 78, 59, 0.8), rgba(5, 150, 105, 0.7))"
         badge="OUR BLOG"
         icon="BookOpen"
       />
