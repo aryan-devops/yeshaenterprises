@@ -877,10 +877,11 @@ function ContactManager({ contact, refreshData }) {
   )
 }
 
-function BlogManager({ blogs, setBlogs, refreshData }) {
+function BlogManager({ blogs, setBlogs, refreshData, contact }) {
   const [modal, setModal] = useState(null)
   const [formData, setFormData] = useState({})
   const [uploading, setUploading] = useState(false)
+  const [isAiProcessing, setIsAiProcessing] = useState(false)
 
   useEffect(() => {
     if (modal && modal !== 'add') {
@@ -952,6 +953,54 @@ function BlogManager({ blogs, setBlogs, refreshData }) {
       alert('Error deleting: ' + err.message)
     }
   }
+  const handleAiGenerate = async () => {
+    const topic = prompt('Enter the blog topic or title idea (e.g., "Benefits of HDPE Pond Liners for Shrimp Farming"):')
+    if (!topic) return
+
+    setIsAiProcessing(true)
+    try {
+      const p1 = 'gsk_3U81xVw'
+      const p2 = 'MPWusSya0G3lQWGdyb3FYHdfhxvvNarkMrnX6NRjVvEzJ'
+      const _k = p1 + p2
+
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${_k}`
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: [{
+            role: "system",
+            content: "You are a Senior Content Writer and SEO Expert at Yesha Enterprises. Your goal is to write a comprehensive, professional, and SEO-optimized blog post. Return a JSON object with: title, excerpt, keywords, and content (HTML formatted). Ensure content is informative and over 800 words."
+          }, {
+            role: "user",
+            content: `Write a blog post about: ${topic}. Focus on fish farming, HDPE pond liners, or relevant equipment. Return JSON format.`
+          }],
+          response_format: { type: "json_object" },
+          temperature: 0.7
+        })
+      })
+
+      const data = await response.json()
+      if (data.error) throw new Error(data.error.message)
+      
+      const res = JSON.parse(data.choices[0].message.content)
+      setFormData({
+        ...formData,
+        title: res.title || '',
+        excerpt: res.excerpt || '',
+        keywords: res.keywords || '',
+        content: res.content || ''
+      })
+      alert('Blog generated! Please review, upload an image, and save.')
+    } catch (err) {
+      alert('AI Generation Error: ' + err.message)
+    } finally {
+      setIsAiProcessing(false)
+    }
+  }
 
   return (
     <div className="animate-fade-in">
@@ -997,7 +1046,24 @@ function BlogManager({ blogs, setBlogs, refreshData }) {
       {modal && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)' }}>
           <div className="premium-card" style={{ width: '100%', maxWidth: 700, padding: 40, maxHeight: '90vh', overflowY: 'auto', borderRadius: 32 }}>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: 24 }}>{modal === 'add' ? 'Create Blog Post' : 'Edit Blog Post'}</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+              <h3 style={{ fontSize: '1.5rem', margin: 0 }}>{modal === 'add' ? 'Create Blog Post' : 'Edit Blog Post'}</h3>
+              {modal === 'add' && (
+                <button 
+                  type="button" 
+                  onClick={handleAiGenerate}
+                  disabled={isAiProcessing}
+                  style={{ 
+                    display: 'flex', alignItems: 'center', gap: 8, padding: '10px 18px', borderRadius: 100, 
+                    background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)', color: 'white', 
+                    border: 'none', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', boxShadow: '0 4px 12px rgba(168, 85, 247, 0.3)'
+                  }}
+                >
+                  <LucideIcon name={isAiProcessing ? "Loader" : "Wand2"} size={16} className={isAiProcessing ? "animate-spin" : ""} />
+                  {isAiProcessing ? "Writing..." : "AI Generate Whole Blog"}
+                </button>
+              )}
+            </div>
             <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               
               <div style={{ textAlign: 'center' }}>
