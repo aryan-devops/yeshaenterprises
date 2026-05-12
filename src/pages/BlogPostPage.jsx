@@ -140,7 +140,8 @@ export default function BlogPostPage({ blogs, contact = {} }) {
 
         {/* Content + Sidebar Grid */}
         <div className="container blog-container" style={{ marginTop: 60, marginBottom: 80 }}>
-          <div className="blog-layout">
+          <div className="blog-main-wrapper">
+            <div className="blog-layout">
 
             {/* Article Body */}
             {/* Main Content Area */}
@@ -275,6 +276,7 @@ export default function BlogPostPage({ blogs, contact = {} }) {
             </aside>
           </div>
         </div>
+      </div>
 
         {/* You May Also Like Section */}
         {blogs.filter(b => b.slug !== slug).length > 0 && (
@@ -326,20 +328,22 @@ export default function BlogPostPage({ blogs, contact = {} }) {
       </article>
 
       <style>{`
-        @media (max-width: 1024px) {
-          .blog-layout { grid-template-columns: 1fr !important; }
-          .blog-faq-width { max-width: 100% !important; }
-        }
+        html, body { overflow-x: hidden; position: relative; }
         .blog-content h2 { font-size: 1.7rem; margin-top: 40px; margin-bottom: 14px; color: var(--text-primary); font-weight: 800; }
         .blog-content h3 { font-size: 1.35rem; margin-top: 30px; margin-bottom: 12px; color: var(--text-primary); font-weight: 700; }
-        .blog-content p { margin-bottom: 18px; }
+        .blog-content p { margin-bottom: 18px; word-wrap: break-word; overflow-wrap: break-word; }
         .blog-content ul, .blog-content ol { margin-bottom: 20px; padding-left: 22px; }
         .blog-content li { margin-bottom: 10px; }
         .blog-content strong { color: var(--text-primary); }
         .blog-content blockquote { border-left: 4px solid var(--primary); padding: 14px 20px; background: var(--surface); border-radius: 0 12px 12px 0; margin-bottom: 20px; }
-        .blog-content img { max-width: 100%; border-radius: 14px; margin: 20px 0; }
+        .blog-content img { max-width: 100%; height: auto !important; border-radius: 14px; margin: 20px 0; display: block; }
         .blog-content a { color: var(--primary); text-decoration: underline; }
         .sidebar-blog-link:hover { color: var(--primary) !important; }
+
+        .blog-main-wrapper {
+          width: 100%;
+          min-width: 0;
+        }
 
         .blog-layout {
           display: grid;
@@ -355,6 +359,7 @@ export default function BlogPostPage({ blogs, contact = {} }) {
           position: sticky;
           top: 100px;
           height: fit-content;
+          z-index: 10;
         }
 
         @media (max-width: 1100px) {
@@ -363,32 +368,34 @@ export default function BlogPostPage({ blogs, contact = {} }) {
             gap: 40px;
           }
           .blog-sidebar {
-            position: static;
+            position: static !important;
             order: 2;
           }
           .blog-faq-width {
             max-width: 100% !important;
           }
-          .blog-container {
-            padding: 0 20px;
-          }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 640px) {
           .blog-container {
-            margin-top: 30px !important;
-            padding: 0 16px;
+            margin-top: 24px !important;
+            margin-bottom: 40px !important;
+            padding: 0 16px !important;
           }
           .blog-content {
             font-size: 1.05rem !important;
-            line-height: 1.7 !important;
+            line-height: 1.8 !important;
           }
           .blog-hero-header {
-            min-height: 50vh !important;
+            min-height: 40vh !important;
             padding-top: 60px !important;
           }
           .blog-hero-header h1 {
-            font-size: 1.8rem !important;
+            font-size: 1.7rem !important;
+            line-height: 1.25 !important;
+          }
+          .premium-card {
+            border-radius: 16px !important;
           }
         }
       `}</style>
