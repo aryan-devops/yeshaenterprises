@@ -1306,45 +1306,45 @@ export default function AdminPanel(props) {
   ]
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg)' }}>
+    <div className="admin-layout">
       {/* Sidebar */}
-      <aside style={{
-        width: 280, background: 'var(--surface)', borderRight: '1px solid var(--border)',
-        padding: '32px 16px', display: 'flex', flexDirection: 'column', gap: 8, position: 'sticky', top: 0, height: '100vh', zIndex: 100
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '0 16px', marginBottom: 40 }}>
+      <aside className="admin-sidebar">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '0 16px', marginBottom: 40, flexShrink: 0 }}>
           <div style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
             <LucideIcon name="Layers" size={18} />
           </div>
           <span style={{ fontWeight: 800, letterSpacing: '-0.5px' }}>YESHA ADMIN</span>
         </div>
 
-        {menu.map(item => (
-          <button
-            key={item.id}
-            onClick={() => setActive(item.id)}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px',
-              borderRadius: 100, background: active === item.id ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent',
-              color: active === item.id ? 'var(--primary)' : 'var(--text-secondary)',
-              fontWeight: active === item.id ? 700 : 500, transition: 'all 0.2s', textAlign: 'left'
-            }}
-          >
-            <LucideIcon name={item.icon} size={20} />
-            {item.label}
-          </button>
-        ))}
+        <div className="admin-nav-links">
+          {menu.map(item => (
+            <button
+              key={item.id}
+              onClick={() => setActive(item.id)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px',
+                borderRadius: 100, background: active === item.id ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent',
+                color: active === item.id ? 'var(--primary)' : 'var(--text-secondary)',
+                fontWeight: active === item.id ? 700 : 500, transition: 'all 0.2s', textAlign: 'left',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              <LucideIcon name={item.icon} size={20} />
+              {item.label}
+            </button>
+          ))}
+        </div>
 
-        <div style={{ marginTop: 'auto', paddingTop: 24, borderTop: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <button onClick={props.toggleDarkMode} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', color: 'var(--text-secondary)' }}>
+        <div className="admin-sidebar-footer">
+          <button onClick={props.toggleDarkMode} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
             <LucideIcon name={props.darkMode ? 'Sun' : 'Moon'} size={18} />
             {props.darkMode ? 'Light Theme' : 'Dark Theme'}
           </button>
-          <button onClick={props.onLogout} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', color: '#ef4444', fontWeight: 600 }}>
+          <button onClick={props.onLogout} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', color: '#ef4444', fontWeight: 600, whiteSpace: 'nowrap' }}>
             <LucideIcon name="LogOut" size={18} />
             Termination
           </button>
-          <button onClick={props.onClose} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', color: 'var(--text-muted)', fontWeight: 600 }}>
+          <button onClick={props.onClose} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', color: 'var(--text-muted)', fontWeight: 600, whiteSpace: 'nowrap' }}>
             <LucideIcon name="ArrowLeft" size={18} />
             Return to Portal
           </button>
@@ -1352,8 +1352,8 @@ export default function AdminPanel(props) {
       </aside>
 
       {/* Main Content */}
-      <main style={{ flex: 1, padding: '60px 80px', overflowY: 'auto', background: 'var(--bg)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+      <main className="admin-main">
+        <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
           {active === 'products' && <ProductManager {...props} />}
           {active === 'blogs' && <BlogManager {...props} setBlogs={props.setBlogs} />}
           {active === 'slides' && <SliderManager {...props} />}
@@ -1362,6 +1362,84 @@ export default function AdminPanel(props) {
           {active === 'contact' && <ContactManager {...props} />}
         </div>
       </main>
+
+      <style>{`
+        .admin-layout {
+          display: flex;
+          min-height: 100vh;
+          background: var(--bg);
+        }
+        .admin-sidebar {
+          width: 280px;
+          background: var(--surface);
+          border-right: 1px solid var(--border);
+          padding: 32px 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          z-index: 100;
+        }
+        .admin-nav-links {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .admin-sidebar-footer {
+          margin-top: auto;
+          padding-top: 24px;
+          border-top: 1px solid var(--border);
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .admin-main {
+          flex: 1;
+          padding: 60px 80px;
+          overflow-y: auto;
+          background: var(--bg);
+          min-width: 0;
+        }
+
+        @media (max-width: 900px) {
+          .admin-layout {
+            flex-direction: column;
+          }
+          .admin-sidebar {
+            width: 100%;
+            height: auto;
+            position: static;
+            padding: 16px;
+            border-right: none;
+            border-bottom: 1px solid var(--border);
+          }
+          .admin-sidebar > div:first-child {
+            margin-bottom: 16px !important;
+          }
+          .admin-nav-links {
+            flex-direction: row;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+          }
+          .admin-nav-links::-webkit-scrollbar {
+            display: none;
+          }
+          .admin-sidebar-footer {
+            margin-top: 16px;
+            padding-top: 16px;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+          }
+          .admin-main {
+            padding: 24px 16px;
+          }
+        }
+      `}</style>
     </div>
   )
 }

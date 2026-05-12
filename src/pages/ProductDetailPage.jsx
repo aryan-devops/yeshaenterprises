@@ -123,7 +123,7 @@ export default function ProductDetailPage({ products, contact }) {
             <span style={{ color: 'var(--primary)', fontWeight: 600 }}>{product.name}</span>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.2fr)', gap: 80, alignItems: 'start' }}>
+          <div className="product-layout">
 
             {/* Left: Gallery */}
             <div style={{ position: 'sticky', top: 120 }}>
@@ -151,12 +151,13 @@ export default function ProductDetailPage({ products, contact }) {
 
               {/* Thumbnails */}
               {gallery.length > 1 && (
-                <div style={{ display: 'flex', gap: 16, marginTop: 24 }}>
+                <div style={{ display: 'flex', gap: 16, marginTop: 24, overflowX: 'auto', paddingBottom: 8 }}>
                   {gallery.map((img, i) => (
                     <div
                       key={i}
                       onClick={() => setActiveImage(i)}
                       style={{
+                        flexShrink: 0,
                         width: 80,
                         height: 80,
                         borderRadius: 16,
@@ -180,7 +181,7 @@ export default function ProductDetailPage({ products, contact }) {
             </div>
 
             {/* Right */}
-            <div>
+            <div style={{ minWidth: 0, overflowWrap: 'break-word', wordWrap: 'break-word' }}>
               <div style={{
                 display: 'inline-block', padding: '6px 14px', borderRadius: 100,
                 background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)',
@@ -254,10 +255,10 @@ export default function ProductDetailPage({ products, contact }) {
               {/* Quick Share Section */}
               <div style={{ marginTop: 24, padding: '20px', borderRadius: 20, background: 'var(--surface-hover)', border: '1px solid var(--border)' }}>
                 <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Share with others</div>
-                <div style={{ display: 'flex', gap: 12 }}>
+                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                   <button 
                     onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`Check out ${product.name} at Yesha Enterprises: ${window.location.href}`)}`, '_blank')}
-                    style={{ flex: 1, padding: '10px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: '0.2s' }}
+                    style={{ flex: '1 1 auto', minWidth: '100px', padding: '10px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: '0.2s' }}
                     onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--primary)'}
                     onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
                   >
@@ -266,7 +267,7 @@ export default function ProductDetailPage({ products, contact }) {
                   </button>
                   <button 
                     onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')}
-                    style={{ flex: 1, padding: '10px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: '0.2s' }}
+                    style={{ flex: '1 1 auto', minWidth: '100px', padding: '10px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: '0.2s' }}
                     onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--primary)'}
                     onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
                   >
@@ -278,7 +279,7 @@ export default function ProductDetailPage({ products, contact }) {
                       navigator.clipboard.writeText(window.location.href);
                       alert('Link copied to clipboard!');
                     }}
-                    style={{ flex: 1, padding: '10px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: '0.2s' }}
+                    style={{ flex: '1 1 auto', minWidth: '100px', padding: '10px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: '0.2s' }}
                     onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--primary)'}
                     onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
                   >
@@ -293,9 +294,9 @@ export default function ProductDetailPage({ products, contact }) {
 
           {/* You May Also Like Section */}
           <div style={{ marginTop: 120 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16, marginBottom: 40 }}>
               <div>
-                <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 8 }}>You May Also Like</h2>
+                <h2 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 8 }}>You May Also Like</h2>
                 <p style={{ color: 'var(--text-secondary)' }}>Explore more premium tools and equipment for your farm.</p>
               </div>
               <button 
@@ -308,7 +309,7 @@ export default function ProductDetailPage({ products, contact }) {
               </button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 30 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 30 }}>
               {products
                 .filter(p => String(p.id) !== id) // Exclude current product
                 .sort(() => Math.random() - 0.5) // Randomize
@@ -363,6 +364,13 @@ export default function ProductDetailPage({ products, contact }) {
           box-shadow: 0 20px 40px rgba(var(--primary-rgb), 0.4);
         }
 
+        .product-layout {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+          gap: 80px;
+          align-items: start;
+        }
+
         .specs-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -377,7 +385,7 @@ export default function ProductDetailPage({ products, contact }) {
         }
 
         @media (max-width: 1024px) {
-          .container > div {
+          .product-layout {
             grid-template-columns: 1fr !important;
             gap: 40px !important;
           }
