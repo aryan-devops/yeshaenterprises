@@ -251,6 +251,43 @@ export default function ProductDetailPage({ products, contact }) {
                 </a>
               </div>
 
+              {/* Quick Share Section */}
+              <div style={{ marginTop: 24, padding: '20px', borderRadius: 20, background: 'var(--surface-hover)', border: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Share with others</div>
+                <div style={{ display: 'flex', gap: 12 }}>
+                  <button 
+                    onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`Check out ${product.name} at Yesha Enterprises: ${window.location.href}`)}`, '_blank')}
+                    style={{ flex: 1, padding: '10px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: '0.2s' }}
+                    onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--primary)'}
+                    onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+                  >
+                    <LucideIcon name="MessageSquare" size={16} color="#25D366" />
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>WhatsApp</span>
+                  </button>
+                  <button 
+                    onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')}
+                    style={{ flex: 1, padding: '10px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: '0.2s' }}
+                    onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--primary)'}
+                    onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+                  >
+                    <LucideIcon name="Facebook" size={16} color="#1877F2" />
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Facebook</span>
+                  </button>
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                      alert('Link copied to clipboard!');
+                    }}
+                    style={{ flex: 1, padding: '10px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: '0.2s' }}
+                    onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--primary)'}
+                    onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+                  >
+                    <LucideIcon name="Copy" size={16} color="var(--text-muted)" />
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Copy Link</span>
+                  </button>
+                </div>
+              </div>
+
             </div>
           </div>
 

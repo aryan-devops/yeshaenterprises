@@ -115,6 +115,19 @@ export default function Products({ products, contact, previewMode = false }) {
                     </div>
                 }
                 <span className="pcard-badge">{(p.stock_status || p.stockStatus || 'In Stock').toUpperCase()}</span>
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const url = `${window.location.origin}/product/${p.id}`;
+                    navigator.clipboard.writeText(url);
+                    alert('Product link copied to clipboard!');
+                  }}
+                  className="pcard-share-btn"
+                  title="Share Product"
+                >
+                  <LucideIcon name="Share2" size={14} />
+                </button>
               </div>
 
               {/* Info */}
@@ -301,6 +314,29 @@ export default function Products({ products, contact, previewMode = false }) {
           font-size: 0.65rem;
           font-weight: 800;
           letter-spacing: 0.05em;
+        }
+        .pcard-share-btn {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.9);
+          border: 1px solid var(--border);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          color: var(--text-primary);
+          transition: 0.2s;
+          z-index: 2;
+        }
+        .pcard-share-btn:hover {
+          background: var(--primary);
+          color: white;
+          border-color: var(--primary);
+          transform: scale(1.1);
         }
         .pcard-body {
           padding: 18px;
