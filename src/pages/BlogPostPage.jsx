@@ -246,9 +246,14 @@ export default function BlogPostPage({ blogs, contact = {} }) {
               <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
                 <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 16 }}>Latest Updates</h3>
                 {blogs.filter(b => b.slug !== slug).slice(0, 3).map((b, i) => (
-                  <Link key={i} to={`/blog/${b.slug}`} style={{ display: 'block', textDecoration: 'none', marginBottom: i < 2 ? 16 : 0, group: 'true' }}>
-                    <p style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px', lineHeight: 1.4, transition: 'color 0.2s' }} className="sidebar-blog-link">{b.title}</p>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0 }}>{new Date(b.created_at).toLocaleDateString()}</p>
+                  <Link key={i} to={`/blog/${b.slug}`} style={{ display: 'flex', gap: 12, textDecoration: 'none', marginBottom: i < 2 ? 16 : 0, group: 'true' }}>
+                    <div style={{ width: 60, height: 60, borderRadius: 8, overflow: 'hidden', flexShrink: 0, background: 'var(--surface-hover)' }}>
+                      {b.image_url ? <img src={b.image_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <LucideIcon name="Image" size={16} />}
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px', lineHeight: 1.3, transition: 'color 0.2s' }} className="sidebar-blog-link">{b.title}</p>
+                      <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0 }}>{new Date(b.created_at).toLocaleDateString()}</p>
+                    </div>
                   </Link>
                 ))}
               </div>
