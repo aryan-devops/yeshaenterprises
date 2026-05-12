@@ -161,54 +161,47 @@ function CustomWysiwyg({ value, onChange }) {
   const [isAiProcessing, setIsAiProcessing] = useState(false)
 
   const handleAiFormat = async () => {
-    let key = localStorage.getItem('GEMINI_API_KEY')
+    let key = localStorage.getItem('GROQ_API_KEY')
     if (!key) {
-      key = prompt('Please enter your Gemini API Key (get one free at aistudio.google.com):')
-      if (key) localStorage.setItem('GEMINI_API_KEY', key)
+      key = prompt('Please enter your Groq API Key (get one for free at console.groq.com):')
+      if (key) localStorage.setItem('GROQ_API_KEY', key)
     }
     if (!key) return
 
-    const content = editorRef.current.innerText
-    if (!content || content.trim().length < 10) {
-      alert('Please enter some text first.')
-      return
-    }
-
     setIsAiProcessing(true)
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`
+        },
         body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `You are an SEO expert and professional blog formatter. 
-              Please format the following text using HTML tags (h2, h3, p, strong, ul, li).
-              - Use H2 and H3 for logical sections.
-              - Use strong for important keywords.
-              - Use bullet points for lists.
-              - Return ONLY the clean HTML content, no markdown code blocks, no other text.
-              
-              CONTENT TO FORMAT:
-              ${content}`
-            }]
-          }]
+          model: "llama-3.3-70b-versatile",
+          messages: [{
+            role: "system",
+            content: "You are an SEO expert. Format the provided text using HTML tags (h2, h3, p, strong, ul, li). Return ONLY the clean HTML. No markdown, no conversational text."
+          }, {
+            role: "user",
+            content: content
+          }],
+          temperature: 0.5,
+          max_tokens: 4096
         })
       })
 
       const data = await response.json()
       if (data.error) throw new Error(data.error.message)
       
-      let aiHtml = data.candidates[0].content.parts[0].text
+      let aiHtml = data.choices[0].message.content
       // Strip markdown code blocks if AI included them
       aiHtml = aiHtml.replace(/```html|```/g, '').trim()
       
       editorRef.current.innerHTML = aiHtml
       onChange(aiHtml)
-      alert('Content formatted with AI! Please review it.')
+      alert('Content formatted with Groq AI!')
     } catch (err) {
       alert('AI Error: ' + err.message)
-      if (err.message.includes('API key')) localStorage.removeItem('GEMINI_API_KEY')
     } finally {
       setIsAiProcessing(false)
     }
