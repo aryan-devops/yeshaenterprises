@@ -158,6 +158,62 @@ function CustomWysiwyg({ value, onChange }) {
     onChange(editorRef.current.innerHTML)
   }
 
+  const [isAiProcessing, setIsAiProcessing] = useState(false)
+
+  const handleAiFormat = async () => {
+    let key = localStorage.getItem('GEMINI_API_KEY')
+    if (!key) {
+      key = prompt('Please enter your Gemini API Key (get one free at aistudio.google.com):')
+      if (key) localStorage.setItem('GEMINI_API_KEY', key)
+    }
+    if (!key) return
+
+    const content = editorRef.current.innerText
+    if (!content || content.trim().length < 10) {
+      alert('Please enter some text first.')
+      return
+    }
+
+    setIsAiProcessing(true)
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `You are an SEO expert and professional blog formatter. 
+              Please format the following text using HTML tags (h2, h3, p, strong, ul, li).
+              - Use H2 and H3 for logical sections.
+              - Use strong for important keywords.
+              - Use bullet points for lists.
+              - Return ONLY the clean HTML content, no markdown code blocks, no other text.
+              
+              CONTENT TO FORMAT:
+              ${content}`
+            }]
+          }]
+        })
+      })
+
+      const data = await response.json()
+      if (data.error) throw new Error(data.error.message)
+      
+      let aiHtml = data.candidates[0].content.parts[0].text
+      // Strip markdown code blocks if AI included them
+      aiHtml = aiHtml.replace(/```html|```/g, '').trim()
+      
+      editorRef.current.innerHTML = aiHtml
+      onChange(aiHtml)
+      alert('Content formatted with AI! Please review it.')
+    } catch (err) {
+      alert('AI Error: ' + err.message)
+      if (err.message.includes('API key')) localStorage.removeItem('GEMINI_API_KEY')
+    } finally {
+      setIsAiProcessing(false)
+    }
+  }
+
   return (
     <div style={{ border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--surface)' }}>
       <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--border)', display: 'flex', gap: 8, background: 'var(--surface-hover)', flexWrap: 'wrap' }}>
@@ -175,6 +231,21 @@ function CustomWysiwyg({ value, onChange }) {
           const url = prompt('Enter link URL:')
           if (url) exec('createLink', url)
         }} title="Insert Link" style={{ padding: 6, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-primary)' }}><LucideIcon name="Link" size={18} /></button>
+        <div style={{ width: 1, background: 'var(--border)', margin: '0 4px' }} />
+        <button 
+          type="button" 
+          onClick={handleAiFormat} 
+          disabled={isAiProcessing}
+          title="Format with AI" 
+          style={{ 
+            display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 100, 
+            border: '1px solid #c084fc', background: 'linear-gradient(135deg, #f0f9ff 0%, #fae8ff 100%)', 
+            cursor: 'pointer', color: '#9333ea', fontWeight: 700, fontSize: '0.75rem' 
+          }}
+        >
+          <LucideIcon name={isAiProcessing ? "Loader" : "Sparkles"} size={14} className={isAiProcessing ? "animate-spin" : ""} />
+          {isAiProcessing ? "Processing..." : "AI Format"}
+        </button>
         <button type="button" onClick={() => {
           exec('removeFormat')
         }} title="Clear Formatting" style={{ padding: 6, borderRadius: 6, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--text-muted)', marginLeft: 'auto' }}><LucideIcon name="Eraser" size={18} /></button>
