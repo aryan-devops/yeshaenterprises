@@ -116,8 +116,8 @@ export default function BlogPostPage({ blogs, contact = {} }) {
       <article style={{ background: 'var(--bg)', paddingBottom: 100 }}>
 
         {/* Hero Header */}
-        <header style={{
-          position: 'relative', height: '60vh', minHeight: 400,
+        <header className="blog-hero-header" style={{
+          position: 'relative', minHeight: '60vh',
           display: 'flex', alignItems: 'flex-end',
           background: blog.image_url ? `url(${blog.image_url}) center/cover` : 'var(--surface)'
         }}>
@@ -139,8 +139,8 @@ export default function BlogPostPage({ blogs, contact = {} }) {
         </header>
 
         {/* Content + Sidebar Grid */}
-        <div className="container" style={{ marginTop: 60 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 300px', gap: 48, alignItems: 'start' }} className="blog-layout">
+        <div className="container blog-container" style={{ marginTop: 60, marginBottom: 80 }}>
+          <div className="blog-layout">
 
             {/* Article Body */}
             {/* Main Content Area */}
@@ -183,7 +183,7 @@ export default function BlogPostPage({ blogs, contact = {} }) {
             </div>
 
             {/* Sidebar */}
-            <aside style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <aside className="blog-sidebar">
 
               {/* Card 1: Engage With Us */}
               <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
@@ -340,6 +340,57 @@ export default function BlogPostPage({ blogs, contact = {} }) {
         .blog-content img { max-width: 100%; border-radius: 14px; margin: 20px 0; }
         .blog-content a { color: var(--primary); text-decoration: underline; }
         .sidebar-blog-link:hover { color: var(--primary) !important; }
+
+        .blog-layout {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) 320px;
+          gap: 48px;
+          align-items: start;
+        }
+
+        .blog-sidebar {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          position: sticky;
+          top: 100px;
+          height: fit-content;
+        }
+
+        @media (max-width: 1100px) {
+          .blog-layout {
+            grid-template-columns: 1fr;
+            gap: 40px;
+          }
+          .blog-sidebar {
+            position: static;
+            order: 2;
+          }
+          .blog-faq-width {
+            max-width: 100% !important;
+          }
+          .blog-container {
+            padding: 0 20px;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .blog-container {
+            margin-top: 30px !important;
+            padding: 0 16px;
+          }
+          .blog-content {
+            font-size: 1.05rem !important;
+            line-height: 1.7 !important;
+          }
+          .blog-hero-header {
+            min-height: 50vh !important;
+            padding-top: 60px !important;
+          }
+          .blog-hero-header h1 {
+            font-size: 1.8rem !important;
+          }
+        }
       `}</style>
     </>
   )
