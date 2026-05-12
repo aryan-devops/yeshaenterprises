@@ -143,11 +143,44 @@ export default function BlogPostPage({ blogs, contact = {} }) {
           <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 300px', gap: 48, alignItems: 'start' }} className="blog-layout">
 
             {/* Article Body */}
-            <div
-              className="blog-content"
-              style={{ fontSize: '1.08rem', color: 'var(--text-secondary)', lineHeight: 1.9, minWidth: 0 }}
-              dangerouslySetInnerHTML={{ __html: blog.content }}
-            />
+            {/* Main Content Area */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
+              <div
+                className="blog-content"
+                style={{ fontSize: '1.08rem', color: 'var(--text-secondary)', lineHeight: 1.9, minWidth: 0 }}
+                dangerouslySetInnerHTML={{ __html: blog.content }}
+              />
+
+              {/* Share Buttons */}
+              <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '32px 0', marginTop: 20 }}>
+                <p style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 16 }}>Share this article</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+                  <a 
+                    href={`https://wa.me/?text=${encodeURIComponent('Check out this article: ' + blog.title + ' ' + window.location.href)}`} 
+                    target="_blank" rel="noopener noreferrer"
+                    style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: 12, background: '#25D366', color: 'white', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem' }}
+                  >
+                    <LucideIcon name="MessageCircle" size={18} /> WhatsApp
+                  </a>
+                  <a 
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`} 
+                    target="_blank" rel="noopener noreferrer"
+                    style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: 12, background: '#1877F2', color: 'white', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem' }}
+                  >
+                    <LucideIcon name="Facebook" size={18} /> Facebook
+                  </a>
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href)
+                      alert('Link copied to clipboard!')
+                    }}
+                    style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: 12, background: 'var(--surface-hover)', border: '1px solid var(--border)', color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 700, fontSize: '0.9rem' }}
+                  >
+                    <LucideIcon name="Link" size={18} /> Copy Link
+                  </button>
+                </div>
+              </div>
+            </div>
 
             {/* Sidebar */}
             <aside style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -269,6 +302,30 @@ export default function BlogPostPage({ blogs, contact = {} }) {
             </aside>
           </div>
         </div>
+
+        {/* You May Also Like Section */}
+        {blogs.filter(b => b.slug !== slug).length > 0 && (
+          <div className="container" style={{ marginTop: 80 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+              <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>You May Also Like</h2>
+              <Link to="/blog" style={{ color: 'var(--primary)', fontWeight: 700, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
+                View All <LucideIcon name="ArrowRight" size={18} />
+              </Link>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: 30 }}>
+              {blogs.filter(b => b.slug !== slug).slice(0, 2).map((b, i) => (
+                <Link key={i} to={`/blog/${b.slug}`} className="premium-card" style={{ display: 'block', textDecoration: 'none', borderRadius: 24, overflow: 'hidden', transition: 'transform 0.3s ease' }}>
+                  <div style={{ height: 220, background: `url(${b.image_url}) center/cover` }} />
+                  <div style={{ padding: 24 }}>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: 12 }}>{new Date(b.created_at).toLocaleDateString()}</div>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 12, lineHeight: 1.3 }}>{b.title}</h3>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: 0 }}>{b.excerpt?.substring(0, 100)}...</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* FAQ Section — full width aligned to article column */}
         <div className="container" style={{ marginTop: 80 }}>
