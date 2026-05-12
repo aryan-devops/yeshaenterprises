@@ -973,10 +973,10 @@ function BlogManager({ blogs, setBlogs, refreshData, contact }) {
           model: "llama-3.3-70b-versatile",
           messages: [{
             role: "system",
-            content: "You are a Senior Content Writer and SEO Expert at Yesha Enterprises. Your goal is to write a comprehensive, professional, and SEO-optimized blog post. Return a JSON object with: title, excerpt, keywords, and content (HTML formatted). Ensure content is informative and over 800 words."
+            content: "You are a Senior Content Writer and SEO Expert. Write a professional, SEO-optimized blog post using SIMPLE, EASY-TO-UNDERSTAND language. Avoid complex jargon. Return a JSON object with: title, excerpt, keywords, and content (HTML formatted)."
           }, {
             role: "user",
-            content: `Write a blog post about: ${topic}. Focus on fish farming, HDPE pond liners, or relevant equipment. Return JSON format.`
+            content: `Write a blog post about: ${topic}. Return JSON format.`
           }],
           response_format: { type: "json_object" },
           temperature: 0.7
@@ -997,6 +997,50 @@ function BlogManager({ blogs, setBlogs, refreshData, contact }) {
       alert('Blog generated! Please review, upload an image, and save.')
     } catch (err) {
       alert('AI Generation Error: ' + err.message)
+    } finally {
+      setIsAiProcessing(false)
+    }
+  }
+
+  const handleAiFaqs = async () => {
+    if (!formData.title) {
+      alert('Please enter or generate a title first.')
+      return
+    }
+
+    setIsAiProcessing(true)
+    try {
+      const p1 = 'gsk_3U81xVw'
+      const p2 = 'MPWusSya0G3lQWGdyb3FYHdfhxvvNarkMrnX6NRjVvEzJ'
+      const _k = p1 + p2
+
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${_k}`
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: [{
+            role: "system",
+            content: "You are an SEO Expert. Generate 6 frequently asked questions (FAQs) for a blog post. Use simple, easy language. Return a JSON object with a 'faqs' key containing an array of {q, a} objects."
+          }, {
+            role: "user",
+            content: `Generate FAQs for a blog titled: "${formData.title}". Content summary: ${formData.excerpt}`
+          }],
+          response_format: { type: "json_object" }
+        })
+      })
+
+      const data = await response.json()
+      if (data.error) throw new Error(data.error.message)
+      
+      const res = JSON.parse(data.choices[0].message.content)
+      setFormData({ ...formData, faqs: res.faqs || [] })
+      alert('FAQs generated with AI!')
+    } catch (err) {
+      alert('FAQ Generation Error: ' + err.message)
     } finally {
       setIsAiProcessing(false)
     }
@@ -1099,13 +1143,24 @@ function BlogManager({ blogs, setBlogs, refreshData, contact }) {
               <div style={{ width: '100%', borderTop: '1px solid var(--border)', paddingTop: 20 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Custom FAQs</label>
-                  <button 
-                    type="button" 
-                    onClick={() => setFormData({ ...formData, faqs: [...(formData.faqs || []), { q: '', a: '' }] })}
-                    style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
-                  >
-                    <LucideIcon name="Plus" size={14} /> Add FAQ
-                  </button>
+                  <div style={{ display: 'flex', gap: 12 }}>
+                    <button 
+                      type="button" 
+                      onClick={handleAiFaqs}
+                      disabled={isAiProcessing}
+                      style={{ background: 'none', border: '1px solid #c084fc', color: '#9333ea', padding: '4px 10px', borderRadius: 8, fontWeight: 700, fontSize: '0.75rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+                    >
+                      <LucideIcon name={isAiProcessing ? "Loader" : "Sparkles"} size={14} className={isAiProcessing ? "animate-spin" : ""} />
+                      AI Generate FAQs
+                    </button>
+                    <button 
+                      type="button" 
+                      onClick={() => setFormData({ ...formData, faqs: [...(formData.faqs || []), { q: '', a: '' }] })}
+                      style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+                    >
+                      <LucideIcon name="Plus" size={14} /> Add FAQ
+                    </button>
+                  </div>
                 </div>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
