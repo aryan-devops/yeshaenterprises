@@ -291,12 +291,26 @@ function ProductManager({ products, refreshData }) {
 
   useEffect(() => {
     if (modal && modal !== 'add') {
-      setFormData(modal)
+      const data = { ...modal }
+      if (!data.specifications || data.specifications.length === 0) {
+        data.specifications = [
+          { icon: 'Grid', label: 'Standard Specs', value: data.specs || '' },
+          { icon: 'Layers', label: 'Material Grade', value: data.material_grade || '' },
+          { icon: 'Map', label: 'Distribution', value: data.distribution || '' },
+          { icon: 'Headset', label: 'Support Type', value: data.support || '' }
+        ]
+      }
+      setFormData(data)
     } else {
       setFormData({ 
-        name: '', category: 'Other', price_range: '', stock_status: 'In Stock', specs: '', 
-        description: '', image_url: '', image_url_2: '', image_url_3: '',
-        material_grade: 'Industrial-Grade', distribution: 'Pan India', support: '24/7 Technical'
+        name: '', category: 'HDPE Pond Liners', price_range: '', description: '', 
+        image_url: '', image_url_2: '', image_url_3: '',
+        specifications: [
+          { icon: 'Grid', label: 'Standard Specs', value: '' },
+          { icon: 'Layers', label: 'Material Grade', value: '' },
+          { icon: 'Map', label: 'Distribution', value: '' },
+          { icon: 'Headset', label: 'Support Type', value: '' }
+        ]
       })
     }
   }, [modal])
@@ -480,14 +494,65 @@ function ProductManager({ products, refreshData }) {
                 </div>
                 <InputGroup label="Price Range" icon="IndianRupee" value={formData.price_range} onChange={e => setFormData({ ...formData, price_range: e.target.value })} />
               </div>
-              <InputGroup label="Standard Specs" icon="Grid" value={formData.specs} onChange={e => setFormData({ ...formData, specs: e.target.value })} />
-              
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                <InputGroup label="Material Grade" icon="Layers" value={formData.material_grade} onChange={e => setFormData({ ...formData, material_grade: e.target.value })} />
-                <InputGroup label="Distribution" icon="Map" value={formData.distribution} onChange={e => setFormData({ ...formData, distribution: e.target.value })} />
+              <div style={{ width: '100%', borderTop: '1px solid var(--border)', paddingTop: 20 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Technical Specifications</label>
+                  <button 
+                    type="button" 
+                    onClick={() => setFormData({ ...formData, specifications: [...(formData.specifications || []), { icon: 'Settings', label: '', value: '' }] })}
+                    style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+                  >
+                    <LucideIcon name="Plus" size={14} /> Add Spec
+                  </button>
+                </div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  {(formData.specifications || []).map((spec, index) => (
+                    <div key={index} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                      <input 
+                        type="text" 
+                        placeholder="Icon (e.g. Shield)" 
+                        value={spec.icon} 
+                        onChange={e => {
+                          const newSpecs = [...formData.specifications]
+                          newSpecs[index].icon = e.target.value
+                          setFormData({ ...formData, specifications: newSpecs })
+                        }}
+                        style={{ width: 100, padding: '10px', borderRadius: 8, border: '1px solid var(--border)', fontSize: '0.8rem' }}
+                      />
+                      <input 
+                        type="text" 
+                        placeholder="Label (e.g. Size)" 
+                        value={spec.label} 
+                        onChange={e => {
+                          const newSpecs = [...formData.specifications]
+                          newSpecs[index].label = e.target.value
+                          setFormData({ ...formData, specifications: newSpecs })
+                        }}
+                        style={{ flex: 1, padding: '10px', borderRadius: 8, border: '1px solid var(--border)', fontSize: '0.8rem' }}
+                      />
+                      <input 
+                        type="text" 
+                        placeholder="Value (e.g. 8 GAUGE)" 
+                        value={spec.value} 
+                        onChange={e => {
+                          const newSpecs = [...formData.specifications]
+                          newSpecs[index].value = e.target.value
+                          setFormData({ ...formData, specifications: newSpecs })
+                        }}
+                        style={{ flex: 1, padding: '10px', borderRadius: 8, border: '1px solid var(--border)', fontSize: '0.8rem' }}
+                      />
+                      <button 
+                        type="button" 
+                        onClick={() => setFormData({ ...formData, specifications: formData.specifications.filter((_, i) => i !== index) })}
+                        style={{ color: '#ef4444', padding: 5, cursor: 'pointer', background: 'none', border: 'none' }}
+                      >
+                        <LucideIcon name="X" size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
-              
-              <InputGroup label="Support Type" icon="Headset" value={formData.support} onChange={e => setFormData({ ...formData, support: e.target.value })} />
 
               <div style={{ width: '100%' }}>
                 <label style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)', marginBottom: 8, display: 'block', textTransform: 'uppercase' }}>Description</label>

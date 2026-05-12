@@ -220,15 +220,15 @@ export default function ProductDetailPage({ products, contact }) {
                   Technical Specifications
                 </h4>
                 <div className="specs-grid">
-                  {[
-                    { label: 'Size & Specs', value: product.specs, icon: 'Settings' },
+                  {(product.specifications && product.specifications.length > 0 ? product.specifications : [
+                    { label: 'Standard Specs', value: product.specs, icon: 'Settings' },
                     { label: 'Quality', value: product.material_grade || 'Top Quality', icon: 'Layers' },
                     { label: 'Delivery', value: product.distribution || 'All over India', icon: 'Truck' },
                     { label: 'Help', value: product.support || '24/7 Support', icon: 'Headset' }
-                  ].map((spec, i) => (
+                  ]).map((spec, i) => (
                     <div key={i}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                        <LucideIcon name={spec.icon} size={14} color="var(--text-muted)" />
+                        <LucideIcon name={spec.icon || 'Settings'} size={14} color="var(--text-muted)" />
                         <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{spec.label}</span>
                       </div>
                       <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)' }}>{spec.value}</div>
