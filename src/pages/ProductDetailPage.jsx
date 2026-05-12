@@ -326,6 +326,19 @@ export default function ProductDetailPage({ products, contact }) {
           box-shadow: 0 20px 40px rgba(var(--primary-rgb), 0.4);
         }
 
+        .specs-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 24px;
+        }
+
+        @media (max-width: 600px) {
+          .specs-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+        }
+
         @media (max-width: 1024px) {
           .container > div {
             grid-template-columns: 1fr !important;
