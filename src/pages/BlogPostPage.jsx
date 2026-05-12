@@ -209,24 +209,6 @@ export default function BlogPostPage({ blogs, contact = {} }) {
                 </Link>
               </div>
 
-              {/* Card 2: Why Choose Us */}
-              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 16 }}>Why Choose Yesha Enterprises?</h3>
-                {[
-                  { icon: 'ShieldCheck', text: '#1 Pond Liner Supplier in Chhattisgarh' },
-                  { icon: 'Truck', text: 'Fast Delivery Across India' },
-                  { icon: 'Scissors', text: 'Custom Sizes for Every Farm' },
-                  { icon: 'BadgeIndianRupee', text: 'Best Wholesale Prices' },
-                  { icon: 'HeadphonesIcon', text: 'Expert Support Before & After Sale' },
-                ].map((item, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-                    <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <LucideIcon name={item.icon} size={16} color="white" />
-                    </div>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{item.text}</span>
-                  </div>
-                ))}
-              </div>
 
               {/* Card 3: View Products */}
               <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
@@ -259,20 +241,6 @@ export default function BlogPostPage({ blogs, contact = {} }) {
                 </div>
               )}
 
-              {/* Card 5: Our Locations */}
-              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 14 }}>We Serve Across India</h3>
-                {[
-                  { state: 'Chhattisgarh (HQ)', city: 'Raipur, Bilaspur, Durg', path: '/location/chhattisgarh' },
-                  { state: 'Maharashtra', city: 'Nagpur, Amravati', path: '/location/maharashtra' },
-                  { state: 'Odisha', city: 'Bhubaneswar, Cuttack', path: '/location/odisha' },
-                ].map((loc, i) => (
-                  <Link key={i} to={loc.path} style={{ display: 'block', textDecoration: 'none', marginBottom: i < 2 ? 12 : 0 }}>
-                    <p style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-primary)', margin: '0 0 2px' }}>{loc.state}</p>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0 }}>{loc.city}</p>
-                  </Link>
-                ))}
-              </div>
 
               {/* Card 6: Latest Articles */}
               <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
