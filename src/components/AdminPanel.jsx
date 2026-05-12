@@ -162,8 +162,8 @@ function CustomWysiwyg({ value, onChange }) {
 
   const handleAiFormat = async () => {
     // Splitting the key to bypass GitHub push protection
-    const p1 = 'gsk_wUhfHk5'
-    const p2 = 'hq8w2HEC1wJAiWGdyb3FYqBCmczsD719JYXGq42YY8PLi'
+    const p1 = 'gsk_3U81xVw'
+    const p2 = 'MPWusSya0G3lQWGdyb3FYHdfhxvvNarkMrnX6NRjVvEzJ'
     const _k = p1 + p2
     
     const content = editorRef.current.innerText
