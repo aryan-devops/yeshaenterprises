@@ -253,6 +253,67 @@ export default function ProductDetailPage({ products, contact }) {
 
             </div>
           </div>
+
+          {/* You May Also Like Section */}
+          <div style={{ marginTop: 120 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40 }}>
+              <div>
+                <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 8 }}>You May Also Like</h2>
+                <p style={{ color: 'var(--text-secondary)' }}>Explore more premium tools and equipment for your farm.</p>
+              </div>
+              <button 
+                onClick={() => navigate('/products')} 
+                style={{ background: 'none', border: '1px solid var(--border)', padding: '12px 24px', borderRadius: 100, fontWeight: 700, color: 'var(--text-primary)', cursor: 'pointer', transition: '0.3s', display: 'flex', alignItems: 'center', gap: 8 }}
+                onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--primary)'}
+                onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+              >
+                View Catalog <LucideIcon name="ArrowRight" size={18} />
+              </button>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 30 }}>
+              {products
+                .filter(p => String(p.id) !== id) // Exclude current product
+                .sort(() => Math.random() - 0.5) // Randomize
+                .slice(0, 3) // Take 3
+                .map(item => (
+                  <div 
+                    key={item.id} 
+                    onClick={() => {
+                      navigate(`/product/${item.id}`)
+                      window.scrollTo(0, 0)
+                    }}
+                    className="premium-card" 
+                    style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', height: '100%' }}
+                  >
+                    <div style={{ height: 200, background: 'var(--surface-hover)', overflow: 'hidden', position: 'relative' }}>
+                      {item.image_url ? (
+                        <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <LucideIcon name="Package" size={40} color="var(--primary)" />
+                        </div>
+                      )}
+                      <div style={{ position: 'absolute', top: 12, right: 12, background: 'var(--primary)', color: 'white', padding: '4px 10px', borderRadius: 6, fontSize: '0.65rem', fontWeight: 800 }}>
+                        {item.category?.toUpperCase()}
+                      </div>
+                    </div>
+                    <div style={{ padding: 24, flexGrow: 1 }}>
+                      <h3 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: 10, color: 'var(--text-primary)' }}>{item.name}</h3>
+                      <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: 20, lineClamp: 2, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                        {item.description}
+                      </p>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontWeight: 800, color: 'var(--primary)' }}>{item.price_range}</span>
+                        <div style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.85rem', fontWeight: 700 }}>
+                          Details <LucideIcon name="ChevronRight" size={14} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
         </div>
 
         <style>{`
