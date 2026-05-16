@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import LucideIcon from './LucideIcon'
 
 export default function AuthorizedDealers({ brands = [] }) {
@@ -26,7 +27,12 @@ export default function AuthorizedDealers({ brands = [] }) {
 
         <div className="dealers-grid">
           {displayBrands.map((brand, i) => (
-            <div key={i} className="dealer-card animate-slide-up" style={{ animationDelay: `${i * 0.1}s` }}>
+            <Link 
+              key={i} 
+              to={`/partner/${brand.slug || brand.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')}`}
+              className="dealer-card animate-slide-up" 
+              style={{ animationDelay: `${i * 0.1}s`, display: 'flex', textDecoration: 'none' }}
+            >
               <div className="dealer-icon">
                 {brand.image_url ? (
                   <img src={brand.image_url} alt={brand.name} style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '8px' }} />
@@ -38,7 +44,7 @@ export default function AuthorizedDealers({ brands = [] }) {
                 <h3 className="brand-name">{brand.name}</h3>
                 <span className="brand-type">{brand.type}</span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

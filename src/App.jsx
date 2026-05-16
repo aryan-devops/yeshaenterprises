@@ -13,6 +13,7 @@ import ScrollToTop from './components/ScrollToTop'
 import LocationPage from './pages/LocationPage'
 import BlogPage from './pages/BlogPage'
 import BlogPostPage from './pages/BlogPostPage'
+import PartnerDetailPage from './pages/PartnerDetailPage'
 
 const DEFAULT_BLOGS = [
   {
@@ -206,9 +207,9 @@ const DEFAULT_CONTACT = {
 }
 
 const DEFAULT_BRANDS = [
-  { name: 'Arun Aquaculture', type: 'Premium Partner', image_url: null },
-  { name: 'ADRIS Enviro Solution', type: 'Authorized Dealer', image_url: null },
-  { name: 'COMSYN', type: 'Certified Distributor', image_url: null }
+  { name: 'Arun Aquaculture', type: 'Premium Partner', image_url: null, slug: 'arun-aquaculture', certificate_url: null },
+  { name: 'ADRIS Enviro Solution', type: 'Authorized Dealer', image_url: null, slug: 'adris-enviro-solution', certificate_url: null },
+  { name: 'COMSYN', type: 'Certified Distributor', image_url: null, slug: 'comsyn', certificate_url: null }
 ]
 
 const DEFAULT_TESTIMONIALS = [
@@ -350,6 +351,7 @@ export default function App() {
             <Route path="contact" element={<ContactPage contact={contact} />} />
             <Route path="blog" element={<BlogPage blogs={blogs} />} />
             <Route path="blog/:slug" element={<BlogPostPage blogs={blogs} />} />
+            <Route path="partner/:slug" element={<PartnerDetailPage brands={brands} />} />
             
             {/* Location Landing Pages */}
             <Route path="location/chhattisgarh" element={<LocationPage state="Chhattisgarh" city="Raipur" {...sharedProps} />} />

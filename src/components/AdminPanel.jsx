@@ -1302,13 +1302,13 @@ function BrandsManager({ brands, refreshData }) {
     }
   }, [modal])
 
-  const handleFileChange = async (e) => {
+  const handleFileChange = async (e, field = 'image_url') => {
     const file = e.target.files[0]
     if (!file) return
     try {
-      setUploading(true)
+      setUploading(field)
       const url = await uploadImage(file)
-      setFormData({ ...formData, image_url: url })
+      setFormData({ ...formData, [field]: url })
     } catch (err) {
       alert(`Upload failed: ${err.message}`)
     } finally {
@@ -1319,11 +1319,16 @@ function BrandsManager({ brands, refreshData }) {
   const handleSave = async (e) => {
     e.preventDefault()
     try {
+      const payload = { ...formData }
+      if (!payload.slug) {
+        payload.slug = payload.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
+      }
+
       let updatedBrands = [...(brands || [])]
       if (modal === 'add') {
-        updatedBrands.push({ ...formData, id: Date.now().toString() })
+        updatedBrands.push({ ...payload, id: Date.now().toString() })
       } else {
-        updatedBrands = updatedBrands.map(b => (b.id === modal.id || b.name === modal.name) ? { ...formData, id: b.id || Date.now().toString() } : b)
+        updatedBrands = updatedBrands.map(b => (b.id === modal.id || b.name === modal.name) ? { ...payload, id: b.id || Date.now().toString() } : b)
       }
       const { error } = await supabase.from('site_settings').upsert({ key: 'brands', value: updatedBrands }, { onConflict: 'key' })
       if (error) throw error
@@ -1389,22 +1394,37 @@ function BrandsManager({ brands, refreshData }) {
           <div className="premium-card" style={{ width: '100%', maxWidth: 450, padding: 32, borderRadius: 32 }}>
             <h3 style={{ fontSize: '1.5rem', marginBottom: 24 }}>{modal === 'add' ? 'Add Brand' : 'Edit Brand'}</h3>
             <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <div style={{ textAlign: 'center', marginBottom: 10 }}>
-                <div style={{ width: 120, height: 120, borderRadius: 20, background: 'var(--surface-hover)', margin: '0 auto 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '1px solid var(--border)' }}>
-                  {formData.image_url ? <img src={formData.image_url} style={{ width: '100%', height: '100%', objectFit: 'contain' }} /> : <LucideIcon name="Image" size={32} color="var(--text-muted)" />}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 10 }}>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ width: '100%', height: 120, borderRadius: 20, background: 'var(--surface-hover)', marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                    {formData.image_url ? <img src={formData.image_url} style={{ width: '100%', height: '100%', objectFit: 'contain' }} /> : <LucideIcon name="Image" size={32} color="var(--text-muted)" />}
+                  </div>
+                  <label style={{ cursor: 'pointer', color: 'var(--primary)', fontWeight: 600, fontSize: '0.85rem' }}>
+                    {uploading === 'image_url' ? '...' : 'Upload Logo'}
+                    <input type="file" hidden accept="image/*" onChange={e => handleFileChange(e, 'image_url')} disabled={!!uploading} />
+                  </label>
                 </div>
-                <label style={{ cursor: 'pointer', color: 'var(--primary)', fontWeight: 600 }}>
-                  {uploading ? 'Uploading...' : 'Upload Logo'}
-                  <input type="file" hidden accept="image/*" onChange={handleFileChange} disabled={uploading} />
-                </label>
+
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ width: '100%', height: 120, borderRadius: 20, background: 'var(--surface-hover)', marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                    {formData.certificate_url ? <img src={formData.certificate_url} style={{ width: '100%', height: '100%', objectFit: 'contain' }} /> : <LucideIcon name="FileBadge" size={32} color="var(--text-muted)" />}
+                  </div>
+                  <label style={{ cursor: 'pointer', color: 'var(--primary)', fontWeight: 600, fontSize: '0.85rem' }}>
+                    {uploading === 'certificate_url' ? '...' : 'Upload Cert'}
+                    <input type="file" hidden accept="image/*" onChange={e => handleFileChange(e, 'certificate_url')} disabled={!!uploading} />
+                  </label>
+                </div>
               </div>
 
               <InputGroup label="Brand Name" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
-              <InputGroup label="Partnership Type" value={formData.type} onChange={e => setFormData({ ...formData, type: e.target.value })} placeholder="e.g. Authorized Dealer" required />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                <InputGroup label="Partnership Type" value={formData.type} onChange={e => setFormData({ ...formData, type: e.target.value })} placeholder="e.g. Authorized Dealer" required />
+                <InputGroup label="Custom Slug" value={formData.slug} onChange={e => setFormData({ ...formData, slug: e.target.value })} placeholder="auto-generated" />
+              </div>
 
               <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
                 <button type="button" onClick={() => setModal(null)} style={{ flex: 1, padding: '14px', borderRadius: 100, border: '1px solid var(--border)', fontWeight: 600, background: 'transparent' }}>Cancel</button>
-                <button type="submit" className="hero-btn" style={{ flex: 2, background: 'var(--primary)', color: 'white', padding: '14px', margin: 0 }} disabled={uploading}>
+                <button type="submit" className="hero-btn" style={{ flex: 2, background: 'var(--primary)', color: 'white', padding: '14px', margin: 0 }} disabled={!!uploading}>
                   Save Brand
                 </button>
               </div>
