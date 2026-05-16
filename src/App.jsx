@@ -347,7 +347,7 @@ export default function App() {
             <Route index element={<HomePage {...sharedProps} />} />
             <Route path="products" element={<ProductsPage products={products} contact={contact} />} />
             <Route path="product/:id" element={<ProductDetailPage products={products} contact={contact} />} />
-            <Route path="about" element={<AboutPage contact={contact} testimonials={testimonials} />} />
+            <Route path="about" element={<AboutPage contact={contact} testimonials={testimonials} brands={brands} />} />
             <Route path="contact" element={<ContactPage contact={contact} />} />
             <Route path="blog" element={<BlogPage blogs={blogs} />} />
             <Route path="blog/:slug" element={<BlogPostPage blogs={blogs} />} />

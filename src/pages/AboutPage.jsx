@@ -5,9 +5,10 @@ import About from '../components/About'
 import PageHero from '../components/PageHero'
 import LucideIcon from '../components/LucideIcon'
 import useScrollReveal from '../hooks/useScrollReveal'
+import AuthorizedDealers from '../components/AuthorizedDealers'
 import brochurePdf from '../assets/yesha-enterprises.pdf'
 
-export default function AboutPage({ contact, testimonials }) {
+export default function AboutPage({ contact, testimonials, brands }) {
   const reveal = useScrollReveal()
 
   const faqSchema = {
@@ -66,6 +67,10 @@ export default function AboutPage({ contact, testimonials }) {
 
       <div className="reveal" ref={reveal}>
         <VisionMission />
+      </div>
+
+      <div className="reveal" ref={reveal}>
+        <AuthorizedDealers brands={brands} />
       </div>
 
       <div className="reveal" ref={reveal}>
