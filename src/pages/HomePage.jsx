@@ -7,9 +7,10 @@ import VisionMission from '../components/VisionMission'
 import Testimonials from '../components/Testimonials'
 import FAQ from '../components/FAQ'
 import RecentBlogs from '../components/RecentBlogs'
+import AuthorizedDealers from '../components/AuthorizedDealers'
 import useScrollReveal from '../hooks/useScrollReveal'
 
-export default function HomePage({ slides, stats, products, contact, testimonials, blogs }) {
+export default function HomePage({ slides, stats, products, contact, testimonials, blogs, brands }) {
   const visibleSlides = slides.filter(s => s.is_visible || s.visible)
   const reveal = useScrollReveal()
 
@@ -98,6 +99,10 @@ export default function HomePage({ slides, stats, products, contact, testimonial
 
       <div className="reveal" ref={reveal}>
         <VisionMission />
+      </div>
+
+      <div className="reveal" ref={reveal}>
+        <AuthorizedDealers brands={brands} />
       </div>
 
       <div className="reveal" ref={reveal}>

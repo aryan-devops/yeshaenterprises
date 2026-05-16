@@ -205,6 +205,12 @@ const DEFAULT_CONTACT = {
   whatsapp: '919977228924',
 }
 
+const DEFAULT_BRANDS = [
+  { name: 'Arun Aquaculture', type: 'Premium Partner', image_url: null },
+  { name: 'ADRIS Enviro Solution', type: 'Authorized Dealer', image_url: null },
+  { name: 'COMSYN', type: 'Certified Distributor', image_url: null }
+]
+
 const DEFAULT_TESTIMONIALS = [
   {
     name: 'Rakesh Jhunjhunwala',
@@ -233,6 +239,7 @@ export default function App() {
   const [stats, setStats] = useState(DEFAULT_STATS)
   const [contact, setContact] = useState(DEFAULT_CONTACT)
   const [testimonials, setTestimonials] = useState(DEFAULT_TESTIMONIALS)
+  const [brands, setBrands] = useState(DEFAULT_BRANDS)
   const [enquiries, setEnquiries] = useState([])
   const [blogs, setBlogs] = useState(DEFAULT_BLOGS)
   const [adminLoggedIn, setAdminLoggedIn] = useState(false)
@@ -274,6 +281,7 @@ export default function App() {
       if (settingsData) {
         const contactInfo = settingsData.find(s => s.key === 'contact_info')
         const statsMarquee = settingsData.find(s => s.key === 'stats_marquee')
+        const brandsData = settingsData.find(s => s.key === 'brands')
         if (contactInfo) {
           setContact({
             ...DEFAULT_CONTACT,
@@ -283,6 +291,7 @@ export default function App() {
           })
         }
         if (statsMarquee) setStats(statsMarquee.value)
+        if (brandsData) setBrands(brandsData.value)
       }
     } catch (error) {
       console.error('Error fetching data from Supabase:', error)
@@ -309,6 +318,7 @@ export default function App() {
     stats, setStats, 
     contact, setContact, 
     testimonials, setTestimonials,
+    brands, setBrands,
     enquiries, setEnquiries, 
     blogs, setBlogs,
     darkMode, toggleDarkMode,

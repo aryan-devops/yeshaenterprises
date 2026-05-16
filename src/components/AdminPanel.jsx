@@ -1289,6 +1289,134 @@ function BlogManager({ blogs, setBlogs, refreshData, contact }) {
   )
 }
 
+function BrandsManager({ brands, refreshData }) {
+  const [modal, setModal] = useState(null)
+  const [formData, setFormData] = useState({})
+  const [uploading, setUploading] = useState(false)
+
+  useEffect(() => {
+    if (modal && modal !== 'add') {
+      setFormData(modal)
+    } else {
+      setFormData({ name: '', type: 'Authorized Dealer', image_url: '' })
+    }
+  }, [modal])
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    try {
+      setUploading(true)
+      const url = await uploadImage(file)
+      setFormData({ ...formData, image_url: url })
+    } catch (err) {
+      alert(`Upload failed: ${err.message}`)
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const handleSave = async (e) => {
+    e.preventDefault()
+    try {
+      let updatedBrands = [...(brands || [])]
+      if (modal === 'add') {
+        updatedBrands.push({ ...formData, id: Date.now().toString() })
+      } else {
+        updatedBrands = updatedBrands.map(b => (b.id === modal.id || b.name === modal.name) ? { ...formData, id: b.id || Date.now().toString() } : b)
+      }
+      const { error } = await supabase.from('site_settings').upsert({ key: 'brands', value: updatedBrands }, { onConflict: 'key' })
+      if (error) throw error
+      await refreshData()
+      setModal(null)
+    } catch (err) {
+      alert('Error saving brand: ' + err.message)
+    }
+  }
+
+  const handleDelete = async (brand) => {
+    if (!window.confirm('Delete this brand?')) return
+    try {
+      const updatedBrands = (brands || []).filter(b => b.id !== brand.id && b.name !== brand.name)
+      const { error } = await supabase.from('site_settings').upsert({ key: 'brands', value: updatedBrands }, { onConflict: 'key' })
+      if (error) throw error
+      await refreshData()
+    } catch (err) {
+      alert('Error deleting brand: ' + err.message)
+    }
+  }
+
+  return (
+    <div className="animate-fade-in">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+        <div>
+          <h2 style={{ fontSize: '1.5rem', marginBottom: 4 }}>Authorized Brands</h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Manage your authorized dealer partners and logos.</p>
+        </div>
+        <button onClick={() => setModal('add')} className="hero-btn" style={{ background: 'var(--primary)', color: 'white', padding: '12px 24px', margin: 0 }}>
+          <LucideIcon name="Plus" size={18} />
+          Add Brand
+        </button>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>
+        {(brands || []).map((b, i) => (
+          <div key={i} className="premium-card" style={{ padding: 24, display: 'flex', alignItems: 'center', gap: 20 }}>
+            <div style={{ width: 80, height: 80, borderRadius: 16, background: 'var(--surface-hover)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '1px solid var(--border)' }}>
+              {b.image_url ? (
+                <img src={b.image_url} alt={b.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+              ) : (
+                <LucideIcon name="Award" color="var(--primary)" size={32} />
+              )}
+            </div>
+            <div style={{ flex: 1 }}>
+              <h4 style={{ fontSize: '1.1rem', marginBottom: 4 }}>{b.name}</h4>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{b.type}</div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <button onClick={() => setModal(b)} style={{ width: 36, height: 36, borderRadius: 100, background: 'var(--surface-hover)', border: '1px solid var(--border)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <LucideIcon name="Edit2" size={16} />
+              </button>
+              <button onClick={() => handleDelete(b)} style={{ width: 36, height: 36, borderRadius: 100, background: 'rgba(239, 68, 68, 0.05)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.2)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <LucideIcon name="Trash2" size={16} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {modal && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)' }}>
+          <div className="premium-card" style={{ width: '100%', maxWidth: 450, padding: 32, borderRadius: 32 }}>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: 24 }}>{modal === 'add' ? 'Add Brand' : 'Edit Brand'}</h3>
+            <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ textAlign: 'center', marginBottom: 10 }}>
+                <div style={{ width: 120, height: 120, borderRadius: 20, background: 'var(--surface-hover)', margin: '0 auto 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                  {formData.image_url ? <img src={formData.image_url} style={{ width: '100%', height: '100%', objectFit: 'contain' }} /> : <LucideIcon name="Image" size={32} color="var(--text-muted)" />}
+                </div>
+                <label style={{ cursor: 'pointer', color: 'var(--primary)', fontWeight: 600 }}>
+                  {uploading ? 'Uploading...' : 'Upload Logo'}
+                  <input type="file" hidden accept="image/*" onChange={handleFileChange} disabled={uploading} />
+                </label>
+              </div>
+
+              <InputGroup label="Brand Name" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
+              <InputGroup label="Partnership Type" value={formData.type} onChange={e => setFormData({ ...formData, type: e.target.value })} placeholder="e.g. Authorized Dealer" required />
+
+              <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
+                <button type="button" onClick={() => setModal(null)} style={{ flex: 1, padding: '14px', borderRadius: 100, border: '1px solid var(--border)', fontWeight: 600, background: 'transparent' }}>Cancel</button>
+                <button type="submit" className="hero-btn" style={{ flex: 2, background: 'var(--primary)', color: 'white', padding: '14px', margin: 0 }} disabled={uploading}>
+                  Save Brand
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+
 // ---------------------- Main Dashboard ----------------------
 
 export default function AdminPanel(props) {
@@ -1302,6 +1430,7 @@ export default function AdminPanel(props) {
     { id: 'slides', label: 'Hero Slides', icon: 'Layout' },
     { id: 'testimonials', label: 'Reviews', icon: 'MessageSquare' },
     { id: 'stats', label: 'Ticker', icon: 'BarChart' },
+    { id: 'brands', label: 'Authorized Brands', icon: 'Award' },
     { id: 'contact', label: 'Business Profile', icon: 'Settings' }
   ]
 
@@ -1359,6 +1488,7 @@ export default function AdminPanel(props) {
           {active === 'slides' && <SliderManager {...props} />}
           {active === 'testimonials' && <TestimonialManager {...props} />}
           {active === 'stats' && <StatsManager {...props} />}
+          {active === 'brands' && <BrandsManager {...props} />}
           {active === 'contact' && <ContactManager {...props} />}
         </div>
       </main>
