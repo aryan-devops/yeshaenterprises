@@ -470,13 +470,13 @@ export default function PublicTrackingClient({ order, chatRoomId, initialProfile
 
               {/* Viewer Body */}
               <div className="flex-1 bg-zinc-200 dark:bg-zinc-900 overflow-hidden relative">
-                {(selectedDocumentForView.file_url.toLowerCase().includes('.pdf') || selectedDocumentForView.file_type === 'application/pdf') ? (
+                {(selectedDocumentForView.file_url.toLowerCase().includes('.pdf') || selectedDocumentForView.file_url.startsWith('data:application/pdf') || selectedDocumentForView.file_type === 'application/pdf' || selectedDocumentForView.file_type === 'PDF') ? (
                   <iframe
                     src={`${selectedDocumentForView.file_url}#toolbar=0&navpanes=0&scrollbar=0`}
                     className="w-full h-full border-0"
                     title={selectedDocumentForView.title}
                   />
-                ) : (selectedDocumentForView.file_url.toLowerCase().match(/\.(jpeg|jpg|gif|png|webp)$/) || selectedDocumentForView.file_type?.startsWith('image/')) ? (
+                ) : (selectedDocumentForView.file_url.toLowerCase().match(/\.(jpeg|jpg|gif|png|webp)$/) || selectedDocumentForView.file_url.startsWith('data:image/') || selectedDocumentForView.file_type?.toLowerCase().startsWith('image')) ? (
                   <div className="w-full h-full flex items-center justify-center p-4">
                     <img
                       src={selectedDocumentForView.file_url}
