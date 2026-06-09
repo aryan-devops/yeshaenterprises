@@ -41,7 +41,9 @@ import {
   FileSpreadsheet,
   Camera,
   Copy,
-  Check
+  Check,
+  Edit2,
+  EyeOff
 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -298,6 +300,12 @@ export default function DashboardClientView({
   const [activeRoomId, setActiveRoomId] = useState<string | null>(null)
   const [messages, setMessages] = useState<any[]>([])
   const [typedMessage, setTypedMessage] = useState('')
+
+  // New Chat Feature States
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
+  const [editingContent, setEditingContent] = useState('')
+  const [deleteOptionsForId, setDeleteOptionsForId] = useState<string | null>(null)
+  const [hiddenMessages, setHiddenMessages] = useState<string[]>([])
   
   // Developer sandbox configurations
   const [simulatedRole, setSimulatedRole] = useState(initialProfile.role)
@@ -334,6 +342,15 @@ export default function DashboardClientView({
     return () => {
       socketRef.current?.disconnect()
     }
+  }, [])
+
+  // --- EFFECTS ---
+  useEffect(() => {
+    // Load hidden messages for "Delete for me" functionality
+    try {
+      const stored = localStorage.getItem('yesha_hidden_messages')
+      if (stored) setHiddenMessages(JSON.parse(stored))
+    } catch (e) {}
   }, [])
 
   useEffect(() => {
@@ -1048,6 +1065,45 @@ export default function DashboardClientView({
       }
     } catch (err: any) {
       console.error('Failed to delete message:', err?.message || err)
+    }
+  }
+
+  // Delete Message "for me" Action (Local Storage)
+  const handleDeleteForMe = (messageId: string) => {
+    const updated = [...hiddenMessages, messageId]
+    setHiddenMessages(updated)
+    setDeleteOptionsForId(null)
+    localStorage.setItem('yesha_hidden_messages', JSON.stringify(updated))
+  }
+
+  // Edit Message Action
+  const handleEditMessage = async (messageId: string) => {
+    if (!editingContent.trim()) {
+      setEditingMessageId(null)
+      return
+    }
+
+    try {
+      const cleanContent = editingContent.replace(/\s*\(edited\)$/, '')
+      const finalContent = `${cleanContent}\n*(edited)*`
+
+      const { error } = await supabase
+        .from('messages')
+        .update({ content: finalContent })
+        .eq('id', messageId)
+
+      if (error) throw error
+
+      setMessages(prev => prev.map(m => m.id === messageId ? { ...m, content: finalContent } : m))
+      setEditingMessageId(null)
+      setEditingContent('')
+      
+      // Attempt to broadcast if needed, though simple reload or optimistic state works.
+      if (socketRef.current) {
+        socketRef.current.emit('edit-message', { room_id: activeRoomId, id: messageId, content: finalContent })
+      }
+    } catch (err: any) {
+      console.error('Failed to edit message:', err?.message || err)
     }
   }
 
@@ -2353,16 +2409,22 @@ export default function DashboardClientView({
                         </div>
                         <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#f8fafc] dark:bg-zinc-950/90">
                           {messages.map((m) => {
+                            if (hiddenMessages.includes(m.id)) return null
+
                             const parsed = parseMessageContent(m.content, m.sender_id, m.profiles)
                             const isOwn = getIsOwnMessage(m, profile.role, profile.id)
                             const timeStr = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                            
+                            // Check if within 5 mins
+                            const isEditable = isOwn && (new Date().getTime() - new Date(m.created_at).getTime()) < 5 * 60 * 1000
+                            const isEditing = editingMessageId === m.id
 
                             return (
                               <div
                                 key={m.id}
                                 className={`flex items-start w-full ${isOwn ? 'justify-end' : 'justify-start'}`}
                               >
-                                <div className={`flex flex-col max-w-[75%] ${isOwn ? 'items-end' : 'items-start'}`}>
+                                <div className={`flex flex-col max-w-[85%] ${isOwn ? 'items-end' : 'items-start'}`}>
                                   {/* Sender nickname header */}
                                   <div className="flex items-center gap-1.5 mb-1 px-1 text-[9px] font-bold text-zinc-400 dark:text-zinc-500">
                                     <span className={isOwn ? 'text-violet-650 dark:text-violet-400' : 'text-zinc-650 dark:text-zinc-300'}>
@@ -2373,28 +2435,75 @@ export default function DashboardClientView({
                                     </span>
                                   </div>
 
-                                  <div className="relative group/bubble flex items-end gap-2">
+                                  <div className={`relative group/bubble flex items-center gap-2 ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
                                     {/* Clean Premium Bubble */}
                                     <div className={`rounded-2xl px-3.5 py-2 text-xs shadow-xs relative leading-normal ${
                                       isOwn
                                         ? 'bg-gradient-to-tr from-violet-600 to-indigo-600 text-white rounded-tr-xs shadow-md shadow-violet-500/10 min-w-[80px]'
                                         : 'bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-150 rounded-tl-xs border border-zinc-200/50 dark:border-zinc-855 min-w-[120px]'
                                     }`}>
-                                      <p className="whitespace-pre-line break-words">{parsed.cleanContent}</p>
-                                      <span className={`block text-[8px] text-right mt-1.5 font-medium ${isOwn ? 'text-violet-200' : 'text-zinc-400 dark:text-zinc-500'}`}>
-                                        {timeStr}
-                                      </span>
+                                      {isEditing ? (
+                                        <div className="flex flex-col gap-2 min-w-[200px]">
+                                          <textarea 
+                                            value={editingContent}
+                                            onChange={(e) => setEditingContent(e.target.value)}
+                                            className={`bg-black/10 dark:bg-black/20 border-black/10 dark:border-white/10 rounded p-1.5 outline-none resize-none w-full text-xs ${isOwn ? 'text-white' : 'text-zinc-900 dark:text-white'}`}
+                                            rows={2}
+                                            autoFocus
+                                          />
+                                          <div className="flex justify-end gap-1.5">
+                                            <button onClick={() => setEditingMessageId(null)} className={`px-2 py-1 rounded hover:bg-black/10 text-[10px] font-medium transition-colors ${isOwn ? 'text-white/80' : 'text-zinc-500'}`}>Cancel</button>
+                                            <button onClick={() => handleEditMessage(m.id)} className={`px-2 py-1 rounded font-bold text-[10px] hover:bg-white/90 transition-colors shadow-sm ${isOwn ? 'bg-white text-violet-700' : 'bg-violet-600 text-white'}`}>Save</button>
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <>
+                                          <p className="whitespace-pre-line break-words">{parsed.cleanContent}</p>
+                                          <span className={`block text-[8px] mt-1.5 font-medium ${isOwn ? 'text-violet-200 text-right' : 'text-zinc-400 dark:text-zinc-500 text-right'}`}>
+                                            {timeStr}
+                                          </span>
+                                        </>
+                                      )}
                                     </div>
 
-                                    {/* Delete message action (Own message or Admin role) */}
-                                    {(isOwn || profile?.role === 'super_admin') && (
-                                      <button
-                                        onClick={() => handleDeleteMessage(m.id)}
-                                        className="opacity-0 group-hover/bubble:opacity-100 p-1 rounded hover:bg-red-50 text-zinc-400 hover:text-red-650 transition-opacity shrink-0 self-center"
-                                        title="Delete for everyone"
-                                      >
-                                        <Trash2 className="size-3.5" />
-                                      </button>
+                                    {/* Action Icons Overlay (Hover / Slide context) */}
+                                    {!isEditing && (
+                                      <div className={`opacity-0 group-hover/bubble:opacity-100 focus-within:opacity-100 transition-all duration-200 flex items-center gap-1 ${deleteOptionsForId === m.id ? 'opacity-100 scale-100' : 'scale-95'}`}>
+                                        {deleteOptionsForId === m.id ? (
+                                          <div className="flex flex-col gap-1 bg-white dark:bg-zinc-800 p-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-xl z-10 text-[9px] font-medium shrink-0 animate-in fade-in zoom-in-95 duration-200">
+                                            <button onClick={() => handleDeleteForMe(m.id)} className="px-2 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 flex items-center gap-1.5 text-left transition-colors">
+                                              <EyeOff className="size-3" /> Delete for me
+                                            </button>
+                                            <button onClick={() => { setDeleteOptionsForId(null); handleDeleteMessage(m.id); }} className="px-2 py-1.5 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 flex items-center gap-1.5 text-left transition-colors">
+                                              <Trash2 className="size-3" /> Delete for everyone
+                                            </button>
+                                            <button onClick={() => setDeleteOptionsForId(null)} className="px-2 py-1.5 rounded-lg text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 flex items-center gap-1.5 text-left transition-colors">
+                                              <X className="size-3" /> Cancel
+                                            </button>
+                                          </div>
+                                        ) : (
+                                          <div className="flex gap-1 shrink-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md p-1 rounded-lg border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm" tabIndex={0}>
+                                            {isEditable && (
+                                              <button
+                                                onClick={() => { setEditingMessageId(m.id); setEditingContent(parsed.cleanContent); }}
+                                                className="p-1.5 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-violet-600 transition-colors"
+                                                title="Edit Message (within 5 mins)"
+                                              >
+                                                <Edit2 className="size-3.5" />
+                                              </button>
+                                            )}
+                                            {(isOwn || profile?.role === 'super_admin') && (
+                                              <button
+                                                onClick={() => isOwn ? setDeleteOptionsForId(m.id) : handleDeleteMessage(m.id)}
+                                                className="p-1.5 rounded hover:bg-red-50 dark:hover:bg-red-950/30 text-zinc-400 hover:text-red-650 transition-colors"
+                                                title="Delete Message"
+                                              >
+                                                <Trash2 className="size-3.5" />
+                                              </button>
+                                            )}
+                                          </div>
+                                        )}
+                                      </div>
                                     )}
                                   </div>
                                 </div>
