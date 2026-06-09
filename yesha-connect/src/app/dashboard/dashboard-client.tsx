@@ -2468,7 +2468,7 @@ export default function DashboardClientView({
 
                                     {/* Action Icons Overlay (Hover / Slide context) */}
                                     {!isEditing && (
-                                      <div className={`opacity-0 group-hover/bubble:opacity-100 focus-within:opacity-100 transition-all duration-200 flex items-center gap-1 ${deleteOptionsForId === m.id ? 'opacity-100 scale-100' : 'scale-95'}`}>
+                                      <div className={`transition-all duration-200 flex items-center gap-1 ${deleteOptionsForId === m.id ? 'opacity-100 scale-100' : 'opacity-60 sm:opacity-0 sm:group-hover/bubble:opacity-100 focus-within:opacity-100 scale-95'}`}>
                                         {deleteOptionsForId === m.id ? (
                                           <div className="flex flex-col gap-1 bg-white dark:bg-zinc-800 p-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-xl z-10 text-[9px] font-medium shrink-0 animate-in fade-in zoom-in-95 duration-200">
                                             <button onClick={() => handleDeleteForMe(m.id)} className="px-2 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 flex items-center gap-1.5 text-left transition-colors">
