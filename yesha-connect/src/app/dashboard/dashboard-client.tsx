@@ -1361,7 +1361,7 @@ export default function DashboardClientView({
             >
               <Menu className="size-4" />
             </button>
-            <img src="/yesha-logo.png" alt="Yesha Enterprises" className="h-16 w-auto object-contain" />
+            <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">Yesha Enterprises</span>
           </div>
 
           <div className="flex items-center gap-4">
@@ -1693,7 +1693,7 @@ export default function DashboardClientView({
           {/* Logo */}
           <div className="h-20 flex items-center justify-between px-6 border-b border-zinc-200 dark:border-zinc-800">
             <div className="flex items-center">
-              <img src="/yesha-logo.png" alt="Yesha Enterprises" className="h-16 w-auto object-contain" />
+              <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">Yesha Enterprises</span>
             </div>
             <button
               onClick={() => setIsSidebarOpen(false)}
