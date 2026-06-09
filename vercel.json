@@ -1,8 +1,17 @@
 {
   "rewrites": [
     {
+      "source": "/yesha-connect",
+      "destination": "https://yesha-connect.vercel.app/yesha-connect"
+    },
+    {
+      "source": "/yesha-connect/:path*",
+      "destination": "https://yesha-connect.vercel.app/yesha-connect/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
 }
+

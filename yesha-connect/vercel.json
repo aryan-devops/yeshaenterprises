@@ -1,0 +1,9 @@
+{
+  "framework": "nextjs",
+  "rewrites": [
+    {
+      "source": "/yesha-connect/:path*",
+      "destination": "/:path*"
+    }
+  ]
+}
