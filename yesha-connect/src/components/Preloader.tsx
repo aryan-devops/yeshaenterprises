@@ -63,28 +63,6 @@ export default function Preloader() {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
             className="flex flex-col items-center gap-5 mb-12"
           >
-            {/* Logo mark */}
-            <div className="relative">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-                className="absolute inset-0 rounded-2xl"
-                style={{
-                  background: 'conic-gradient(from 0deg, transparent 60%, rgba(99,102,241,0.6) 100%)',
-                  filter: 'blur(8px)',
-                  margin: '-6px',
-                }}
-              />
-              <div className="relative w-20 h-20 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center shadow-2xl overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/yesha-connect/yesha-logo.png"
-                  alt="Yesha"
-                  className="w-14 h-14 object-contain"
-                />
-              </div>
-            </div>
-
             {/* Brand */}
             <div className="text-center">
               <motion.h1
