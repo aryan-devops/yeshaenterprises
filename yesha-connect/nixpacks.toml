@@ -3,3 +3,6 @@ NODE_VERSION = "20"
 
 [phases.install]
 cmds = ["npm install --production --ignore-scripts"]
+
+[phases.build]
+cmds = []
