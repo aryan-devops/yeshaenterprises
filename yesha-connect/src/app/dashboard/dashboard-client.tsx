@@ -2485,9 +2485,17 @@ export default function DashboardClientView({
                                           </div>
                                         ) : (
                                           <div className="flex gap-1 shrink-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md p-1 rounded-lg border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm" tabIndex={0}>
-                                            {isEditable && (
+                                            {isOwn && (
                                               <button
-                                                onClick={() => { setEditingMessageId(m.id); setEditingContent(parsed.cleanContent); }}
+                                                onClick={() => { 
+                                                  const ageMs = new Date().getTime() - new Date(m.created_at).getTime();
+                                                  if (ageMs > 5 * 60 * 1000) {
+                                                    alert(`Cannot edit message after 5 minutes.\nMessage age: ${Math.floor(ageMs / 60000)} minutes.\nIf you just sent this, your device clock may be out of sync!`);
+                                                    return;
+                                                  }
+                                                  setEditingMessageId(m.id); 
+                                                  setEditingContent(parsed.cleanContent); 
+                                                }}
                                                 className="p-1.5 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-violet-600 transition-colors"
                                                 title="Edit Message (within 5 mins)"
                                               >
