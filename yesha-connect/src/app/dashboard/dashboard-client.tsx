@@ -2143,6 +2143,21 @@ export default function DashboardClientView({
                                     >
                                       <Plus className="size-3" /> Doc
                                     </Button>
+
+                                    {order.share_token && (
+                                      <Button
+                                        onClick={(e) => {
+                                          e.stopPropagation()
+                                          handleCopyInviteLink(order)
+                                        }}
+                                        size="xs"
+                                        variant="outline"
+                                        className="h-7 text-[10px] gap-1 px-2 border-zinc-200"
+                                      >
+                                        {copiedOrderId === order.id ? <Check className="size-3 text-emerald-500" /> : <Copy className="size-3" />}
+                                        Invite
+                                      </Button>
+                                    )}
                                   </div>
                                 )}
 
@@ -2845,6 +2860,13 @@ export default function DashboardClientView({
                   </button>
                 </div>
 
+                {errorMsg && (
+                  <div className="p-3 bg-red-50 text-red-700 rounded-lg text-xs border border-red-200 flex items-start gap-2">
+                    <AlertCircle className="size-3.5 shrink-0" />
+                    <p>{errorMsg}</p>
+                  </div>
+                )}
+
                 {/* Main Grid: Details & Meta */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
                   {/* Left Column: Metadata Specifications */}
@@ -2911,31 +2933,38 @@ export default function DashboardClientView({
                         {profile?.role === 'super_admin' ? (
                           <div className="p-3 bg-purple-50/50 dark:bg-purple-950/10 border border-purple-200/50 dark:border-purple-900/50 rounded-xl text-[10px] text-purple-800 dark:text-purple-300 leading-normal space-y-2">
                             <strong className="block font-semibold">Assign Technician</strong>
-                            <div className="flex gap-1.5">
-                              <select
-                                value={selectedTechIdForAssign}
-                                onChange={(e) => setSelectedTechIdForAssign(e.target.value)}
-                                className="flex-1 h-7 px-1.5 border rounded-lg text-xs bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-750 text-zinc-750 dark:text-zinc-350 focus:outline-none"
-                              >
-                                <option value="">-- Select Technician --</option>
-                                {profilesList
-                                  .filter(p => p.role === 'technician')
-                                  .map(p => (
-                                    <option key={p.id} value={p.id}>
-                                      {p.full_name}
-                                    </option>
-                                  ))
-                                }
-                              </select>
-                              <Button
-                                size="xs"
-                                onClick={() => handleAssignTechnician(order.id)}
-                                className="bg-purple-600 hover:bg-purple-700 text-white font-semibold text-[10px] h-7 px-2.5 shrink-0 border-0"
-                                disabled={!selectedTechIdForAssign}
-                              >
-                                Assign
-                              </Button>
-                            </div>
+                            {profilesList.filter(p => p.role === 'technician').length === 0 ? (
+                              <div className="bg-white/50 dark:bg-zinc-900/50 p-2 rounded border border-purple-200/50 text-zinc-500 italic flex items-center justify-between">
+                                <span>No technicians available.</span>
+                                <span className="text-[9px] text-purple-600 font-semibold cursor-pointer underline" onClick={() => { setSelectedOrderDetails(null); setActiveTab('settings'); }}>Create one in Settings</span>
+                              </div>
+                            ) : (
+                              <div className="flex gap-1.5">
+                                <select
+                                  value={selectedTechIdForAssign}
+                                  onChange={(e) => setSelectedTechIdForAssign(e.target.value)}
+                                  className="flex-1 h-7 px-1.5 border rounded-lg text-xs bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-750 text-zinc-750 dark:text-zinc-350 focus:outline-none"
+                                >
+                                  <option value="">-- Select Technician --</option>
+                                  {profilesList
+                                    .filter(p => p.role === 'technician')
+                                    .map(p => (
+                                      <option key={p.id} value={p.id}>
+                                        {p.full_name}
+                                      </option>
+                                    ))
+                                  }
+                                </select>
+                                <Button
+                                  size="xs"
+                                  onClick={() => handleAssignTechnician(order.id)}
+                                  className="bg-purple-600 hover:bg-purple-700 text-white font-semibold text-[10px] h-7 px-2.5 shrink-0 border-0"
+                                  disabled={!selectedTechIdForAssign}
+                                >
+                                  Assign
+                                </Button>
+                              </div>
+                            )}
                           </div>
                         ) : (
                           <div className="p-3 bg-purple-50/50 dark:bg-purple-950/10 border border-purple-200/50 dark:border-purple-900/50 rounded-xl text-[10px] text-purple-800 dark:text-purple-300 leading-normal">
