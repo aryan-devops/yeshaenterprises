@@ -43,7 +43,8 @@ import {
   Copy,
   Check,
   Edit2,
-  EyeOff
+  EyeOff,
+  Download
 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -249,6 +250,7 @@ export default function DashboardClientView({
   const [showCreateDispatchModal, setShowCreateDispatchModal] = useState(false)
   const [showTechCompleteModal, setShowTechCompleteModal] = useState(false)
   const [selectedOrderDetails, setSelectedOrderDetails] = useState<any | null>(null)
+  const [selectedDocumentForView, setSelectedDocumentForView] = useState<any | null>(null)
   const [copiedOrderId, setCopiedOrderId] = useState<string | null>(null)
   const [claimCode, setClaimCode] = useState('')
   const [claimError, setClaimError] = useState('')
@@ -2308,9 +2310,9 @@ export default function DashboardClientView({
                                   <p className="font-semibold truncate">{doc.title}</p>
                                   <p className="text-[9px] text-zinc-400 truncate">Order: {doc.orderTitle}</p>
                                 </div>
-                                <a href={doc.file_url} target="_blank" rel="noopener noreferrer" className="p-1 rounded hover:bg-zinc-50 border shrink-0 text-zinc-600">
+                                <button onClick={() => setSelectedDocumentForView(doc)} className="p-1 rounded hover:bg-zinc-50 dark:hover:bg-zinc-700 border dark:border-zinc-700 shrink-0 text-zinc-600 dark:text-zinc-300">
                                   <FileDown className="size-3.5" />
-                                </a>
+                                </button>
                               </div>
                             ))
                           )}
@@ -3212,9 +3214,9 @@ export default function DashboardClientView({
                             <p className="font-semibold truncate text-[11px]">{doc.title}</p>
                             <span className="text-[9px] bg-zinc-200 dark:bg-zinc-800 text-zinc-650 dark:text-zinc-450 px-1.5 py-0.2 rounded uppercase">{doc.category}</span>
                           </div>
-                          <a href={doc.file_url} target="_blank" rel="noopener noreferrer" className="p-1.5 rounded hover:bg-zinc-205 border shrink-0 text-zinc-600 dark:border-zinc-800">
+                          <button onClick={() => setSelectedDocumentForView(doc)} className="p-1.5 rounded hover:bg-zinc-205 border shrink-0 text-zinc-600 dark:text-zinc-300 dark:border-zinc-700 dark:hover:bg-zinc-800">
                             <FileDown className="size-3.5" />
-                          </a>
+                          </button>
                         </div>
                       ))}
                     </div>
@@ -3360,6 +3362,85 @@ export default function DashboardClientView({
           </Button>
         </motion.div>
       )}
+      {/* Document Viewer Modal */}
+      <AnimatePresence>
+        {selectedDocumentForView && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-6">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-5xl h-[95vh] sm:h-[90vh] bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 shrink-0">
+                <div className="min-w-0 pr-4">
+                  <h3 className="text-sm sm:text-base font-bold truncate text-zinc-900 dark:text-zinc-100">
+                    {selectedDocumentForView.title}
+                  </h3>
+                  <p className="text-[10px] sm:text-xs text-zinc-500 uppercase tracking-wider">
+                    {selectedDocumentForView.category}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <a
+                    href={selectedDocumentForView.file_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-lg bg-violet-100 text-violet-700 hover:bg-violet-200 dark:bg-violet-900/30 dark:text-violet-400 dark:hover:bg-violet-900/50 transition-colors"
+                    title="Download File"
+                  >
+                    <Download className="size-4" />
+                  </a>
+                  <button
+                    onClick={() => setSelectedDocumentForView(null)}
+                    className="p-2 rounded-lg bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700 transition-colors"
+                  >
+                    <X className="size-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Viewer Body */}
+              <div className="flex-1 bg-zinc-200 dark:bg-zinc-900 overflow-hidden relative">
+                {(selectedDocumentForView.file_url.toLowerCase().includes('.pdf') || selectedDocumentForView.file_type === 'application/pdf') ? (
+                  <iframe
+                    src={`${selectedDocumentForView.file_url}#toolbar=0&navpanes=0&scrollbar=0`}
+                    className="w-full h-full border-0"
+                    title={selectedDocumentForView.title}
+                  />
+                ) : (selectedDocumentForView.file_url.toLowerCase().match(/\.(jpeg|jpg|gif|png|webp)$/) || selectedDocumentForView.file_type?.startsWith('image/')) ? (
+                  <div className="w-full h-full flex items-center justify-center p-4">
+                    <img
+                      src={selectedDocumentForView.file_url}
+                      alt={selectedDocumentForView.title}
+                      className="max-w-full max-h-full object-contain rounded-lg shadow-lg"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center space-y-4 p-6 text-center">
+                    <div className="size-20 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                      <FileText className="size-10 text-zinc-400" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mb-1">Preview not available for this file type</p>
+                      <p className="text-xs text-zinc-500">Please download the file to view it.</p>
+                    </div>
+                    <a
+                      href={selectedDocumentForView.file_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 px-6 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"
+                    >
+                      <Download className="size-4" /> Download File
+                    </a>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
     </div>
   )
