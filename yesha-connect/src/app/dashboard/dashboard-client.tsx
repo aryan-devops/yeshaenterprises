@@ -3330,75 +3330,7 @@ export default function DashboardClientView({
                         </Button>
                       </div>
                     )}
-                    {profile?.role === 'super_admin' && (
-                      <Card className="border-zinc-200/50 md:col-span-2">
-                        <CardHeader>
-                          <CardTitle className="text-violet-600 dark:text-violet-400">Dashboard Access Modes</CardTitle>
-                          <p className="text-xs text-zinc-500">Temporarily switch your dashboard view to see exactly what other roles see.</p>
-                        </CardHeader>
-                        <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                          {[
-                            { id: 'customer', label: 'Customer View', desc: 'View the simplified Chat-only interface' },
-                            { id: 'manufacturer', label: 'Manufacturer View', desc: 'View production and tracking interface' },
-                            { id: 'technician', label: 'Technician View', desc: 'View installation and technical interface' }
-                          ].map((mode) => (
-                            <Button
-                              key={mode.id}
-                              variant="outline"
-                              onClick={() => handleRoleSwitch(mode.id)}
-                              disabled={loading}
-                              className="h-auto flex flex-col items-start p-4 text-left border-zinc-200 dark:border-zinc-800 hover:border-violet-400 dark:hover:border-violet-600 transition-colors"
-                            >
-                              <span className="font-bold text-sm text-zinc-800 dark:text-zinc-200 mb-1">{mode.label}</span>
-                              <span className="text-[10px] text-zinc-500 font-normal whitespace-normal">{mode.desc}</span>
-                            </Button>
-                          ))}
-                        </CardContent>
-                      </Card>
-                    )}
 
-                    {profile?.role === 'super_admin' && (
-                      <Card className="border-zinc-200/50">
-                        <CardHeader>
-                          <CardTitle className="text-purple-600 dark:text-purple-400">Create Technician Credentials</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4 text-xs">
-                          {techError && <div className="p-2.5 bg-red-50 text-red-650 rounded text-xs">{techError}</div>}
-                          {techSuccess && <div className="p-2.5 bg-emerald-50 text-emerald-650 rounded text-xs">{techSuccess}</div>}
-                          <div className="space-y-1.5">
-                            <Label>Technician Full Name</Label>
-                            <Input
-                              value={techForm.fullName}
-                              onChange={(e) => setTechForm(p => ({ ...p, fullName: e.target.value }))}
-                              placeholder="e.g. Ramesh Kumar"
-                              className="h-8 text-xs"
-                            />
-                          </div>
-                          <div className="space-y-1.5">
-                            <Label>Login Username</Label>
-                            <Input
-                              value={techForm.username}
-                              onChange={(e) => setTechForm(p => ({ ...p, username: e.target.value }))}
-                              placeholder="e.g. ramesh01"
-                              className="h-8 text-xs"
-                            />
-                          </div>
-                          <div className="space-y-1.5">
-                            <Label>Login Password</Label>
-                            <Input
-                              type="password"
-                              value={techForm.password}
-                              onChange={(e) => setTechForm(p => ({ ...p, password: e.target.value }))}
-                              placeholder="e.g. Pass@123"
-                              className="h-8 text-xs"
-                            />
-                          </div>
-                          <Button onClick={handleCreateUserCredential} disabled={techLoading} className="w-full h-8 text-xs bg-purple-600 hover:bg-purple-700 text-white border-0">
-                            {techLoading ? 'Creating...' : 'Create Account'}
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    )}
                     <Button variant="outline" size="sm" onClick={() => setSelectedOrderDetails(null)}>Close</Button>
                   </div>
                 </div>
