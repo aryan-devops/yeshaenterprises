@@ -1065,6 +1065,7 @@ export default function DashboardClientView({
       }
     } catch (err: any) {
       console.error('Failed to delete message:', err?.message || err)
+      alert(`Failed to delete message! Have you run the SQL snippet in your Supabase dashboard? Error: ${err?.message || err}`)
     }
   }
 
@@ -1104,6 +1105,7 @@ export default function DashboardClientView({
       }
     } catch (err: any) {
       console.error('Failed to edit message:', err?.message || err)
+      alert(`Failed to save edit! Have you run the SQL snippet in your Supabase dashboard? Error: ${err?.message || err}`)
     }
   }
 
@@ -2492,9 +2494,9 @@ export default function DashboardClientView({
                                                 <Edit2 className="size-3.5" />
                                               </button>
                                             )}
-                                            {(isOwn || profile?.role === 'super_admin') && (
+                                            {isOwn && (
                                               <button
-                                                onClick={() => isOwn ? setDeleteOptionsForId(m.id) : handleDeleteMessage(m.id)}
+                                                onClick={() => setDeleteOptionsForId(m.id)}
                                                 className="p-1.5 rounded hover:bg-red-50 dark:hover:bg-red-950/30 text-zinc-400 hover:text-red-650 transition-colors"
                                                 title="Delete Message"
                                               >
