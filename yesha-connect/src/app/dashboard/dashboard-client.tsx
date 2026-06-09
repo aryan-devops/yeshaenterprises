@@ -2289,21 +2289,21 @@ export default function DashboardClientView({
                   <p className="text-sm text-zinc-500 font-light">Collaborate on order details with invited manufacturers and field teams.</p>
                 </div>
 
-                <div className="flex-1 flex overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 rounded-2xl shadow-sm">
-                  {/* Left Chat Orders list */}
-                  <div className="w-64 border-r hidden sm:flex flex-col">
-                    <div className="p-3 border-b">
+                <div className="flex-1 flex flex-col sm:flex-row overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 rounded-2xl shadow-sm">
+                  {/* Channel List (Horizontal on mobile, vertical on desktop) */}
+                  <div className="sm:w-64 border-b sm:border-b-0 sm:border-r flex flex-col shrink-0">
+                    <div className="p-2 sm:p-3 border-b sm:block hidden">
                       <span className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Active Channels</span>
                     </div>
-                    <div className="flex-1 overflow-y-auto p-2 space-y-1">
+                    <div className="flex sm:flex-col flex-row overflow-x-auto sm:overflow-y-auto p-2 gap-2 sm:gap-0 sm:space-y-1 no-scrollbar">
                       {(profile?.role === 'technician' ? techOrders : manufacturerOrders).map((o) => (
                         <button
                           key={o.id}
                           onClick={() => setActiveOrderIdForChat(o.id)}
-                          className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all truncate ${
+                          className={`shrink-0 sm:w-full text-left px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs transition-all truncate max-w-[150px] sm:max-w-none border sm:border-transparent ${
                             activeOrderIdForChat === o.id
-                              ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-950 dark:text-white font-semibold'
-                              : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/40'
+                              ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-950 dark:text-white font-semibold border-zinc-200 dark:border-zinc-700'
+                              : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 border-transparent'
                           }`}
                         >
                           # {o.title}
@@ -2316,11 +2316,25 @@ export default function DashboardClientView({
                   <div className="flex-1 flex flex-col bg-zinc-50 dark:bg-zinc-950 overflow-hidden">
                     {activeOrderDetails ? (
                       <div className="flex-1 flex flex-col overflow-hidden">
-                        <div className="p-3 border-b bg-white dark:bg-zinc-900 flex justify-between items-center shadow-xs">
-                          <div>
-                            <h4 className="font-bold text-sm"># {activeOrderDetails.title}</h4>
-                            <p className="text-[10px] text-zinc-400">Quotation No: {parsedActiveMeta?.quotationNo}</p>
+                        <div className="p-3 border-b bg-white dark:bg-zinc-900 flex justify-between items-center shadow-xs shrink-0">
+                          <div className="truncate pr-2">
+                            <h4 className="font-bold text-sm truncate"># {activeOrderDetails.title}</h4>
+                            <p className="text-[10px] text-zinc-400 truncate">Quotation No: {parsedActiveMeta?.quotationNo}</p>
                           </div>
+                          {activeOrderDetails.share_token && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleCopyInviteLink(activeOrderDetails)}
+                              className="h-7 text-[10px] sm:text-xs shrink-0"
+                            >
+                              {copiedOrderId === activeOrderDetails.id ? (
+                                <><Check className="size-3 mr-1" /> Copied</>
+                              ) : (
+                                <><Copy className="size-3 mr-1" /> Invite Customer</>
+                              )}
+                            </Button>
+                          )}
                         </div>
                         <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#f8fafc] dark:bg-zinc-950/90">
                           {messages.map((m) => {
