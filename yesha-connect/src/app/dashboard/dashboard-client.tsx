@@ -251,6 +251,7 @@ export default function DashboardClientView({
   const [showTechCompleteModal, setShowTechCompleteModal] = useState(false)
   const [selectedOrderDetails, setSelectedOrderDetails] = useState<any | null>(null)
   const [selectedDocumentForView, setSelectedDocumentForView] = useState<any | null>(null)
+  const [docToDelete, setDocToDelete] = useState<{id: string, uploadedBy: string} | null>(null)
   const [copiedOrderId, setCopiedOrderId] = useState<string | null>(null)
   const [claimCode, setClaimCode] = useState('')
   const [claimError, setClaimError] = useState('')
@@ -1327,25 +1328,29 @@ export default function DashboardClientView({
     }
   }
   // Delete Document Action
-  const handleDeleteDocument = async (docId: string, uploadedBy: string) => {
+  // Delete Document Action
+  const confirmDeleteDocument = (docId: string, uploadedBy: string) => {
     if (profile?.role !== 'super_admin' && profile?.id !== uploadedBy) {
       alert("You don't have permission to delete this document.")
       return
     }
+    setDocToDelete({ id: docId, uploadedBy })
+  }
 
-    if (!confirm("Are you sure you want to delete this document?")) return
-
+  const executeDeleteDocument = async () => {
+    if (!docToDelete) return
     setLoading(true)
     try {
       const { error } = await supabase
         .from('project_documents')
         .delete()
-        .eq('id', docId)
+        .eq('id', docToDelete.id)
 
       if (error) throw error
 
       await refreshProjects()
       setSelectedDocumentForView(null)
+      setDocToDelete(null)
     } catch (err: any) {
       console.error('Delete document error:', err?.message || err)
       alert("Failed to delete document.")
@@ -3452,7 +3457,7 @@ export default function DashboardClientView({
                   </a>
                   {(profile?.role === 'super_admin' || (profile?.role === 'manufacturer' && profile?.id === selectedDocumentForView.uploaded_by)) && (
                     <button
-                      onClick={() => handleDeleteDocument(selectedDocumentForView.id, selectedDocumentForView.uploaded_by)}
+                      onClick={() => confirmDeleteDocument(selectedDocumentForView.id, selectedDocumentForView.uploaded_by)}
                       className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 transition-colors"
                       title="Delete Document"
                     >
@@ -3503,6 +3508,46 @@ export default function DashboardClientView({
                     </a>
                   </div>
                 )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {docToDelete && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full max-w-sm bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-xl overflow-hidden"
+            >
+              <div className="p-6 text-center">
+                <div className="mx-auto size-12 rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 flex items-center justify-center mb-4">
+                  <Trash2 className="size-6" />
+                </div>
+                <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">Delete Document</h3>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                  Are you sure you want to delete this document? This action cannot be undone.
+                </p>
+              </div>
+              <div className="flex border-t border-zinc-200 dark:border-zinc-800">
+                <button
+                  onClick={() => setDocToDelete(null)}
+                  disabled={loading}
+                  className="flex-1 p-3 text-sm font-semibold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={executeDeleteDocument}
+                  disabled={loading}
+                  className="flex-1 p-3 text-sm font-bold text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 transition-colors border-l border-zinc-200 dark:border-zinc-800"
+                >
+                  {loading ? 'Deleting...' : 'Delete'}
+                </button>
               </div>
             </motion.div>
           </div>
