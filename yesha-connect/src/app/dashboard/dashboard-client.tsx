@@ -2469,7 +2469,7 @@ export default function DashboardClientView({
                                     </div>
 
                                     {/* Action Icons Overlay (Hover / Slide context) */}
-                                    {!isEditing && (
+                                    {!isEditing && isOwn && (
                                       <div className={`transition-all duration-200 flex items-center gap-1 ${deleteOptionsForId === m.id ? 'opacity-100 scale-100' : 'opacity-60 sm:opacity-0 sm:group-hover/bubble:opacity-100 focus-within:opacity-100 scale-95'}`}>
                                         {deleteOptionsForId === m.id ? (
                                           <div className="flex flex-col gap-1 bg-white dark:bg-zinc-800 p-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-xl z-10 text-[9px] font-medium shrink-0 animate-in fade-in zoom-in-95 duration-200">
@@ -2485,14 +2485,9 @@ export default function DashboardClientView({
                                           </div>
                                         ) : (
                                           <div className="flex gap-1 shrink-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md p-1 rounded-lg border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm" tabIndex={0}>
-                                            {isOwn && (
+                                            {isEditable && (
                                               <button
                                                 onClick={() => { 
-                                                  const ageMs = new Date().getTime() - new Date(m.created_at).getTime();
-                                                  if (ageMs > 5 * 60 * 1000) {
-                                                    alert(`Cannot edit message after 5 minutes.\nMessage age: ${Math.floor(ageMs / 60000)} minutes.\nIf you just sent this, your device clock may be out of sync!`);
-                                                    return;
-                                                  }
                                                   setEditingMessageId(m.id); 
                                                   setEditingContent(parsed.cleanContent); 
                                                 }}
@@ -2502,15 +2497,13 @@ export default function DashboardClientView({
                                                 <Edit2 className="size-3.5" />
                                               </button>
                                             )}
-                                            {isOwn && (
-                                              <button
-                                                onClick={() => setDeleteOptionsForId(m.id)}
-                                                className="p-1.5 rounded hover:bg-red-50 dark:hover:bg-red-950/30 text-zinc-400 hover:text-red-650 transition-colors"
-                                                title="Delete Message"
-                                              >
-                                                <Trash2 className="size-3.5" />
-                                              </button>
-                                            )}
+                                            <button
+                                              onClick={() => setDeleteOptionsForId(m.id)}
+                                              className="p-1.5 rounded hover:bg-red-50 dark:hover:bg-red-950/30 text-zinc-400 hover:text-red-650 transition-colors"
+                                              title="Delete Message"
+                                            >
+                                              <Trash2 className="size-3.5" />
+                                            </button>
                                           </div>
                                         )}
                                       </div>
