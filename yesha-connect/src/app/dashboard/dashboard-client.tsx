@@ -154,6 +154,7 @@ interface ParsedMsg {
   isGuest: boolean
   roleLabel: string
   cleanContent: string
+  isEdited?: boolean
 }
 
 const getRoleFromLabel = (label: string): string => {
@@ -3327,8 +3328,8 @@ export default function DashboardClientView({
                               className="h-8 text-xs"
                             />
                           </div>
-                          <Button onClick={handleCreateTechnician} disabled={techLoading} className="w-full h-8 text-xs bg-purple-600 hover:bg-purple-700 text-white border-0">
-                            {techLoading ? 'Creating...' : 'Create Technician'}
+                          <Button onClick={handleCreateUserCredential} disabled={techLoading} className="w-full h-8 text-xs bg-purple-600 hover:bg-purple-700 text-white border-0">
+                            {techLoading ? 'Creating...' : 'Create Account'}
                           </Button>
                         </CardContent>
                       </Card>
