@@ -1326,6 +1326,33 @@ export default function DashboardClientView({
       setLoading(false)
     }
   }
+  // Delete Document Action
+  const handleDeleteDocument = async (docId: string, uploadedBy: string) => {
+    if (profile?.role !== 'super_admin' && profile?.id !== uploadedBy) {
+      alert("You don't have permission to delete this document.")
+      return
+    }
+
+    if (!confirm("Are you sure you want to delete this document?")) return
+
+    setLoading(true)
+    try {
+      const { error } = await supabase
+        .from('project_documents')
+        .delete()
+        .eq('id', docId)
+
+      if (error) throw error
+
+      await refreshProjects()
+      setSelectedDocumentForView(null)
+    } catch (err: any) {
+      console.error('Delete document error:', err?.message || err)
+      alert("Failed to delete document.")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   // Seed Demo Data helper with custom order metadata
   const handleSeedDemoData = async () => {
@@ -2231,6 +2258,18 @@ export default function DashboardClientView({
                                         className="h-7 text-[10px] bg-emerald-600 hover:bg-emerald-700 text-white border-0"
                                       >
                                         Dispatched
+                                      </Button>
+                                      <Button
+                                        onClick={(e) => {
+                                          e.stopPropagation()
+                                          setSelectedOrderId(order.id)
+                                          setShowAddDocModal(true)
+                                        }}
+                                        size="xs"
+                                        variant="outline"
+                                        className="h-7 text-[10px] gap-1 px-2 border-zinc-200"
+                                      >
+                                        <Plus className="size-3" /> Doc
                                       </Button>
                                     </div>
                                   )}
@@ -3204,21 +3243,40 @@ export default function DashboardClientView({
                 )}
 
                 {/* Documents section */}
-                {order.project_documents && order.project_documents.length > 0 && (
+                {((order.project_documents && order.project_documents.length > 0) || profile?.role === 'super_admin' || profile?.role === 'manufacturer') && (
                   <div className="space-y-2 border-t pt-4 border-zinc-100 dark:border-zinc-800 text-xs">
-                    <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400">Attached Documents</h4>
+                    <div className="flex justify-between items-center mb-2">
+                      <h4 className="font-bold text-[10px] uppercase tracking-wider text-zinc-400">Attached Documents</h4>
+                      {(profile?.role === 'super_admin' || profile?.role === 'manufacturer') && (
+                        <Button
+                          onClick={() => {
+                            setSelectedOrderId(order.id)
+                            setShowAddDocModal(true)
+                          }}
+                          size="xs"
+                          variant="outline"
+                          className="h-6 text-[10px] gap-1 px-2 border-zinc-200 dark:border-zinc-700"
+                        >
+                          <Plus className="size-3" /> Upload
+                        </Button>
+                      )}
+                    </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {order.project_documents.map((doc: any) => (
-                        <div key={doc.id} className="p-2 border rounded-xl bg-zinc-50/50 dark:bg-zinc-950/30 flex items-center justify-between">
-                          <div className="min-w-0 pr-2">
-                            <p className="font-semibold truncate text-[11px]">{doc.title}</p>
-                            <span className="text-[9px] bg-zinc-200 dark:bg-zinc-800 text-zinc-650 dark:text-zinc-450 px-1.5 py-0.2 rounded uppercase">{doc.category}</span>
+                      {order.project_documents && order.project_documents.length > 0 ? (
+                        order.project_documents.map((doc: any) => (
+                          <div key={doc.id} className="p-2 border rounded-xl bg-zinc-50/50 dark:bg-zinc-950/30 flex items-center justify-between">
+                            <div className="min-w-0 pr-2">
+                              <p className="font-semibold truncate text-[11px]">{doc.title}</p>
+                              <span className="text-[9px] bg-zinc-200 dark:bg-zinc-800 text-zinc-650 dark:text-zinc-450 px-1.5 py-0.2 rounded uppercase">{doc.category}</span>
+                            </div>
+                            <button onClick={() => setSelectedDocumentForView(doc)} className="p-1.5 rounded hover:bg-zinc-205 border shrink-0 text-zinc-600 dark:text-zinc-300 dark:border-zinc-700 dark:hover:bg-zinc-800">
+                              <FileDown className="size-3.5" />
+                            </button>
                           </div>
-                          <button onClick={() => setSelectedDocumentForView(doc)} className="p-1.5 rounded hover:bg-zinc-205 border shrink-0 text-zinc-600 dark:text-zinc-300 dark:border-zinc-700 dark:hover:bg-zinc-800">
-                            <FileDown className="size-3.5" />
-                          </button>
-                        </div>
-                      ))}
+                        ))
+                      ) : (
+                        <p className="text-[10px] text-zinc-400 italic col-span-2">No documents attached.</p>
+                      )}
                     </div>
                   </div>
                 )}
@@ -3392,6 +3450,15 @@ export default function DashboardClientView({
                   >
                     <Download className="size-4" />
                   </a>
+                  {(profile?.role === 'super_admin' || (profile?.role === 'manufacturer' && profile?.id === selectedDocumentForView.uploaded_by)) && (
+                    <button
+                      onClick={() => handleDeleteDocument(selectedDocumentForView.id, selectedDocumentForView.uploaded_by)}
+                      className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 transition-colors"
+                      title="Delete Document"
+                    >
+                      <Trash2 className="size-4" />
+                    </button>
+                  )}
                   <button
                     onClick={() => setSelectedDocumentForView(null)}
                     className="p-2 rounded-lg bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700 transition-colors"
