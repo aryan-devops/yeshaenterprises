@@ -166,13 +166,17 @@ const getRoleFromLabel = (label: string): string => {
 }
 
 const parseMessageContent = (content: string, senderId: any, senderProfile: any): ParsedMsg => {
-  const prefixMatch = content.match(/^\[([^:]+):\s*([^\]]+)\]:\s*([\s\S]*)$/)
+  const isEdited = content.endsWith('\n*(edited)*')
+  const actualContent = isEdited ? content.replace(/\n\*(edited)\*$/, '') : content
+
+  const prefixMatch = actualContent.match(/^\[([^:]+):\s*([^\]]+)\]:\s*([\s\S]*)$/)
   if (prefixMatch) {
     return {
       senderName: prefixMatch[2],
       isGuest: prefixMatch[1].toLowerCase() === 'guest',
       roleLabel: prefixMatch[1],
-      cleanContent: prefixMatch[3]
+      cleanContent: prefixMatch[3],
+      isEdited
     }
   }
 
@@ -181,7 +185,8 @@ const parseMessageContent = (content: string, senderId: any, senderProfile: any)
       senderName: senderProfile?.full_name || 'User',
       isGuest: false,
       roleLabel: senderProfile?.role?.replace('_', ' ') || 'member',
-      cleanContent: content
+      cleanContent: actualContent,
+      isEdited
     }
   }
 
@@ -189,7 +194,8 @@ const parseMessageContent = (content: string, senderId: any, senderProfile: any)
     senderName: 'Anonymous Guest',
     isGuest: true,
     roleLabel: 'Guest',
-    cleanContent: content
+    cleanContent: actualContent,
+    isEdited
   }
 }
 
@@ -269,6 +275,8 @@ export default function DashboardClientView({
 
   // Dynamic profiles list state to support immediate update on tech creation
   const [profilesList, setProfilesList] = useState<any[]>(allProfiles || [])
+  const manufacturersList = profilesList.filter((p) => p.role === 'manufacturer')
+  const techniciansList = profilesList.filter((p) => p.role === 'technician')
 
   // Technician creation states
   const [techForm, setTechForm] = useState({ fullName: '', username: '', password: '' })
@@ -500,14 +508,15 @@ export default function DashboardClientView({
     }
   }
 
-  // Handle creating a new technician profile and credentials
-  const handleCreateTechnician = async () => {
+  // Handle creating a new user profile and credentials
+  const handleCreateUserCredential = async () => {
     setTechError('')
     setTechSuccess('')
     
     const name = techForm.fullName.trim()
     const user = techForm.username.trim()
     const pass = techForm.password
+    const role = (techForm as any).role || 'technician'
 
     if (!name || !user || !pass) {
       setTechError('All fields are required.')
@@ -519,27 +528,25 @@ export default function DashboardClientView({
       // 1. Insert profile row into profiles
       const { data: newProfile, error: profileErr } = await supabase
         .from('profiles')
-        .insert([
-          {
-            full_name: name,
-            role: 'technician'
-          }
-        ])
+        .insert([{ full_name: name, role: role }])
         .select()
         .single()
 
       if (profileErr) throw profileErr
 
-      // 2. Insert credential row into technician_credentials
-      const { error: credErr } = await supabase
-        .from('technician_credentials')
-        .insert([
-          {
-            profile_id: newProfile.id,
-            username: user,
-            password: pass
-          }
-        ])
+      // 2. Try inserting into app_credentials (new system)
+      let credErr = null
+      const { error: newErr } = await supabase
+        .from('app_credentials')
+        .insert([{ profile_id: newProfile.id, username: user, password: pass }])
+      
+      if (newErr) {
+        // Fallback to old technician_credentials if migration not run
+        const { error: oldErr } = await supabase
+          .from('technician_credentials')
+          .insert([{ profile_id: newProfile.id, username: user, password: pass }])
+        credErr = oldErr
+      }
 
       if (credErr) {
         // Rollback profile insert on failure
@@ -547,23 +554,39 @@ export default function DashboardClientView({
         throw credErr
       }
 
-      setTechSuccess(`Technician "${name}" created successfully! Use username "${user}" to log in.`)
-      setTechForm({ fullName: '', username: '', password: '' })
+      setTechSuccess(`${role} "${name}" created successfully! Use username "${user}" to log in.`)
+      setTechForm({ fullName: '', username: '', password: '', role: 'technician' } as any)
       
-      // Re-fetch all profiles list to update dropdowns dynamically
-      const { data: newProfilesList } = await supabase
-        .from('profiles')
-        .select('id, full_name, role, company_name')
-        .order('full_name', { ascending: true })
-      
-      if (newProfilesList) {
-        setProfilesList(newProfilesList)
-      }
+      // Update local profiles list
+      setProfilesList(prev => [...prev, newProfile])
     } catch (err: any) {
-      console.error('Create technician error:', JSON.stringify(err))
-      setTechError(supabaseErrMsg(err, 'Failed to create technician.'))
+      console.error('Create user error:', JSON.stringify(err))
+      setTechError(err.message || 'Failed to create user.')
     } finally {
       setTechLoading(false)
+    }
+  }
+
+  const handleResetPassword = async (profileId: string) => {
+    const newPass = prompt('Enter new password for this user:')
+    if (!newPass) return
+    
+    try {
+      let { error } = await supabase
+        .from('app_credentials')
+        .update({ password: newPass })
+        .eq('profile_id', profileId)
+
+      if (error) {
+        const { error: oldErr } = await supabase
+          .from('technician_credentials')
+          .update({ password: newPass })
+          .eq('profile_id', profileId)
+        if (oldErr) throw oldErr
+      }
+      alert('Password reset successfully!')
+    } catch (err: any) {
+      alert(`Failed to reset password. Error: ${err.message}`)
     }
   }
 
@@ -1664,74 +1687,23 @@ export default function DashboardClientView({
           </main>
         </div>
 
-        {/* Floating Sandbox Widget */}
-        <div className="fixed bottom-4 right-4 z-50">
-          <AnimatePresence>
-            {showSandbox ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                className="bg-white/95 dark:bg-zinc-900/95 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl p-4 w-72 space-y-4 backdrop-blur-md"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-heading text-xs font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-1.5">
-                    <Wrench className="size-3 text-violet-500" /> Dev Sandbox
-                  </span>
-                  <button
-                    onClick={() => setShowSandbox(false)}
-                    className="p-1 rounded bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-750 text-zinc-500 dark:text-zinc-400"
-                  >
-                    <X className="size-3" />
-                  </button>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-[10px] text-zinc-400 font-semibold mb-1">Switch simulated role:</p>
-                  <div className="grid grid-cols-2 gap-1.5">
-                    {[
-                      { id: 'super_admin', label: 'Admin', color: 'border-amber-400' },
-                      { id: 'customer', label: 'Customer', color: 'border-blue-400' },
-                      { id: 'manufacturer', label: 'Manufacturer', color: 'border-emerald-400' },
-                      { id: 'technician', label: 'Technician', color: 'border-purple-400' }
-                    ].map((r) => (
-                      <button
-                        key={r.id}
-                        onClick={() => handleRoleSwitch(r.id)}
-                        disabled={loading}
-                        className={`px-2 py-1 border text-[11px] rounded-lg font-semibold transition-all ${
-                          simulatedRole === r.id
-                            ? `bg-zinc-950 dark:bg-zinc-800 text-white ${r.color} border-2`
-                            : 'bg-zinc-50/50 hover:bg-zinc-100 border-zinc-200 text-zinc-600 dark:bg-zinc-800/40 dark:hover:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-300'
-                        }`}
-                      >
-                        {loading && simulatedRole !== r.id ? '...' : r.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800">
-                  <Button
-                    onClick={handleSeedDemoData}
-                    disabled={loading}
-                    size="xs"
-                    className="w-full justify-center gap-1.5"
-                  >
-                    <RefreshCw className="size-3" /> Seed Demo Data
-                  </Button>
-                </div>
-              </motion.div>
-            ) : (
-              <motion.button
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                onClick={() => setShowSandbox(true)}
-                className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold rounded-full shadow-lg text-xs"
-              >
-                <Wrench className="size-3.5" /> Dev Sandbox
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </div>
+        {/* Admin Return Button (If Simulating) */}
+        {initialProfile.role === 'super_admin' && profile.role !== 'super_admin' && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="fixed bottom-6 right-6 z-50"
+          >
+            <Button
+              onClick={() => handleRoleSwitch('super_admin')}
+              disabled={loading}
+              className="bg-zinc-900 hover:bg-zinc-800 text-white shadow-xl border-zinc-700/50 flex items-center gap-2 rounded-full px-6"
+            >
+              <Wrench className="size-4" />
+              {loading ? 'Switching...' : 'Return to Admin Dashboard'}
+            </Button>
+          </motion.div>
+        )}
       </div>
     )
   }
@@ -2417,8 +2389,9 @@ export default function DashboardClientView({
                             const isOwn = getIsOwnMessage(m, profile.role, profile.id)
                             const timeStr = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                             
-                            // Check if within 5 mins
-                            const isEditable = isOwn && (new Date().getTime() - new Date(m.created_at).getTime()) < 5 * 60 * 1000
+                            // Ensure timestamp is parsed as UTC to avoid local timezone skew instantly hiding the edit button
+                            const createdAtStr = m.created_at.endsWith('Z') ? m.created_at : m.created_at + 'Z'
+                            const isEditable = isOwn && (new Date().getTime() - new Date(createdAtStr).getTime()) < 5 * 60 * 1000
                             const isEditing = editingMessageId === m.id
 
                             return (
@@ -2435,6 +2408,11 @@ export default function DashboardClientView({
                                     <span className="px-1 text-[7px] bg-zinc-200/50 dark:bg-zinc-800 rounded uppercase">
                                       {parsed.roleLabel}
                                     </span>
+                                    {parsed.isEdited && (
+                                      <span className="px-1.5 py-0.5 text-[8px] bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 rounded">
+                                        Edited
+                                      </span>
+                                    )}
                                   </div>
 
                                   <div className={`relative group/bubble flex items-center gap-2 ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -2570,42 +2548,90 @@ export default function DashboardClientView({
                   {profile?.role === 'super_admin' && (
                     <Card className="border-zinc-200/50">
                       <CardHeader>
-                        <CardTitle className="text-purple-600 dark:text-purple-400">Create Technician Credentials</CardTitle>
+                        <CardTitle className="text-purple-600 dark:text-purple-400">Manage System Credentials</CardTitle>
+                        <p className="text-xs text-zinc-500">Create logins for your Field Technicians and Manufacturers.</p>
                       </CardHeader>
-                      <CardContent className="space-y-4 text-xs">
-                        {techError && <div className="p-2.5 bg-red-50 text-red-650 rounded text-xs">{techError}</div>}
-                        {techSuccess && <div className="p-2.5 bg-emerald-50 text-emerald-650 rounded text-xs">{techSuccess}</div>}
-                        <div className="space-y-1.5">
-                          <Label>Technician Full Name</Label>
-                          <Input
-                            value={techForm.fullName}
-                            onChange={(e) => setTechForm(p => ({ ...p, fullName: e.target.value }))}
-                            placeholder="e.g. Ramesh Kumar"
-                            className="h-8 text-xs"
-                          />
+                      <CardContent className="space-y-6 text-xs">
+                        {/* Creation Form */}
+                        <div className="space-y-4 p-4 border rounded-xl bg-zinc-50/50 dark:bg-zinc-900/50">
+                          <h4 className="font-semibold text-sm">Create New Account</h4>
+                          {techError && <div className="p-2.5 bg-red-50 text-red-650 rounded text-xs">{techError}</div>}
+                          {techSuccess && <div className="p-2.5 bg-emerald-50 text-emerald-650 rounded text-xs">{techSuccess}</div>}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="space-y-1.5">
+                              <Label>Full Name</Label>
+                              <Input
+                                value={techForm.fullName}
+                                onChange={(e) => setTechForm(p => ({ ...p, fullName: e.target.value }))}
+                                placeholder="e.g. Ramesh Kumar"
+                                className="h-8 text-xs"
+                              />
+                            </div>
+                            <div className="space-y-1.5">
+                              <Label>Role</Label>
+                              <select
+                                value={(techForm as any).role || 'technician'}
+                                onChange={(e) => setTechForm(p => ({ ...p, role: e.target.value }))}
+                                className="w-full h-8 rounded-md border border-zinc-200 bg-white px-3 text-xs outline-none focus:ring-1 focus:ring-purple-500 dark:border-zinc-800 dark:bg-zinc-900"
+                              >
+                                <option value="technician">Field Technician</option>
+                                <option value="manufacturer">Manufacturer</option>
+                              </select>
+                            </div>
+                            <div className="space-y-1.5">
+                              <Label>Login Username</Label>
+                              <Input
+                                value={techForm.username}
+                                onChange={(e) => setTechForm(p => ({ ...p, username: e.target.value }))}
+                                placeholder="e.g. ramesh01"
+                                className="h-8 text-xs"
+                              />
+                            </div>
+                            <div className="space-y-1.5">
+                              <Label>Login Password</Label>
+                              <Input
+                                type="password"
+                                value={techForm.password}
+                                onChange={(e) => setTechForm(p => ({ ...p, password: e.target.value }))}
+                                placeholder="e.g. Pass@123"
+                                className="h-8 text-xs"
+                              />
+                            </div>
+                          </div>
+                          <Button onClick={handleCreateUserCredential} disabled={techLoading} className="w-full h-8 text-xs bg-purple-600 hover:bg-purple-700 text-white border-0">
+                            {techLoading ? 'Creating...' : 'Create Account'}
+                          </Button>
                         </div>
-                        <div className="space-y-1.5">
-                          <Label>Login Username</Label>
-                          <Input
-                            value={techForm.username}
-                            onChange={(e) => setTechForm(p => ({ ...p, username: e.target.value }))}
-                            placeholder="e.g. ramesh01"
-                            className="h-8 text-xs"
-                          />
+
+                        {/* Existing Users List */}
+                        <div className="space-y-4">
+                          <h4 className="font-semibold text-sm">Existing Accounts</h4>
+                          
+                          <div className="space-y-2">
+                            <h5 className="text-[10px] uppercase font-bold text-zinc-500">Technicians</h5>
+                            {techniciansList.length === 0 ? <p className="text-[10px] italic text-zinc-400">No technicians found.</p> : (
+                              techniciansList.map(t => (
+                                <div key={t.id} className="flex items-center justify-between p-2 border rounded-lg bg-white dark:bg-zinc-950">
+                                  <span className="font-semibold">{t.full_name}</span>
+                                  <Button onClick={() => handleResetPassword(t.id)} variant="outline" size="sm" className="h-6 text-[10px]">Reset Password</Button>
+                                </div>
+                              ))
+                            )}
+                          </div>
+
+                          <div className="space-y-2">
+                            <h5 className="text-[10px] uppercase font-bold text-zinc-500">Manufacturers</h5>
+                            {manufacturersList.length === 0 ? <p className="text-[10px] italic text-zinc-400">No manufacturers found.</p> : (
+                              manufacturersList.map(m => (
+                                <div key={m.id} className="flex items-center justify-between p-2 border rounded-lg bg-white dark:bg-zinc-950">
+                                  <span className="font-semibold">{m.full_name}</span>
+                                  <Button onClick={() => handleResetPassword(m.id)} variant="outline" size="sm" className="h-6 text-[10px]">Reset Password</Button>
+                                </div>
+                              ))
+                            )}
+                          </div>
                         </div>
-                        <div className="space-y-1.5">
-                          <Label>Login Password</Label>
-                          <Input
-                            type="password"
-                            value={techForm.password}
-                            onChange={(e) => setTechForm(p => ({ ...p, password: e.target.value }))}
-                            placeholder="e.g. Pass@123"
-                            className="h-8 text-xs"
-                          />
-                        </div>
-                        <Button onClick={handleCreateTechnician} disabled={techLoading} className="w-full h-8 text-xs bg-purple-600 hover:bg-purple-700 text-white border-0">
-                          {techLoading ? 'Creating...' : 'Create Technician'}
-                        </Button>
+
                       </CardContent>
                     </Card>
                   )}
@@ -3238,6 +3264,75 @@ export default function DashboardClientView({
                         </Button>
                       </div>
                     )}
+                    {profile?.role === 'super_admin' && (
+                      <Card className="border-zinc-200/50 md:col-span-2">
+                        <CardHeader>
+                          <CardTitle className="text-violet-600 dark:text-violet-400">Dashboard Access Modes</CardTitle>
+                          <p className="text-xs text-zinc-500">Temporarily switch your dashboard view to see exactly what other roles see.</p>
+                        </CardHeader>
+                        <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          {[
+                            { id: 'customer', label: 'Customer View', desc: 'View the simplified Chat-only interface' },
+                            { id: 'manufacturer', label: 'Manufacturer View', desc: 'View production and tracking interface' },
+                            { id: 'technician', label: 'Technician View', desc: 'View installation and technical interface' }
+                          ].map((mode) => (
+                            <Button
+                              key={mode.id}
+                              variant="outline"
+                              onClick={() => handleRoleSwitch(mode.id)}
+                              disabled={loading}
+                              className="h-auto flex flex-col items-start p-4 text-left border-zinc-200 dark:border-zinc-800 hover:border-violet-400 dark:hover:border-violet-600 transition-colors"
+                            >
+                              <span className="font-bold text-sm text-zinc-800 dark:text-zinc-200 mb-1">{mode.label}</span>
+                              <span className="text-[10px] text-zinc-500 font-normal whitespace-normal">{mode.desc}</span>
+                            </Button>
+                          ))}
+                        </CardContent>
+                      </Card>
+                    )}
+
+                    {profile?.role === 'super_admin' && (
+                      <Card className="border-zinc-200/50">
+                        <CardHeader>
+                          <CardTitle className="text-purple-600 dark:text-purple-400">Create Technician Credentials</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4 text-xs">
+                          {techError && <div className="p-2.5 bg-red-50 text-red-650 rounded text-xs">{techError}</div>}
+                          {techSuccess && <div className="p-2.5 bg-emerald-50 text-emerald-650 rounded text-xs">{techSuccess}</div>}
+                          <div className="space-y-1.5">
+                            <Label>Technician Full Name</Label>
+                            <Input
+                              value={techForm.fullName}
+                              onChange={(e) => setTechForm(p => ({ ...p, fullName: e.target.value }))}
+                              placeholder="e.g. Ramesh Kumar"
+                              className="h-8 text-xs"
+                            />
+                          </div>
+                          <div className="space-y-1.5">
+                            <Label>Login Username</Label>
+                            <Input
+                              value={techForm.username}
+                              onChange={(e) => setTechForm(p => ({ ...p, username: e.target.value }))}
+                              placeholder="e.g. ramesh01"
+                              className="h-8 text-xs"
+                            />
+                          </div>
+                          <div className="space-y-1.5">
+                            <Label>Login Password</Label>
+                            <Input
+                              type="password"
+                              value={techForm.password}
+                              onChange={(e) => setTechForm(p => ({ ...p, password: e.target.value }))}
+                              placeholder="e.g. Pass@123"
+                              className="h-8 text-xs"
+                            />
+                          </div>
+                          <Button onClick={handleCreateTechnician} disabled={techLoading} className="w-full h-8 text-xs bg-purple-600 hover:bg-purple-700 text-white border-0">
+                            {techLoading ? 'Creating...' : 'Create Technician'}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    )}
                     <Button variant="outline" size="sm" onClick={() => setSelectedOrderDetails(null)}>Close</Button>
                   </div>
                 </div>
@@ -3247,81 +3342,23 @@ export default function DashboardClientView({
         })()}
       </AnimatePresence>
 
-      {/* Floating Sandbox Role Override Overlay */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <AnimatePresence>
-          {showSandbox ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 10 }}
-              className="bg-white/95 dark:bg-zinc-900/95 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl p-4 w-72 space-y-4 backdrop-blur-md"
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-heading text-xs font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-1.5">
-                  <Wrench className="size-3 text-violet-500" /> Dev Sandbox
-                </span>
-                <button
-                  onClick={() => setShowSandbox(false)}
-                  className="p-1 rounded bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-750 text-zinc-500 dark:text-zinc-400"
-                >
-                  <X className="size-3" />
-                </button>
-              </div>
-
-              <div className="space-y-1">
-                <p className="text-[10px] text-zinc-400 font-semibold mb-1">Switch simulated role:</p>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {[
-                    { id: 'super_admin', label: 'Admin', color: 'border-amber-400' },
-                    { id: 'customer', label: 'Customer', color: 'border-blue-400' },
-                    { id: 'manufacturer', label: 'Manufacturer', color: 'border-emerald-400' },
-                    { id: 'technician', label: 'Technician', color: 'border-purple-400' }
-                  ].map((r) => (
-                    <button
-                      key={r.id}
-                      onClick={() => handleRoleSwitch(r.id)}
-                      disabled={loading}
-                      className={`px-2 py-1 border text-[11px] rounded-lg font-semibold transition-all ${
-                        simulatedRole === r.id
-                          ? `bg-zinc-950 dark:bg-zinc-800 text-white ${r.color} border-2`
-                          : 'bg-zinc-50/50 hover:bg-zinc-100 border-zinc-200 text-zinc-600 dark:bg-zinc-800/40 dark:hover:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-300'
-                      }`}
-                    >
-                      {loading && simulatedRole !== r.id ? '...' : r.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 space-y-2">
-                <Button
-                  onClick={handleSeedDemoData}
-                  disabled={loading}
-                  size="xs"
-                  className="w-full justify-center gap-1.5 bg-violet-600 text-white hover:bg-violet-700 border-0"
-                >
-                  <RefreshCw className={`size-3 ${loading ? 'animate-spin' : ''}`} />
-                  Seed Demo Data
-                </Button>
-                <p className="text-[9px] text-zinc-400 text-center leading-normal">
-                  Populates orders, files, and chat rooms synced with database.
-                </p>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.button
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              onClick={() => setShowSandbox(true)}
-              className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold rounded-full shadow-lg text-xs"
-            >
-              <Wrench className="size-3.5" />
-              Dev Sandbox
-            </motion.button>
-          )}
-        </AnimatePresence>
-      </div>
+      {/* Admin Return Button (If Simulating in Admin layout but as Tech/Manufacturer) */}
+      {initialProfile.role === 'super_admin' && profile.role !== 'super_admin' && (
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed bottom-6 right-6 z-50"
+        >
+          <Button
+            onClick={() => handleRoleSwitch('super_admin')}
+            disabled={loading}
+            className="bg-zinc-900 hover:bg-zinc-800 text-white shadow-xl border-zinc-700/50 flex items-center gap-2 rounded-full px-6"
+          >
+            <Wrench className="size-4" />
+            {loading ? 'Switching...' : 'Return to Admin Dashboard'}
+          </Button>
+        </motion.div>
+      )}
 
     </div>
   )

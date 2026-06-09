@@ -14,14 +14,30 @@ export async function login(formData: FormData) {
   if (username === 'aryan05' && password === 'Aryan@#2003') {
     sessionVal = 'aryan05'
   } else {
-    // Check technician credentials in the database
+    // Check credentials in the database
     const supabase = await createClient()
-    const { data: creds } = await supabase
-      .from('technician_credentials')
+    let creds = null
+    
+    // First try new unified credentials table
+    const { data: newCreds } = await supabase
+      .from('app_credentials')
       .select('profile_id')
       .eq('username', username)
       .eq('password', password)
       .maybeSingle()
+
+    if (newCreds) {
+      creds = newCreds
+    } else {
+      // Fallback for existing technicians if migration isn't run yet
+      const { data: oldCreds } = await supabase
+        .from('technician_credentials')
+        .select('profile_id')
+        .eq('username', username)
+        .eq('password', password)
+        .maybeSingle()
+      creds = oldCreds
+    }
 
     if (creds) {
       sessionVal = creds.profile_id
