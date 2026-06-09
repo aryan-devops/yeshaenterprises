@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/yesha-connect",
-      "destination": "https://yeshaenterprises-coh4.vercel.app/yesha-connect"
+      "destination": "https://yeshaenterprises-i1wk.vercel.app/yesha-connect"
     },
     {
       "source": "/yesha-connect/:path*",
-      "destination": "https://yeshaenterprises-coh4.vercel.app/yesha-connect/:path*"
+      "destination": "https://yeshaenterprises-i1wk.vercel.app/yesha-connect/:path*"
     },
     {
       "source": "/(.*)",
