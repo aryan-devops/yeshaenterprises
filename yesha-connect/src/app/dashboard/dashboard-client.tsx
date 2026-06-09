@@ -2852,12 +2852,25 @@ export default function DashboardClientView({
                       )}
                     </div>
                   </div>
-                  <button
-                    onClick={() => setSelectedOrderDetails(null)}
-                    className="p-1.5 rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 dark:border-zinc-850 dark:hover:bg-zinc-800 animate-transition"
-                  >
-                    <X className="size-4" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {profile?.role === 'super_admin' && order.share_token && (
+                      <Button
+                        onClick={() => handleCopyInviteLink(order)}
+                        size="sm"
+                        variant="outline"
+                        className="h-8 text-xs gap-1"
+                      >
+                        {copiedOrderId === order.id ? <Check className="size-3.5 text-emerald-500" /> : <Copy className="size-3.5" />}
+                        Invite Customer
+                      </Button>
+                    )}
+                    <button
+                      onClick={() => setSelectedOrderDetails(null)}
+                      className="p-1.5 rounded-lg border border-zinc-200 text-zinc-500 hover:bg-zinc-100 dark:border-zinc-850 dark:hover:bg-zinc-800 animate-transition"
+                    >
+                      <X className="size-4" />
+                    </button>
+                  </div>
                 </div>
 
                 {errorMsg && (
