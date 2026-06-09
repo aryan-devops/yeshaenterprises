@@ -289,7 +289,7 @@ export default function DashboardClientView({
   const [techLoading, setTechLoading] = useState(false)
   const [selectedTechIdForAssign, setSelectedTechIdForAssign] = useState('')
   
-  const [newDoc, setNewDoc] = useState({ title: '', category: 'Blueprint', fileUrl: '' })
+  const [newDoc, setNewDoc] = useState({ title: '', category: 'Blueprint', fileUrl: '', fileType: '' })
   const [newDispatch, setNewDispatch] = useState({
     driverName: '',
     driverPhone: '',
@@ -1293,15 +1293,12 @@ export default function DashboardClientView({
     }
   }
 
-  // Standard File Upload (General)
   const handleAddDocument = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!selectedOrderId || !newDoc.title.trim()) return
+    if (!selectedOrderId || !newDoc.title.trim() || !newDoc.fileUrl) return
 
     setLoading(true)
     try {
-      const fileUrl = newDoc.fileUrl.trim() || `https://example.com/docs/${newDoc.title.toLowerCase().replace(/\s+/g, '_')}.pdf`
-      
       const { error } = await supabase
         .from('project_documents')
         .insert([
@@ -1309,16 +1306,16 @@ export default function DashboardClientView({
             project_id: selectedOrderId,
             uploaded_by: profile.id,
             title: newDoc.title,
-            file_url: fileUrl,
+            file_url: newDoc.fileUrl,
             category: newDoc.category,
-            file_type: 'PDF'
+            file_type: newDoc.fileType || 'application/pdf'
           }
         ])
 
       if (error) throw error
 
       await refreshProjects()
-      setNewDoc({ title: '', category: 'Blueprint', fileUrl: '' })
+      setNewDoc({ title: '', category: 'Blueprint', fileUrl: '', fileType: '' })
       setShowAddDocModal(false)
       setSelectedOrderId(null)
     } catch (err: any) {
@@ -2843,10 +2840,26 @@ export default function DashboardClientView({
                     onChange={(e) => setNewDoc(p => ({ ...p, category: e.target.value }))}
                     className="w-full h-8 px-2 border rounded-lg text-xs bg-white dark:bg-zinc-800"
                   >
-                    {['Blueprint', 'Quotation', 'Invoice', 'Sign-off'].map(c => (
+                    {['Blueprint', 'Quotation', 'Invoice', 'Sign-off', 'Image', 'Other'].map(c => (
                       <option key={c} value={c}>{c}</option>
                     ))}
                   </select>
+                </div>
+                <div className="space-y-1">
+                  <Label>File Upload</Label>
+                  <input 
+                    type="file" 
+                    required
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      if (file) {
+                        const reader = new FileReader()
+                        reader.onload = (ev) => setNewDoc(p => ({ ...p, fileUrl: ev.target?.result as string, fileType: file.type }))
+                        reader.readAsDataURL(file)
+                      }
+                    }}
+                    className="w-full text-xs file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 dark:file:bg-violet-900/30 dark:file:text-violet-400 cursor-pointer"
+                  />
                 </div>
                 <div className="flex gap-2 justify-end pt-2">
                   <Button type="button" variant="outline" onClick={() => { setShowAddDocModal(false); setSelectedOrderId(null); }}>Cancel</Button>
