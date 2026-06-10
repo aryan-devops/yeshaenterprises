@@ -2454,8 +2454,8 @@ export default function DashboardClientView({
                             const isOwn = getIsOwnMessage(m, profile.role, profile.id)
                             const timeStr = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                             
-                            // Ensure timestamp is parsed as UTC to avoid local timezone skew instantly hiding the edit button
-                            const createdAtStr = m.created_at.endsWith('Z') ? m.created_at : m.created_at + 'Z'
+                            // Ensure timestamp is parsed correctly (Supabase often includes +00:00 already)
+                            const createdAtStr = (!m.created_at.includes('+') && !m.created_at.endsWith('Z')) ? m.created_at + 'Z' : m.created_at
                             const isEditable = isOwn && (new Date().getTime() - new Date(createdAtStr).getTime()) < 5 * 60 * 1000
                             const isEditing = editingMessageId === m.id
 

@@ -402,7 +402,7 @@ export default function PublicChatClient({ orderId, chatRoomId, initialProfile }
               : messageRole === viewerRole
 
             const timeStr = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            const createdAtStr = m.created_at.endsWith('Z') ? m.created_at : m.created_at + 'Z'
+            const createdAtStr = (!m.created_at.includes('+') && !m.created_at.endsWith('Z')) ? m.created_at + 'Z' : m.created_at
             const isEditable = isOwn && (new Date().getTime() - new Date(createdAtStr).getTime()) < 5 * 60 * 1000
             const isEditing = editingMessageId === m.id
 
