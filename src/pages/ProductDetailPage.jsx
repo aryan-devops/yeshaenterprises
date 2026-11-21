@@ -9,11 +9,12 @@ export default function ProductDetailPage({ products, contact }) {
   const navigate = useNavigate()
   const [activeImage, setActiveImage] = useState(0)
 
-  const product = products.find(p => String(p.id) === id)
+  const slugify = (text) => text?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || ''
+  const product = products.find(p => String(p.id) === id || slugify(p.name) === id)
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [])
+  }, [id])
 
   if (!product) {
     return (
@@ -35,30 +36,32 @@ export default function ProductDetailPage({ products, contact }) {
 
   if (gallery.length === 0) gallery.push(null)
 
+  const productSlug = slugify(product.name) || product.id
+  const canonicalUrl = `https://yeshaenterprises.in/product/${productSlug}`
+
   const productSchema = {
     "@context": "https://schema.org/",
     "@type": "Product",
     "name": product.name,
-    "image": [
-      product.image_url,
-      product.image_url_2,
-      product.image_url_3
-    ].filter(Boolean),
+    "image": gallery.filter(Boolean),
     "description": product.description,
     "sku": `YESHA-${product.id}`,
     "brand": {
       "@type": "Brand",
       "name": "Yesha Enterprises"
     },
+    "category": product.category,
     "offers": {
       "@type": "Offer",
-      "url": window.location.href,
+      "url": canonicalUrl,
       "priceCurrency": "INR",
-      "price": product.price_range?.split('-')[0]?.replace(/[^0-9]/g, '') || "0",
+      "price": product.price_range?.split('-')[0]?.replace(/[^0-9]/g, '') || "500",
       "availability": product.stock_status === 'In Stock' ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "itemCondition": "https://schema.org/NewCondition",
       "seller": {
         "@type": "Organization",
-        "name": "Yesha Enterprises"
+        "name": "Yesha Enterprises",
+        "url": "https://yeshaenterprises.in"
       }
     }
   };
@@ -83,7 +86,7 @@ export default function ProductDetailPage({ products, contact }) {
         "@type": "ListItem",
         "position": 3,
         "name": product.name,
-        "item": window.location.href
+        "item": canonicalUrl
       }
     ]
   };
@@ -91,10 +94,11 @@ export default function ProductDetailPage({ products, contact }) {
   return (
     <>
       <SEO 
-        title={product.name}
-        description={product.description?.substring(0, 160)}
-        keywords={`${product.name}, ${product.category}, Biofloc ${product.name}, ${product.name} price Raipur`}
+        title={`${product.name} Supplier & Price in India`}
+        description={`${product.description?.substring(0, 140)} Wholesale distributor in Raipur, Chhattisgarh with fast PAN India delivery.`}
+        keywords={`${product.name}, ${product.category}, ${product.name} Raipur, ${product.name} price in India, Biofloc ${product.name}, aquaculture equipment`}
         image={product.image_url}
+        url={canonicalUrl}
       />
       <script type="application/ld+json">
         {JSON.stringify(productSchema)}
@@ -236,6 +240,22 @@ export default function ProductDetailPage({ products, contact }) {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* Product Highlights & Applications Card */}
+              <div style={{
+                background: 'var(--surface)', border: '1px solid var(--border)',
+                borderRadius: 24, padding: '20px 24px', marginBottom: 30,
+              }}>
+                <h4 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <LucideIcon name="CheckCircle2" size={18} color="var(--primary)" />
+                  Key Highlights & Applications
+                </h4>
+                <ul style={{ margin: 0, paddingLeft: 18, color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.8 }}>
+                  <li><strong>Virgin Quality:</strong> UV-stabilized, high-density industrial materials tested for Indian weather conditions.</li>
+                  <li><strong>Target Applications:</strong> Biofloc fish tanks, commercial aquaculture ponds, shrimp farming, nursery tanks & water retention.</li>
+                  <li><strong>Raipur Wholesale Hub:</strong> Direct supply from Yesha Enterprises warehouse with transparent wholesale pricing & pan-India freight.</li>
+                </ul>
               </div>
 
               {/* Button FIXED */}

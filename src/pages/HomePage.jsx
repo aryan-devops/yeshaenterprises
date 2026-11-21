@@ -18,10 +18,10 @@ export default function HomePage({ slides, stats, products, contact, testimonial
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "Yesha Enterprises",
-    "image": "https://yeshaenterprises.in/favicon.ico",
-    "@id": "https://yeshaenterprises.in",
+    "image": "https://yeshaenterprises.in/main-logo.svg",
+    "@id": "https://yeshaenterprises.in/#organization",
     "url": "https://yeshaenterprises.in",
-    "telephone": "+91 99772 28924, 9770403382",
+    "telephone": "+91 99772 28924",
     "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
@@ -55,25 +55,42 @@ export default function HomePage({ slides, stats, products, contact, testimonial
       "https://www.tradeindia.com/yesha-enterprises-36400761/",
       "https://www.exportersindia.com/yeshaenterprises/",
       "https://www.indiamart.com/yesha-enterprises-raipur/profile.html"
+    ],
+    "areaServed": [
+      { "@type": "City", "name": "Raipur" },
+      { "@type": "State", "name": "Chhattisgarh" },
+      { "@type": "State", "name": "Maharashtra" },
+      { "@type": "State", "name": "Odisha" },
+      { "@type": "State", "name": "Madhya Pradesh" },
+      { "@type": "Country", "name": "India" }
     ]
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Yesha Enterprises",
+    "url": "https://yeshaenterprises.in",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://yeshaenterprises.in/products?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
   };
 
   return (
     <>
       <SEO 
-        title="Best HDPE Pond Liner in India - Chhattisgarh, Maharashtra & Odisha"
-        description="Yesha Enterprises is the top seller of HDPE Pond Liners and Biofloc tools in Raipur, Nagpur, and Bhubaneswar. Best prices and fast delivery for all your pond liner needs."
-        keywords="hdpe pond liner, pond liner, hdpe liner, best pond liner, fish pond liners, small pond liner, blue pond liner, pond liners for sale near me, cheap pond liner, buy pond liner, lldpe pond liner, pond liner installation, 20 x 20 pond liner, flexible pond liner, pond liner manufacturers, pond liner nearby, pond liner installation near me, liner for pond on sale, fish pond liners near me, pond liner prices, water pond liner, bulk pond liner, pond liner 50 x 100, irrigation pond liner, wholesale pond liners, pond leak, discount pond liners, pond liner size, largest pond liner available, buy pond liner near me, stock pond liner, 20 by 20 pond liner, 100 by 100 pond liner, deep pond liner, pond liner for fish farming, hdpe pond liner manufacturer, hdpe liner pond, pond liner 15 x 20, pond liner manufacturers in india, high quality pond liner, pond liners direct, pond liner with drain, 50 by 50 pond liner, green pond liner, strong pond liner, best type of pond liner, hdpe pond, uv resistant pond liner, pond liner india, pond liner manufacturers in maharashtra, pond liner specifications, fish tank liner, best liner for ponds, hdpe fish pond liner, leak in pond liner, pond liner fitters near me, fish liner, best fish pond liner, quality pond liner, pond liner 4 x 4, best place to buy pond liner, durable pond liner, pond liner cover, pond liner supplier, good quality pond liner, pond sheeting, blue liner for pond, long pond liner, pond liner tank, 20 x 50 pond liner, 100 ft pond liner, 20 ft pond liner, pond liner in stock, pond liner design, water feature pond liner, fish pond membrane, pond liner green, fish farming pond design, biofloc tanks, 1000 sq ft pond, design of ponds"
+        title="Biofloc Fish Farming Equipment & HDPE Pond Liner Supplier in India"
+        description="Yesha Enterprises is India's leading wholesale distributor of HDPE Pond Liners, Ring Blowers, Jet Aerators, and Biofloc Fish Tanks in Raipur, Chhattisgarh with PAN India delivery."
+        keywords="Biofloc Fish Farming Equipment Supplier in India, Aquaculture Equipment Supplier, HDPE Pond Liner Supplier, Ring Blower Supplier, Fish Farming Equipment in Raipur, Aquaculture Products Chhattisgarh"
+        url="https://yeshaenterprises.in"
       />
       <script type="application/ld+json">
-        {JSON.stringify({
-          ...organizationSchema,
-          "areaServed": [
-            { "@type": "State", "name": "Chhattisgarh" },
-            { "@type": "State", "name": "Maharashtra" },
-            { "@type": "State", "name": "Odisha" }
-          ]
-        })}
+        {JSON.stringify(organizationSchema)}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify(websiteSchema)}
       </script>
       
       <HeroSlider slides={visibleSlides} contact={contact} />

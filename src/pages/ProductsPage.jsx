@@ -3,13 +3,36 @@ import Products from '../components/Products'
 import PageHero from '../components/PageHero'
 
 export default function ProductsPage({ products, contact }) {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://yeshaenterprises.in/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Products",
+        "item": "https://yeshaenterprises.in/products"
+      }
+    ]
+  };
+
   return (
     <>
       <SEO 
-        title="Products - Best Fish Farming Tools & HDPE Pond Liners"
-        description="See our list of the best Biofloc fish farming products, HDPE pond liners, and air pumps. Get best prices and fast delivery across India."
-        keywords="pond liners for sale near me, cheap pond liner, wholesale pond liners, hdpe liner pond, largest pond liner available, pond liner size, buy pond liner, stock pond liner, pond liner prices, bulk pond liner, hdpe pond liner manufacturer, biofloc tanks, fish pond membrane"
+        title="Biofloc Fish Farming Equipment & HDPE Pond Liners Catalog"
+        description="Browse wholesale aquaculture equipment: HDPE Pond Liners (200-500 GSM), Ring Blowers (1-5 HP), Jet Aerators, Biofloc Tanks & Shade Nets in Raipur, Chhattisgarh with pan-India delivery."
+        keywords="HDPE Pond Liner Supplier, Ring Blower for Biofloc Fish Farming, Biofloc Fish Tank Price, Jet Aerator in Raipur, Pond Liner in Raipur, Fish Farming Equipment India"
+        url="https://yeshaenterprises.in/products"
       />
+      <script type="application/ld+json">
+        {JSON.stringify(breadcrumbSchema)}
+      </script>
       <PageHero
         title="Our Products"
         subtitle="Complete Fish Farming Setup"

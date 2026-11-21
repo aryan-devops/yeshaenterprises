@@ -88,30 +88,82 @@ export default function BlogPostPage({ blogs, contact = {} }) {
 
   const faqs = (blog.faqs && blog.faqs.length > 0) ? blog.faqs : getBlogFAQs(blog)
 
+  const canonicalUrl = `https://yeshaenterprises.in/blog/${blog.slug}`
+
   const articleSchema = {
-    "@context": "https://schema.org", "@type": "Article",
-    "headline": blog.title, "image": blog.image_url ? [blog.image_url] : [],
-    "datePublished": blog.created_at, "dateModified": blog.created_at,
-    "author": { "@type": "Organization", "name": "Yesha Enterprises" },
-    "publisher": { "@type": "Organization", "name": "Yesha Enterprises", "logo": { "@type": "ImageObject", "url": "https://yeshaenterprises.in/favicon.ico" } },
+    "@context": "https://schema.org", 
+    "@type": "Article",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": canonicalUrl
+    },
+    "headline": blog.title, 
+    "image": blog.image_url ? [blog.image_url.startsWith('http') ? blog.image_url : `https://yeshaenterprises.in${blog.image_url}`] : [],
+    "datePublished": blog.created_at, 
+    "dateModified": blog.created_at,
+    "author": { 
+      "@type": "Organization", 
+      "name": "Yesha Enterprises",
+      "url": "https://yeshaenterprises.in" 
+    },
+    "publisher": { 
+      "@type": "Organization", 
+      "name": "Yesha Enterprises", 
+      "logo": { 
+        "@type": "ImageObject", 
+        "url": "https://yeshaenterprises.in/main-logo.svg" 
+      } 
+    },
     "description": blog.excerpt
   }
 
   const faqSchema = {
-    "@context": "https://schema.org", "@type": "FAQPage",
-    "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
+    "@context": "https://schema.org", 
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({ 
+      "@type": "Question", 
+      "name": f.q, 
+      "acceptedAnswer": { "@type": "Answer", "text": f.a } 
+    }))
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://yeshaenterprises.in/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://yeshaenterprises.in/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": blog.title,
+        "item": canonicalUrl
+      }
+    ]
   }
 
   return (
     <>
       <SEO
-        title={`${blog.title} - Yesha Enterprises Blog`}
+        title={`${blog.title} — Yesha Enterprises`}
         description={blog.excerpt}
         keywords={blog.keywords || "biofloc, fish farming, hdpe pond liner, aquaculture"}
         image={blog.image_url}
+        url={canonicalUrl}
       />
       <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
       <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+      <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
 
       <article style={{ background: 'var(--bg)', paddingBottom: 100 }}>
 

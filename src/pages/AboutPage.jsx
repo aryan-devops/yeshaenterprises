@@ -45,8 +45,10 @@ export default function AboutPage({ contact, testimonials, brands }) {
   return (
     <>
       <SEO 
-        title="About Us - Best Fish Farming Tools"
-        description="Learn about Yesha Enterprises, India's top seller of HDPE Pond Liners and Biofloc tools. We help farmers build strong and easy-to-use fish farms."
+        title="About Yesha Enterprises — Aquaculture & Biofloc Equipment Supplier"
+        description="Learn about Yesha Enterprises, India's premier wholesale distributor of HDPE Pond Liners, Ring Blowers, and Biofloc equipment founded in Raipur in 2022."
+        keywords="About Yesha Enterprises, Aquaculture Equipment Supplier, Fish Farming Equipment Raipur, Biofloc Equipment Manufacturer India"
+        url="https://yeshaenterprises.in/about"
       />
       <script type="application/ld+json">
         {JSON.stringify(faqSchema)}

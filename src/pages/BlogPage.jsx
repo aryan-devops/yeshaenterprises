@@ -19,13 +19,36 @@ export default function BlogPage({ blogs }) {
     )
   }, [publishedBlogs, searchQuery])
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://yeshaenterprises.in/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://yeshaenterprises.in/blog"
+      }
+    ]
+  };
+
   return (
     <>
       <SEO 
-        title="Blog - Fish Farming Tips & Guides"
-        description="Read the latest tips, guides, and news about Biofloc fish farming, HDPE pond liners, and aquaculture tools."
-        keywords="fish farming blog, biofloc tips, pond liner guide, fish farming business"
+        title="Aquaculture & Biofloc Knowledge Hub — Guides, Costs & Tips"
+        description="Comprehensive guides on HDPE pond liners, ring blower sizing, biofloc setup costs, PMMSY subsidies, and modern fish farming practices in India."
+        keywords="fish farming blog, biofloc tips, pond liner buying guide, biofloc setup cost India, PMMSY subsidy fish farming"
+        url="https://yeshaenterprises.in/blog"
       />
+      <script type="application/ld+json">
+        {JSON.stringify(breadcrumbSchema)}
+      </script>
       <PageHero
         title="Fish Farming Knowledge Hub"
         subtitle="Guides, Tips & Industry News"

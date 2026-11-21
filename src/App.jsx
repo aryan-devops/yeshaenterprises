@@ -1,12 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { supabase } from './lib/supabaseClient'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
 import ProductsPage from './pages/ProductsPage'
 import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
-import AdminPanel from './components/AdminPanel'
 import ProductDetailPage from './pages/ProductDetailPage'
 import Preloader from './components/Preloader'
 import ScrollToTop from './components/ScrollToTop'
@@ -14,6 +13,8 @@ import LocationPage from './pages/LocationPage'
 import BlogPage from './pages/BlogPage'
 import BlogPostPage from './pages/BlogPostPage'
 import PartnerDetailPage from './pages/PartnerDetailPage'
+
+const AdminPanel = lazy(() => import('./components/AdminPanel'))
 
 const DEFAULT_BLOGS = [
   {
@@ -331,15 +332,17 @@ export default function App() {
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          {/* Admin Route (No Layout) */}
+          {/* Admin Route (No Layout) - Lazy Loaded */}
           <Route path="/admin" element={
-            <AdminPanel
-              {...sharedProps}
-              loggedIn={adminLoggedIn} 
-              onLogin={handleAdminLogin}
-              onLogout={handleAdminLogout} 
-              onClose={() => window.location.href = '/'}
-            />
+            <Suspense fallback={<Preloader />}>
+              <AdminPanel
+                {...sharedProps}
+                loggedIn={adminLoggedIn} 
+                onLogin={handleAdminLogin}
+                onLogout={handleAdminLogout} 
+                onClose={() => window.location.href = '/'}
+              />
+            </Suspense>
           } />
 
           {/* Public Routes (With Navbar/Footer Layout) */}
@@ -347,6 +350,8 @@ export default function App() {
             <Route index element={<HomePage {...sharedProps} />} />
             <Route path="products" element={<ProductsPage products={products} contact={contact} />} />
             <Route path="product/:id" element={<ProductDetailPage products={products} contact={contact} />} />
+            <Route path="products/:category" element={<ProductsPage products={products} contact={contact} />} />
+            <Route path="fish-farming-equipment" element={<ProductsPage products={products} contact={contact} />} />
             <Route path="about" element={<AboutPage contact={contact} testimonials={testimonials} brands={brands} />} />
             <Route path="contact" element={<ContactPage contact={contact} />} />
             <Route path="blog" element={<BlogPage blogs={blogs} />} />
@@ -354,9 +359,13 @@ export default function App() {
             <Route path="partner/:slug" element={<PartnerDetailPage brands={brands} />} />
             
             {/* Location Landing Pages */}
+            <Route path="location/raipur" element={<LocationPage state="Raipur" city="Raipur" {...sharedProps} />} />
+            <Route path="locations/pond-liner-raipur" element={<LocationPage state="Raipur" city="Raipur" {...sharedProps} />} />
             <Route path="location/chhattisgarh" element={<LocationPage state="Chhattisgarh" city="Raipur" {...sharedProps} />} />
+            <Route path="locations/fish-farming-equipment-chhattisgarh" element={<LocationPage state="Chhattisgarh" city="Raipur" {...sharedProps} />} />
             <Route path="location/maharashtra" element={<LocationPage state="Maharashtra" city="Nagpur" {...sharedProps} />} />
             <Route path="location/odisha" element={<LocationPage state="Odisha" city="Bhubaneswar" {...sharedProps} />} />
+            <Route path="location/madhya-pradesh" element={<LocationPage state="Madhya Pradesh" city="Indore" {...sharedProps} />} />
           </Route>
         </Routes>
       </BrowserRouter>

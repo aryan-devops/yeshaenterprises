@@ -5,17 +5,26 @@ const SEO = ({
   title,
   description,
   keywords,
-  image = '/og-image.jpg',
-  url = window.location.href,
+  image = '/blog-hdpe-pond-liner.png',
+  url,
   type = 'website'
 }) => {
   const siteName = 'Yesha Enterprises';
-  const defaultDescription = "Yesha Enterprises — India's biggest HDPE Pond Liner dealer and wholesale distributor of Biofloc Fish Farming products in Raipur, Chhattisgarh. PAN India delivery.";
-  const defaultKeywords = "Biofloc Fish Farming India, HDPE Pond Liner Raipur, Fish Tank Manufacturers Chhattisgarh, Ring Blower for Fish Farming, Aquaculture Equipment Distributor, Pond Liner Wholesale India, Biofloc Tank Prices, Industrial Grade Pond Liners, Fish Farming Aeration Systems, Biofloc Setup Cost India, Geomembrane Sheets for Ponds, Best Pond Liner Dealer Raipur, Fish Farming Solutions Chhattisgarh, HDPE Sheet for Agriculture, Biofloc Farming Training India, Aquaculture Infrastructure Solutions, High Density Polyethylene Liners, Fish Pond Aerators India, Biofloc Product Suppliers, Water Management for Fish Farming";
+  const defaultDescription = "Yesha Enterprises — India's premier wholesale distributor of Biofloc fish farming equipment, HDPE pond liners, ring blowers, and aeration systems in Raipur, Chhattisgarh with PAN India delivery.";
+  const defaultKeywords = "Biofloc Fish Farming Equipment, HDPE Pond Liner Raipur, Ring Blower for Fish Farming, Biofloc Tank Supplier, Fish Pond Aerator India, Aquaculture Equipment Chhattisgarh";
 
-  const seoTitle = title ? `${title} | ${siteName}` : siteName;
+  const seoTitle = title ? (title.includes(siteName) ? title : `${title} | ${siteName}`) : `Biofloc Fish Farming Equipment & HDPE Pond Liner Supplier | ${siteName}`;
   const seoDescription = description || defaultDescription;
   const seoKeywords = keywords || defaultKeywords;
+
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/';
+  const canonicalUrl = url
+    ? (url.startsWith('http') ? url.split('?')[0].split('#')[0] : `https://yeshaenterprises.in${url.startsWith('/') ? url : `/${url}`}`)
+    : `https://yeshaenterprises.in${currentPath === '/' ? '' : currentPath}`;
+
+  const absoluteImage = image.startsWith('http')
+    ? image
+    : `https://yeshaenterprises.in${image.startsWith('/') ? image : `/${image}`}`;
 
   return (
     <Helmet>
@@ -23,24 +32,24 @@ const SEO = ({
       <title>{seoTitle}</title>
       <meta name="description" content={seoDescription} />
       <meta name="keywords" content={seoKeywords} />
-      <link rel="canonical" href={url} />
+      <link rel="canonical" href={canonicalUrl} />
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
-      <meta property="og:url" content={url} />
+      <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={seoTitle} />
       <meta property="og:description" content={seoDescription} />
-      <meta property="og:image" content={image} />
+      <meta property="og:image" content={absoluteImage} />
       <meta property="og:site_name" content={siteName} />
       <meta property="og:locale" content="en_IN" />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content={url} />
+      <meta name="twitter:url" content={canonicalUrl} />
       <meta name="twitter:title" content={seoTitle} />
       <meta name="twitter:description" content={seoDescription} />
-      <meta name="twitter:image" content={image} />
+      <meta name="twitter:image" content={absoluteImage} />
       <meta name="twitter:site" content="@yeshaenterprises" />
 
       {/* Advanced SEO */}

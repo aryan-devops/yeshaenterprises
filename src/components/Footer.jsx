@@ -7,9 +7,10 @@ export default function Footer({ contact, onAdminClick }) {
 
   const links = [
     { label: 'Home', to: '/' },
-    { label: 'Products', to: '/products' },
-    { label: 'About', to: '/about' },
-    { label: 'Contact', to: '/contact' }
+    { label: 'Products Catalog', to: '/products' },
+    { label: 'Knowledge Hub & Blog', to: '/blog' },
+    { label: 'About Us', to: '/about' },
+    { label: 'Contact Us', to: '/contact' }
   ]
 
   const categories = ['Pond Liners', 'Blowers', 'Tanks', 'Generators', 'Shade Nets']
@@ -30,7 +31,7 @@ export default function Footer({ contact, onAdminClick }) {
             </div>
 
             <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', lineHeight: 1.8, marginBottom: 32 }}>
-              India's premier distribution hub for industrial-grade Biofloc infrastructure.
+              India's premier distribution hub for industrial-grade Biofloc and Aquaculture infrastructure. Headquartered in Raipur, Chhattisgarh with pan-India supply.
             </p>
 
             {/* ✅ FIXED SOCIAL ICONS */}
@@ -66,7 +67,7 @@ export default function Footer({ contact, onAdminClick }) {
 
           {/* Quick Links */}
           <div>
-            <h4 style={{ fontSize: '1.1rem', marginBottom: 28 }}>Sitemap</h4>
+            <h4 style={{ fontSize: '1.1rem', marginBottom: 28 }}>Navigation</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {links.map((link, i) => (
                 <Link key={i} to={link.to} className="footer-link">
@@ -81,9 +82,11 @@ export default function Footer({ contact, onAdminClick }) {
             <h4 style={{ fontSize: '1.1rem', marginBottom: 28 }}>Regional Presence</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {[
-                { name: 'Chhattisgarh (HQ)', path: '/location/chhattisgarh' },
+                { name: 'Raipur (Central Hub)', path: '/location/raipur' },
+                { name: 'Chhattisgarh (State)', path: '/location/chhattisgarh' },
+                { name: 'Odisha', path: '/location/odisha' },
                 { name: 'Maharashtra', path: '/location/maharashtra' },
-                { name: 'Odisha', path: '/location/odisha' }
+                { name: 'Madhya Pradesh', path: '/location/madhya-pradesh' }
               ].map((loc, i) => (
                 <Link key={i} to={loc.path} className="footer-link">
                   {loc.name}
