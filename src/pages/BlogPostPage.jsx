@@ -287,8 +287,8 @@ export default function BlogPostPage({ blogs, contact = {} }) {
                 View All <LucideIcon name="ArrowRight" size={18} />
               </Link>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: 30 }}>
-              {blogs.filter(b => b.slug !== slug).slice(0, 2).map((b, i) => (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 30 }}>
+              {blogs.filter(b => b.slug !== slug).slice(0, 3).map((b, i) => (
                 <Link key={i} to={`/blog/${b.slug}`} className="premium-card" style={{ display: 'block', textDecoration: 'none', borderRadius: 24, overflow: 'hidden', transition: 'transform 0.3s ease' }}>
                   <div style={{ height: 220, background: `url(${b.image_url}) center/cover` }} />
                   <div style={{ padding: 24 }}>
