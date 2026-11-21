@@ -42,8 +42,8 @@ export default function About() {
             </div>
             
             <h2 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', marginBottom: 24, lineHeight: 1.1 }}>
-              Building Better <br />
-              <span style={{ color: 'var(--primary)' }}>Fish Farms</span>
+              Why Choose <br />
+              <span style={{ color: 'var(--primary)' }}>Yesha Enterprises?</span>
             </h2>
             
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.15rem', marginBottom: 32, lineHeight: 1.8 }}>

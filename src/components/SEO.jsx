@@ -19,12 +19,12 @@ const SEO = ({
 
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/';
   const canonicalUrl = url
-    ? (url.startsWith('http') ? url.split('?')[0].split('#')[0] : `https://yeshaenterprises.in${url.startsWith('/') ? url : `/${url}`}`)
-    : `https://yeshaenterprises.in${currentPath === '/' ? '' : currentPath}`;
+    ? (url.startsWith('http') ? url.split('?')[0].split('#')[0] : `https://www.yeshaenterprises.in${url.startsWith('/') ? url : `/${url}`}`)
+    : `https://www.yeshaenterprises.in${currentPath === '/' ? '/' : currentPath}`;
 
   const absoluteImage = image.startsWith('http')
     ? image
-    : `https://yeshaenterprises.in${image.startsWith('/') ? image : `/${image}`}`;
+    : `https://www.yeshaenterprises.in${image.startsWith('/') ? image : `/${image}`}`;
 
   return (
     <Helmet>

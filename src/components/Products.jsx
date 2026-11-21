@@ -46,7 +46,7 @@ export default function Products({ products, contact, previewMode = false }) {
             <LucideIcon name="Package" size={14} />
             OUR SOLUTIONS
           </div>
-          <h2 className="products-title">Complete Biofloc Infrastructure</h2>
+          <h2 className="products-title">Our Products</h2>
           <p className="products-subtitle">
             Wholesale prices, engineering-grade quality, and Pan-India delivery.
           </p>
@@ -99,10 +99,12 @@ export default function Products({ products, contact, previewMode = false }) {
 
         {/* Product Grid — NEW DESIGN */}
         <div className="products-grid reveal-stagger" ref={reveal}>
-          {displayProducts.map((p, i) => (
+          {displayProducts.map((p, i) => {
+            const productSlug = p.name?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || p.id
+            return (
             <Link
               key={p.id}
-              to={`/product/${p.id}`}
+              to={`/product/${productSlug}`}
               className="pcard animate-slide-up"
               style={{ animationDelay: `${i * 0.08}s` }}
             >
@@ -150,7 +152,8 @@ export default function Products({ products, contact, previewMode = false }) {
                 </div>
               </div>
             </Link>
-          ))}
+            )
+          })}
         </div>
 
         {/* View All CTA */}

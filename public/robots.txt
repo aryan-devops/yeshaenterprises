@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 
 # Sitemap
-Sitemap: https://yeshaenterprises.in/sitemap.xml
+Sitemap: https://www.yeshaenterprises.in/sitemap.xml

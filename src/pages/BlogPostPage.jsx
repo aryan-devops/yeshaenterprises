@@ -91,39 +91,39 @@ export default function BlogPostPage({ blogs, contact = {} }) {
   const canonicalUrl = `https://yeshaenterprises.in/blog/${blog.slug}`
 
   const articleSchema = {
-    "@context": "https://schema.org", 
+    "@context": "https://schema.org",
     "@type": "Article",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": canonicalUrl
     },
-    "headline": blog.title, 
+    "headline": blog.title,
     "image": blog.image_url ? [blog.image_url.startsWith('http') ? blog.image_url : `https://yeshaenterprises.in${blog.image_url}`] : [],
-    "datePublished": blog.created_at, 
+    "datePublished": blog.created_at,
     "dateModified": blog.created_at,
-    "author": { 
-      "@type": "Organization", 
+    "author": {
+      "@type": "Organization",
       "name": "Yesha Enterprises",
-      "url": "https://yeshaenterprises.in" 
+      "url": "https://yeshaenterprises.in"
     },
-    "publisher": { 
-      "@type": "Organization", 
-      "name": "Yesha Enterprises", 
-      "logo": { 
-        "@type": "ImageObject", 
-        "url": "https://yeshaenterprises.in/main-logo.svg" 
-      } 
+    "publisher": {
+      "@type": "Organization",
+      "name": "Yesha Enterprises",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://yeshaenterprises.in/main-logo.svg"
+      }
     },
     "description": blog.excerpt
   }
 
   const faqSchema = {
-    "@context": "https://schema.org", 
+    "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": faqs.map(f => ({ 
-      "@type": "Question", 
-      "name": f.q, 
-      "acceptedAnswer": { "@type": "Answer", "text": f.a } 
+    "mainEntity": faqs.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a }
     }))
   }
 
@@ -195,140 +195,140 @@ export default function BlogPostPage({ blogs, contact = {} }) {
           <div className="blog-main-wrapper">
             <div className="blog-layout">
 
-            {/* Article Body */}
-            {/* Main Content Area */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-              <div
-                className="blog-content"
-                style={{ fontSize: '1.08rem', color: 'var(--text-secondary)', lineHeight: 1.9, minWidth: 0 }}
-                dangerouslySetInnerHTML={{ __html: blog.content }}
-              />
+              {/* Article Body */}
+              {/* Main Content Area */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
+                <div
+                  className="blog-content"
+                  style={{ fontSize: '1.08rem', color: 'var(--text-secondary)', lineHeight: 1.9, minWidth: 0 }}
+                  dangerouslySetInnerHTML={{ __html: blog.content }}
+                />
 
-              {/* Share Buttons */}
-              <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '32px 0', marginTop: 20 }}>
-                <p style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 16 }}>Share this article</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-                  <a 
-                    href={`https://wa.me/?text=${encodeURIComponent('Check out this article: ' + blog.title + ' ' + window.location.href)}`} 
-                    target="_blank" rel="noopener noreferrer"
-                    style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: 12, background: '#25D366', color: 'white', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem' }}
-                  >
-                    <LucideIcon name="MessageCircle" size={18} /> WhatsApp
-                  </a>
-                  <a 
-                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`} 
-                    target="_blank" rel="noopener noreferrer"
-                    style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: 12, background: '#1877F2', color: 'white', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem' }}
-                  >
-                    <LucideIcon name="Facebook" size={18} /> Facebook
-                  </a>
-                  <button 
-                    onClick={() => {
-                      navigator.clipboard.writeText(window.location.href)
-                      alert('Link copied to clipboard!')
-                    }}
-                    style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: 12, background: 'var(--surface-hover)', border: '1px solid var(--border)', color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 700, fontSize: '0.9rem' }}
-                  >
-                    <LucideIcon name="Link" size={18} /> Copy Link
-                  </button>
+                {/* Share Buttons */}
+                <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '32px 0', marginTop: 20 }}>
+                  <p style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 16 }}>Share this article</p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+                    <a
+                      href={`https://wa.me/?text=${encodeURIComponent('Check out this article: ' + blog.title + ' ' + window.location.href)}`}
+                      target="_blank" rel="noopener noreferrer"
+                      style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: 12, background: '#25D366', color: 'white', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem' }}
+                    >
+                      <LucideIcon name="MessageCircle" size={18} /> WhatsApp
+                    </a>
+                    <a
+                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                      target="_blank" rel="noopener noreferrer"
+                      style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: 12, background: '#1877F2', color: 'white', textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem' }}
+                    >
+                      <LucideIcon name="Facebook" size={18} /> Facebook
+                    </a>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(window.location.href)
+                        alert('Link copied to clipboard!')
+                      }}
+                      style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: 12, background: 'var(--surface-hover)', border: '1px solid var(--border)', color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 700, fontSize: '0.9rem' }}
+                    >
+                      <LucideIcon name="Link" size={18} /> Copy Link
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Sidebar */}
-            <aside className="blog-sidebar">
+              {/* Sidebar */}
+              <aside className="blog-sidebar">
 
-              {/* Card 1: Engage With Us */}
-              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 6 }}>Engage With Us</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: 18 }}>
-                  Have a question? Our experts are ready to help you choose the right product for your farm.
-                </p>
-                <a
-                  href={`https://wa.me/${contact?.whatsapp || '919977228924'}`}
-                  target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#22c55e', color: 'white', padding: '12px 16px', borderRadius: 12, fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none', marginBottom: 10 }}
-                >
-                  <LucideIcon name="MessageCircle" size={16} /> WhatsApp Us Now
-                </a>
-                <a
-                  href="tel:+919977228924"
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text-primary)', padding: '12px 16px', borderRadius: 12, fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none', marginBottom: 10 }}
-                >
-                  <LucideIcon name="Phone" size={16} /> Call: +91 99772 28924
-                </a>
-                <Link to="/contact" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'var(--primary)', color: 'white', padding: '12px 16px', borderRadius: 12, fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none' }}>
-                  <LucideIcon name="Mail" size={16} /> Send Enquiry
-                </Link>
-              </div>
-
-
-              {/* Card 3: View Products */}
-              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 16 }}>Our Products</h3>
-                {[
-                  { label: 'HDPE Pond Liners', path: '/products' },
-                  { label: 'Ring Blowers / Air Pumps', path: '/products' },
-                  { label: 'Circular Fish Tanks', path: '/products' },
-                  { label: 'Diesel Generators', path: '/products' },
-                  { label: 'HDPE Shade Nets', path: '/products' },
-                ].map((item, i) => (
-                  <Link key={i} to={item.path} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0', borderBottom: i < 4 ? '1px solid var(--border)' : 'none', textDecoration: 'none', color: 'var(--text-secondary)', fontSize: '0.875rem', fontWeight: 500 }}>
-                    {item.label}
-                    <LucideIcon name="ChevronRight" size={16} color="var(--primary)" />
-                  </Link>
-                ))}
-              </div>
-
-              {/* Card 4: Tags */}
-              {blog.keywords && (
+                {/* Card 1: Engage With Us */}
                 <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
-                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 14 }}>Article Tags</h3>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                    {blog.keywords.split(',').slice(0, 10).map((tag, i) => (
-                      <span key={i} style={{ background: 'var(--bg)', border: '1px solid var(--border)', padding: '5px 12px', borderRadius: 100, fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
-                        {tag.trim()}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-
-              {/* Card 6: Latest Articles */}
-              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 16 }}>Latest Updates</h3>
-                {blogs.filter(b => b.slug !== slug).slice(0, 3).map((b, i) => (
-                  <Link key={i} to={`/blog/${b.slug}`} style={{ display: 'flex', gap: 12, textDecoration: 'none', marginBottom: i < 2 ? 16 : 0, group: 'true' }}>
-                    <div style={{ width: 60, height: 60, borderRadius: 8, overflow: 'hidden', flexShrink: 0, background: 'var(--surface-hover)' }}>
-                      {b.image_url ? <img src={b.image_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <LucideIcon name="Image" size={16} />}
-                    </div>
-                    <div>
-                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px', lineHeight: 1.3, transition: 'color 0.2s' }} className="sidebar-blog-link">{b.title}</p>
-                      <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0 }}>{new Date(b.created_at).toLocaleDateString()}</p>
-                    </div>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 6 }}>Engage With Us</h3>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: 18 }}>
+                    Have a question? Our experts are ready to help you choose the right product for your farm.
+                  </p>
+                  <a
+                    href={`https://wa.me/${contact?.whatsapp || '919977228924'}`}
+                    target="_blank" rel="noopener noreferrer"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#22c55e', color: 'white', padding: '12px 16px', borderRadius: 12, fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none', marginBottom: 10 }}
+                  >
+                    <LucideIcon name="MessageCircle" size={16} /> WhatsApp Us Now
+                  </a>
+                  <a
+                    href="tel:+919977228924"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text-primary)', padding: '12px 16px', borderRadius: 12, fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none', marginBottom: 10 }}
+                  >
+                    <LucideIcon name="Phone" size={16} /> Call: +91 99772 28924
+                  </a>
+                  <Link to="/contact" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'var(--primary)', color: 'white', padding: '12px 16px', borderRadius: 12, fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none' }}>
+                    <LucideIcon name="Mail" size={16} /> Send Enquiry
                   </Link>
-                ))}
-              </div>
+                </div>
 
-              {/* Card 7: Business Hours */}
-              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 14 }}>Business Hours</h3>
-                {[
-                  { days: 'Mon - Sat', hours: '09:00 AM - 07:00 PM' },
-                  { days: 'Sunday', hours: 'Closed' },
-                ].map((item, i) => (
-                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: i === 0 ? 8 : 0 }}>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 600 }}>{item.days}</span>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{item.hours}</span>
+
+                {/* Card 3: View Products */}
+                <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 16 }}>Our Products</h3>
+                  {[
+                    { label: 'HDPE Pond Liners', path: '/products' },
+                    { label: 'Ring Blowers / Air Pumps', path: '/products' },
+                    { label: 'Circular Fish Tanks', path: '/products' },
+                    { label: 'Diesel Generators', path: '/products' },
+                    { label: 'HDPE Shade Nets', path: '/products' },
+                  ].map((item, i) => (
+                    <Link key={i} to={item.path} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0', borderBottom: i < 4 ? '1px solid var(--border)' : 'none', textDecoration: 'none', color: 'var(--text-secondary)', fontSize: '0.875rem', fontWeight: 500 }}>
+                      {item.label}
+                      <LucideIcon name="ChevronRight" size={16} color="var(--primary)" />
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Card 4: Tags */}
+                {blog.keywords && (
+                  <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
+                    <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 14 }}>Article Tags</h3>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                      {blog.keywords.split(',').slice(0, 10).map((tag, i) => (
+                        <span key={i} style={{ background: 'var(--bg)', border: '1px solid var(--border)', padding: '5px 12px', borderRadius: 100, fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+                          {tag.trim()}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                ))}
-              </div>
+                )}
 
-            </aside>
+
+                {/* Card 6: Latest Articles */}
+                <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 16 }}>Latest Updates</h3>
+                  {blogs.filter(b => b.slug !== slug).slice(0, 3).map((b, i) => (
+                    <Link key={i} to={`/blog/${b.slug}`} style={{ display: 'flex', gap: 12, textDecoration: 'none', marginBottom: i < 2 ? 16 : 0, group: 'true' }}>
+                      <div style={{ width: 60, height: 60, borderRadius: 8, overflow: 'hidden', flexShrink: 0, background: 'var(--surface-hover)' }}>
+                        {b.image_url ? <img src={b.image_url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <LucideIcon name="Image" size={16} />}
+                      </div>
+                      <div>
+                        <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px', lineHeight: 1.3, transition: 'color 0.2s' }} className="sidebar-blog-link">{b.title}</p>
+                        <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0 }}>{new Date(b.created_at).toLocaleDateString()}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Card 7: Business Hours */}
+                <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 14 }}>Business Hours</h3>
+                  {[
+                    { days: 'Mon - Sat', hours: '09:00 AM - 07:00 PM' },
+                    { days: 'Sunday', hours: 'Closed' },
+                  ].map((item, i) => (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: i === 0 ? 8 : 0 }}>
+                      <span style={{ fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 600 }}>{item.days}</span>
+                      <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{item.hours}</span>
+                    </div>
+                  ))}
+                </div>
+
+              </aside>
+            </div>
           </div>
         </div>
-      </div>
 
         {/* You May Also Like Section */}
         {blogs.filter(b => b.slug !== slug).length > 0 && (
