@@ -4,6 +4,7 @@ import LucideIcon from './LucideIcon'
 
 const ADMIN_PASSWORD = 'yesha@2024'
 const CATEGORIES_LIST = ['Pond Liners', 'Blowers', 'Tanks', 'Generators', 'Shade Nets', 'Other']
+const GROQ_MODEL = 'openai/gpt-oss-120b'
 
 // ---------------------- Password Gate ----------------------
 function LoginGate({ onLogin }) {
@@ -181,7 +182,7 @@ function CustomWysiwyg({ value, onChange }) {
           'Authorization': `Bearer ${_k}`
         },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
+          model: GROQ_MODEL,
           messages: [{
             role: "system",
             content: "You are an SEO expert. Format the provided text using HTML tags (h2, h3, p, strong, ul, li). Return ONLY the clean HTML. No markdown, no conversational text."
@@ -1035,7 +1036,7 @@ function BlogManager({ blogs, setBlogs, refreshData, contact }) {
           'Authorization': `Bearer ${_k}`
         },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
+          model: GROQ_MODEL,
           messages: [{
             role: "system",
             content: "You are a Senior Content Writer and SEO Expert. Write a professional, SEO-optimized blog post using SIMPLE, EASY-TO-UNDERSTAND language. Avoid complex jargon. Return a JSON object with: title, excerpt, keywords, and content (HTML formatted)."
@@ -1051,12 +1052,14 @@ function BlogManager({ blogs, setBlogs, refreshData, contact }) {
       const data = await response.json()
       if (data.error) throw new Error(data.error.message)
       
-      const res = JSON.parse(data.choices[0].message.content)
+      let rawContent = data.choices[0].message.content
+      rawContent = rawContent.replace(/```json|```/g, '').trim()
+      const res = JSON.parse(rawContent)
       setFormData({
         ...formData,
         title: res.title || '',
         excerpt: res.excerpt || '',
-        keywords: res.keywords || '',
+        keywords: Array.isArray(res.keywords) ? res.keywords.join(', ') : (res.keywords || ''),
         content: res.content || ''
       })
       alert('Blog generated! Please review, upload an image, and save.')
@@ -1086,7 +1089,7 @@ function BlogManager({ blogs, setBlogs, refreshData, contact }) {
           'Authorization': `Bearer ${_k}`
         },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
+          model: GROQ_MODEL,
           messages: [{
             role: "system",
             content: "You are an SEO Expert. Generate 6 frequently asked questions (FAQs) for a blog post. Use simple, easy language. Return a JSON object with a 'faqs' key containing an array of {q, a} objects."
@@ -1101,7 +1104,9 @@ function BlogManager({ blogs, setBlogs, refreshData, contact }) {
       const data = await response.json()
       if (data.error) throw new Error(data.error.message)
       
-      const res = JSON.parse(data.choices[0].message.content)
+      let rawContent = data.choices[0].message.content
+      rawContent = rawContent.replace(/```json|```/g, '').trim()
+      const res = JSON.parse(rawContent)
       setFormData({ ...formData, faqs: res.faqs || [] })
       alert('FAQs generated with AI!')
     } catch (err) {
