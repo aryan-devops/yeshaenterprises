@@ -74,7 +74,7 @@ export default function LocationPage({ state, city, products, contact }) {
     "name": `Yesha Enterprises - ${locationKey}`,
     "description": stateData.description,
     "telephone": "+91 99772 28924",
-    "url": `https://yeshaenterprises.in${currentPath}`,
+    "url": `https://www.yeshaenterprises.in${currentPath}`,
     "areaServed": {
       "@type": locationKey === 'Raipur' ? "City" : "State",
       "name": locationKey
@@ -98,19 +98,19 @@ export default function LocationPage({ state, city, products, contact }) {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://yeshaenterprises.in/"
+        "item": "https://www.yeshaenterprises.in/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Locations",
-        "item": "https://yeshaenterprises.in/products"
+        "item": "https://www.yeshaenterprises.in/products"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": locationKey,
-        "item": `https://yeshaenterprises.in${currentPath}`
+        "item": `https://www.yeshaenterprises.in${currentPath}`
       }
     ]
   }

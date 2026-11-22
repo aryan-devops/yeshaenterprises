@@ -11,13 +11,13 @@ export default function ProductsPage({ products, contact }) {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://yeshaenterprises.in/"
+        "item": "https://www.yeshaenterprises.in/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Products",
-        "item": "https://yeshaenterprises.in/products"
+        "item": "https://www.yeshaenterprises.in/products"
       }
     ]
   };
@@ -28,7 +28,7 @@ export default function ProductsPage({ products, contact }) {
         title="Biofloc Fish Farming Equipment & HDPE Pond Liners Catalog"
         description="Browse wholesale aquaculture equipment: HDPE Pond Liners (200-500 GSM), Ring Blowers (1-5 HP), Jet Aerators, Biofloc Tanks & Shade Nets in Raipur, Chhattisgarh with pan-India delivery."
         keywords="HDPE Pond Liner Supplier, Ring Blower for Biofloc Fish Farming, Biofloc Fish Tank Price, Jet Aerator in Raipur, Pond Liner in Raipur, Fish Farming Equipment India"
-        url="https://yeshaenterprises.in/products"
+        url="https://www.yeshaenterprises.in/products"
       />
       <script type="application/ld+json">
         {JSON.stringify(breadcrumbSchema)}

@@ -27,13 +27,13 @@ export default function BlogPage({ blogs }) {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://yeshaenterprises.in/"
+        "item": "https://www.yeshaenterprises.in/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Blog",
-        "item": "https://yeshaenterprises.in/blog"
+        "item": "https://www.yeshaenterprises.in/blog"
       }
     ]
   };
@@ -44,7 +44,7 @@ export default function BlogPage({ blogs }) {
         title="Aquaculture & Biofloc Knowledge Hub — Guides, Costs & Tips"
         description="Comprehensive guides on HDPE pond liners, ring blower sizing, biofloc setup costs, PMMSY subsidies, and modern fish farming practices in India."
         keywords="fish farming blog, biofloc tips, pond liner buying guide, biofloc setup cost India, PMMSY subsidy fish farming"
-        url="https://yeshaenterprises.in/blog"
+        url="https://www.yeshaenterprises.in/blog"
       />
       <script type="application/ld+json">
         {JSON.stringify(breadcrumbSchema)}

@@ -1039,7 +1039,7 @@ function BlogManager({ blogs, setBlogs, refreshData, contact }) {
           model: GROQ_MODEL,
           messages: [{
             role: "system",
-            content: "You are a Senior Content Writer and SEO Expert writing on behalf of Yesha Enterprises (official website: https://yeshaenterprises.in, Phone: +91 99772 28924). Yesha Enterprises is a premier supplier of high-quality aquaculture, fish farming, biofloc equipment, HDPE pond liners, roots blowers, PVC tarpaulin tanks, and shade nets across India. Write a comprehensive, professional, and SEO-optimized blog post in simple, clear language. In the blog HTML content, you MUST ALWAYS include a dedicated section titled 'How Yesha Enterprises Can Help You' near the conclusion. This section must explain how Yesha Enterprises provides top-quality products, custom sizing, expert setup assistance, competitive pricing, and reliable pan-India delivery. Include website details (https://yeshaenterprises.in) and phone (+91 99772 28924) with a strong call-to-action for readers to get in touch or explore products. Return a JSON object with keys: title, excerpt, keywords, and content (HTML formatted using h2, h3, p, strong, ul, li, a)."
+            content: "You are a Senior Content Writer and SEO Expert writing on behalf of Yesha Enterprises (official website: https://www.yeshaenterprises.in, Phone: +91 99772 28924). Yesha Enterprises is a premier supplier of high-quality aquaculture, fish farming, biofloc equipment, HDPE pond liners, roots blowers, PVC tarpaulin tanks, and shade nets across India. Write a comprehensive, professional, and SEO-optimized blog post in simple, clear language. In the blog HTML content, you MUST ALWAYS include a dedicated section titled 'How Yesha Enterprises Can Help You' near the conclusion. This section must explain how Yesha Enterprises provides top-quality products, custom sizing, expert setup assistance, competitive pricing, and reliable pan-India delivery. Include website details (https://www.yeshaenterprises.in) and phone (+91 99772 28924) with a strong call-to-action for readers to get in touch or explore products. Return a JSON object with keys: title, excerpt, keywords, and content (HTML formatted using h2, h3, p, strong, ul, li, a)."
           }, {
             role: "user",
             content: `Write a blog post about: ${topic}. Return JSON format.`
@@ -1092,7 +1092,7 @@ function BlogManager({ blogs, setBlogs, refreshData, contact }) {
           model: GROQ_MODEL,
           messages: [{
             role: "system",
-            content: "You are an SEO Expert for Yesha Enterprises (https://yeshaenterprises.in). Generate 6 frequently asked questions (FAQs) for a blog post. Use simple, easy language. Where relevant, naturally reference Yesha Enterprises' products, services, or quality assurance. Return a JSON object with a 'faqs' key containing an array of {q, a} objects."
+            content: "You are an SEO Expert for Yesha Enterprises (https://www.yeshaenterprises.in). Generate 6 frequently asked questions (FAQs) for a blog post. Use simple, easy language. Where relevant, naturally reference Yesha Enterprises' products, services, or quality assurance. Return a JSON object with a 'faqs' key containing an array of {q, a} objects."
           }, {
             role: "user",
             content: `Generate FAQs for a blog titled: "${formData.title}". Content summary: ${formData.excerpt}`

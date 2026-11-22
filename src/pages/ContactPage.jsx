@@ -7,7 +7,7 @@ export default function ContactPage({ contact }) {
     "@context": "https://schema.org",
     "@type": "ContactPage",
     "name": "Contact Yesha Enterprises",
-    "url": "https://yeshaenterprises.in/contact",
+    "url": "https://www.yeshaenterprises.in/contact",
     "mainEntity": {
       "@type": "LocalBusiness",
       "name": "Yesha Enterprises",
@@ -30,7 +30,7 @@ export default function ContactPage({ contact }) {
         title="Contact Yesha Enterprises — Raipur Central Office & Inquiries"
         description="Contact Yesha Enterprises in Raipur, Chhattisgarh for wholesale pricing, custom HDPE pond liner sizing, and dealer partnerships. Phone: +91 99772 28924."
         keywords="Contact Yesha Enterprises, Pond Liner Raipur Phone, Fish Farming Equipment Supplier Raipur Contact"
-        url="https://yeshaenterprises.in/contact"
+        url="https://www.yeshaenterprises.in/contact"
       />
       <script type="application/ld+json">
         {JSON.stringify(contactSchema)}

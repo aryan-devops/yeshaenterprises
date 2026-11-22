@@ -48,7 +48,7 @@ export default function AboutPage({ contact, testimonials, brands }) {
         title="About Yesha Enterprises — Aquaculture & Biofloc Equipment Supplier"
         description="Learn about Yesha Enterprises, India's premier wholesale distributor of HDPE Pond Liners, Ring Blowers, and Biofloc equipment founded in Raipur in 2022."
         keywords="About Yesha Enterprises, Aquaculture Equipment Supplier, Fish Farming Equipment Raipur, Biofloc Equipment Manufacturer India"
-        url="https://yeshaenterprises.in/about"
+        url="https://www.yeshaenterprises.in/about"
       />
       <script type="application/ld+json">
         {JSON.stringify(faqSchema)}

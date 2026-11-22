@@ -88,7 +88,7 @@ export default function BlogPostPage({ blogs, contact = {} }) {
 
   const faqs = (blog.faqs && blog.faqs.length > 0) ? blog.faqs : getBlogFAQs(blog)
 
-  const canonicalUrl = `https://yeshaenterprises.in/blog/${blog.slug}`
+  const canonicalUrl = `https://www.yeshaenterprises.in/blog/${blog.slug}`
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -98,20 +98,20 @@ export default function BlogPostPage({ blogs, contact = {} }) {
       "@id": canonicalUrl
     },
     "headline": blog.title,
-    "image": blog.image_url ? [blog.image_url.startsWith('http') ? blog.image_url : `https://yeshaenterprises.in${blog.image_url}`] : [],
+    "image": blog.image_url ? [blog.image_url.startsWith('http') ? blog.image_url : `https://www.yeshaenterprises.in${blog.image_url}`] : [],
     "datePublished": blog.created_at,
     "dateModified": blog.created_at,
     "author": {
       "@type": "Organization",
       "name": "Yesha Enterprises",
-      "url": "https://yeshaenterprises.in"
+      "url": "https://www.yeshaenterprises.in"
     },
     "publisher": {
       "@type": "Organization",
       "name": "Yesha Enterprises",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://yeshaenterprises.in/main-logo.svg"
+        "url": "https://www.yeshaenterprises.in/main-logo.svg"
       }
     },
     "description": blog.excerpt
@@ -135,13 +135,13 @@ export default function BlogPostPage({ blogs, contact = {} }) {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://yeshaenterprises.in/"
+        "item": "https://www.yeshaenterprises.in/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Blog",
-        "item": "https://yeshaenterprises.in/blog"
+        "item": "https://www.yeshaenterprises.in/blog"
       },
       {
         "@type": "ListItem",

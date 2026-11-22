@@ -37,7 +37,7 @@ export default function ProductDetailPage({ products, contact }) {
   if (gallery.length === 0) gallery.push(null)
 
   const productSlug = slugify(product.name) || product.id
-  const canonicalUrl = `https://yeshaenterprises.in/product/${productSlug}`
+  const canonicalUrl = `https://www.yeshaenterprises.in/product/${productSlug}`
 
   const productSchema = {
     "@context": "https://schema.org/",
@@ -61,7 +61,7 @@ export default function ProductDetailPage({ products, contact }) {
       "seller": {
         "@type": "Organization",
         "name": "Yesha Enterprises",
-        "url": "https://yeshaenterprises.in"
+        "url": "https://www.yeshaenterprises.in"
       }
     }
   };
@@ -74,13 +74,13 @@ export default function ProductDetailPage({ products, contact }) {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://yeshaenterprises.in/"
+        "item": "https://www.yeshaenterprises.in/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Products",
-        "item": "https://yeshaenterprises.in/products"
+        "item": "https://www.yeshaenterprises.in/products"
       },
       {
         "@type": "ListItem",
